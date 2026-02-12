@@ -1,4 +1,3 @@
-frontend-template/
 # Dependencies
 node_modules/
 npm-debug.log*
@@ -25,7 +24,7 @@ out/
 *.swp
 *.swo
 *~
-.vite/
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -52,37 +51,3 @@ coverage/
 # Temporary folders
 tmp/
 temp/
-
-# Cache directories
-.cache/
-.parcel-cache/
-.next/
-.nuxt/
-
-# Database
-*.sqlite
-*.db
-
-# Compiled binary addons
-build/Release/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity

@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { authApi } from '../../services/authApi';
 import GlassCard from '../../components/common/GlassCard';
 import Button from '../../components/common/Button';
 import { 
-  Mail, 
+  User, 
   Lock, 
   Eye, 
   EyeOff, 
-  User, 
-  Phone, 
-  MapPin, 
+  Shield, 
   ArrowRight, 
   Sparkles, 
   CheckCircle,
   AlertTriangle,
-  Shield,
   Home,
   UserPlus,
   Check,
@@ -25,9 +23,7 @@ import {
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: '',
-    email: '',
-    phone: '',
-    address: '',
+    username: '',
     password: '',
     confirmPassword: ''
   });
@@ -106,39 +102,33 @@ const Register = () => {
     }
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Check if email already exists (mock check)
-      const existingEmails = ['admin@sms.com', 'superadmin@sms.com', 'john@example.com', 'sarah@example.com', 'demo@user.com'];
-      if (existingEmails.includes(formData.email)) {
-        setError('An account with this email already exists. Please use a different email or try signing in.');
-        setLoading(false);
-        return;
-      }
-
-      // Create new user (mock registration)
-      const newUser = {
-        id: Date.now(),
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        address: formData.address,
-        role: 'public',
-        avatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face`,
-        createdAt: new Date().toISOString()
-      };
+      // Call actual API endpoint
+      const newUser = await authApi.register({
+        fullName: formData.fullName,
+        username: formData.username,
+        password: formData.password,
+        role: 'Customer' // Default role for registration
+      });
 
       setSuccess(true);
       
       // Auto-login after successful registration
-      setTimeout(() => {
-        login(newUser);
-        navigate('/', { replace: true });
+      setTimeout(async () => {
+        try {
+          const loginResponse = await authApi.login(formData.username, formData.password);
+          login({
+            ...loginResponse.user,
+            token: loginResponse.token
+          });
+          navigate('/', { replace: true });
+        } catch (loginErr) {
+          // If auto-login fails, redirect to login page
+          navigate('/login', { replace: true });
+        }
       }, 2000);
 
     } catch (err) {
-      setError('Registration failed. Please check your connection and try again.');
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -268,95 +258,52 @@ const Register = () => {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      Full Name
-                    </div>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      required
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                      placeholder="Enter your full name"
-                    />
-                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    <div className="flex items-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      Phone Number
-                    </div>
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                      placeholder="Enter your phone number"
-                    />
-                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  </div>
-                </div>
-              </div>
-
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Email Address
+                    <User className="w-4 h-4" />
+                    Full Name
                   </div>
                 </label>
                 <div className="relative">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                    placeholder="Enter your email address"
-                  />
-                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="address" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    Address
-                  </div>
-                </label>
-                <div className="relative">
-                  <input
-                    id="address"
-                    name="address"
+                    id="fullName"
+                    name="fullName"
                     type="text"
                     required
-                    value={formData.address}
+                    value={formData.fullName}
                     onChange={handleChange}
                     className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                    placeholder="Enter your address"
+                    placeholder="Enter your full name"
                   />
-                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="username" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    Username
+                  </div>
+                </label>
+                <div className="relative">
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    autoComplete="username"
+                    required
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    placeholder="Choose a unique username"
+                  />
+                  <Shield className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  This will be used to sign in to your account
+                </p>
               </div>
 
               <div className="space-y-2">

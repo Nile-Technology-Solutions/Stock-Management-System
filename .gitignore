@@ -1,4 +1,6 @@
 frontend-template/
+api_spec.yaml
+API_ANALYSIS.md
 # Dependencies
 node_modules/
 npm-debug.log*

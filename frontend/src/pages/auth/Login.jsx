@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { authApi } from '../../services/authApi';
 import GlassCard from '../../components/common/GlassCard';
 import Button from '../../components/common/Button';
 import { 
-  Mail, 
+  User, 
   Lock, 
   Eye, 
   EyeOff, 
-  User, 
   Shield, 
   ArrowRight, 
   Sparkles, 
@@ -18,7 +18,7 @@ import {
 } from '../../components/icons';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '', role: 'public' });
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -32,71 +32,28 @@ const Login = () => {
     return <Navigate to={from} replace />;
   }
 
-  // Enhanced mock user database with public users
-  const mockUsers = {
-    // Admin users
-    'admin@sms.com': {
-      password: 'admin123',
-      role: 'admin',
-      name: 'Admin User',
-      email: 'admin@sms.com',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-    },
-    'superadmin@sms.com': {
-      password: 'super123',
-      role: 'super_admin',
-      name: 'Super Admin',
-      email: 'superadmin@sms.com',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    // Public users
-    'john@example.com': {
-      password: 'user123',
-      role: 'public',
-      name: 'John Smith',
-      email: 'john@example.com',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face'
-    },
-    'sarah@example.com': {
-      password: 'user123',
-      role: 'public',
-      name: 'Sarah Johnson',
-      email: 'sarah@example.com',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face'
-    },
-    'demo@user.com': {
-      password: 'demo123',
-      role: 'public',
-      name: 'Demo User',
-      email: 'demo@user.com',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face'
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      // Call actual API endpoint
+      const response = await authApi.login(credentials.username, credentials.password);
       
-      const user = mockUsers[credentials.email];
+      // Store token and user data
+      login({
+        ...response.user,
+        token: response.token
+      });
       
-      if (user && user.password === credentials.password) {
-        login({
-          ...user,
-          role: user.role
-        });
-        
-        const from = location.state?.from?.pathname || (user.role === 'public' ? '/' : '/admin/dashboard');
-        navigate(from, { replace: true });
-      } else {
-        setError('Invalid email or password. Please check your credentials and try again.');
-      }
+      // Redirect based on user role
+      const from = location.state?.from?.pathname || 
+        (response.user.role === 'Customer' ? '/' : '/admin/dashboard');
+      navigate(from, { replace: true });
+      
     } catch (err) {
-      setError('Login failed. Please check your connection and try again.');
+      setError(err.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
     }
@@ -113,31 +70,31 @@ const Login = () => {
 
   const handleDemoLogin = (demoUser) => {
     setCredentials({
-      email: demoUser.email,
-      password: demoUser.password,
-      role: demoUser.role
+      username: demoUser.username,
+      password: demoUser.password
     });
   };
 
+  // Demo accounts for testing (these should exist in your backend)
   const demoAccounts = [
     { 
-      email: 'demo@user.com', 
+      username: 'demo_customer', 
       password: 'demo123', 
-      role: 'public', 
+      role: 'Customer', 
       name: 'Demo Customer',
       description: 'Browse products and place orders'
     },
     { 
-      email: 'admin@sms.com', 
+      username: 'admin_user', 
       password: 'admin123', 
-      role: 'admin', 
+      role: 'Admin', 
       name: 'Admin User',
       description: 'Manage inventory and orders'
     },
     { 
-      email: 'superadmin@sms.com', 
+      username: 'super_admin', 
       password: 'super123', 
-      role: 'super_admin', 
+      role: 'Super Admin', 
       name: 'Super Admin',
       description: 'Full system access'
     }
@@ -201,25 +158,25 @@ const Login = () => {
               <div className="space-y-3">
                 {demoAccounts.map((demo) => (
                   <button
-                    key={demo.email}
+                    key={demo.username}
                     type="button"
                     onClick={() => handleDemoLogin(demo)}
                     className="w-full text-left p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 transition-all duration-200 hover:scale-105 group"
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        demo.role === 'super_admin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
-                        demo.role === 'admin' ? 'bg-gradient-to-r from-orange-400 to-red-400' :
+                        demo.role === 'Super Admin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
+                        demo.role === 'Admin' ? 'bg-gradient-to-r from-orange-400 to-red-400' :
                         'bg-gradient-to-r from-cyan-400 to-sky-400'
                       } text-white shadow-lg`}>
-                        {demo.role === 'public' ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
+                        {demo.role === 'Customer' ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-200">
                           {demo.name}
                         </div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                          {demo.email}
+                          {demo.username}
                         </div>
                         <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                           {demo.description}
@@ -243,25 +200,25 @@ const Login = () => {
               )}
 
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label htmlFor="username" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Email Address
+                    <User className="w-4 h-4" />
+                    Username
                   </div>
                 </label>
                 <div className="relative">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
+                    id="username"
+                    name="username"
+                    type="text"
+                    autoComplete="username"
                     required
-                    value={credentials.email}
+                    value={credentials.username}
                     onChange={handleChange}
                     className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                    placeholder="Enter your email address"
+                    placeholder="Enter your username"
                   />
-                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
               </div>
 
@@ -349,10 +306,10 @@ const Login = () => {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400/10 to-emerald-400/10 border border-green-400/20 rounded-full">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-600 dark:text-green-400">Demo Environment</span>
+                <span className="text-sm font-medium text-green-600 dark:text-green-400">API Connected</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
-                This is a demonstration environment. Use the demo accounts above to explore the system's features and capabilities.
+                Connected to backend API. Use the demo accounts above or your registered credentials.
               </p>
             </div>
           </GlassCard>

@@ -24,7 +24,7 @@ const createStock = async (req, res, next) => {
     const { name, quantity, color, size, thickness, laminated, origin, typeNote } = req.body;
 
     // Create stock item in database
-    const stock = await prisma.stock.create({
+    const stock = await prisma.stockMaterial.create({
       data: {
         name,
         quantity,
@@ -78,7 +78,7 @@ const updateStock = async (req, res, next) => {
     }
 
     // Check if stock item exists
-    const existingStock = await prisma.stock.findUnique({
+    const existingStock = await prisma.stockMaterial.findUnique({
       where: { id }
     });
 
@@ -98,7 +98,7 @@ const updateStock = async (req, res, next) => {
     if (req.body.typeNote !== undefined) updateData.typeNote = req.body.typeNote;
 
     // Update stock item in database
-    const stock = await prisma.stock.update({
+    const stock = await prisma.stockMaterial.update({
       where: { id },
       data: updateData
     });
@@ -133,7 +133,7 @@ const deleteStock = async (req, res, next) => {
     }
 
     // Check if stock item exists
-    const existingStock = await prisma.stock.findUnique({
+    const existingStock = await prisma.stockMaterial.findUnique({
       where: { id }
     });
 
@@ -142,7 +142,7 @@ const deleteStock = async (req, res, next) => {
     }
 
     // Delete stock item from database
-    await prisma.stock.delete({
+    await prisma.stockMaterial.delete({
       where: { id }
     });
 
@@ -178,7 +178,7 @@ const getAllStock = async (req, res, next) => {
     }
     
     // Query database for stock items
-    const items = await prisma.stock.findMany({
+    const items = await prisma.stockMaterial.findMany({
       where,
       orderBy: {
         id: 'asc'
@@ -212,7 +212,7 @@ const getStockById = async (req, res, next) => {
     }
     
     // Query database for stock item
-    const stock = await prisma.stock.findUnique({
+    const stock = await prisma.stockMaterial.findUnique({
       where: { id }
     });
     

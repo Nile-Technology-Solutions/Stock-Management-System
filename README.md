@@ -17,8 +17,6 @@ npm run dev
 
 Visit `http://localhost:5173` to view the application.
 
-For detailed instructions, see [QUICK_START.md](./QUICK_START.md)
-
 ---
 
 ## 📁 Project Structure
@@ -51,9 +49,6 @@ Stock-Management-System/
 │   ├── public/                # Static assets
 │   ├── package.json           # Dependencies
 │   └── vite.config.js         # Vite configuration
-├── PUBLIC_UI_IMPLEMENTATION.md # Implementation documentation
-├── QUICK_START.md             # Quick start guide
-├── GIT_COMMIT_GUIDE.md        # Git commit guidelines
 └── README.md                  # This file
 ```
 
@@ -91,14 +86,6 @@ Stock-Management-System/
 - API endpoints for products, orders, news
 - Payment gateway integration
 - Order management system
-
----
-
-## 📚 Documentation
-
-- **[PUBLIC_UI_IMPLEMENTATION.md](./PUBLIC_UI_IMPLEMENTATION.md)** - Complete implementation details
-- **[QUICK_START.md](./QUICK_START.md)** - Getting started guide
-- **[GIT_COMMIT_GUIDE.md](./GIT_COMMIT_GUIDE.md)** - Git commit guidelines
 
 ---
 
@@ -159,8 +146,6 @@ VITE_API_BASE_URL=http://localhost:5000
 - `POST /api/orders` - Create new order
 - `GET /api/orders/:id` - Get order details
 - `GET /api/orders/track/:id` - Track order
-
-For detailed API documentation, see [PUBLIC_UI_IMPLEMENTATION.md](./PUBLIC_UI_IMPLEMENTATION.md#-api-endpoints-used)
 
 ---
 
@@ -227,9 +212,6 @@ Upload the `dist` folder to your hosting provider (Vercel, Netlify, etc.)
 
 ## 📝 Contributing
 
-### Commit Guidelines
-Follow the guidelines in [GIT_COMMIT_GUIDE.md](./GIT_COMMIT_GUIDE.md)
-
 ### Code Style
 - Use ESLint for code quality
 - Follow existing code patterns
@@ -265,8 +247,6 @@ npm install
 - Restart dev server
 - Clear browser cache
 - Check Tailwind configuration
-
-For more troubleshooting tips, see [QUICK_START.md](./QUICK_START.md#-troubleshooting)
 
 ---
 

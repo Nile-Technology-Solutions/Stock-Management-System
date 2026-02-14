@@ -1,6 +1,11 @@
 frontend-template/
 api_spec.yaml
 API_ANALYSIS.md
+
+# Documentation files (internal use only - do not push)
+PUBLIC_UI_IMPLEMENTATION.md
+QUICK_START.md
+GIT_COMMIT_GUIDE.md
 # Dependencies
 node_modules/
 npm-debug.log*

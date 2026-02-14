@@ -11,6 +11,9 @@ dist/
 build/
 out/
 
+.env
+
+
 # Environment variables
 .env
 .env.local

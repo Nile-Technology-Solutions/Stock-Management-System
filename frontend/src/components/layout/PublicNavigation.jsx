@@ -102,7 +102,7 @@ const PublicNavigation = () => {
 
             {/* Primary CTA */}
             <Link to="/products">
-              <Button variant="primary" className="flex items-center gap-2">
+              <Button variant="primary" size="md" className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4" />
                 View Products
               </Button>
@@ -189,8 +189,10 @@ const PublicNavigation = () => {
             <ThemeToggle className="text-slate-600 hover:text-slate-800" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 text-slate-600 hover:text-slate-800"
+              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 text-slate-600 hover:text-slate-800 relative z-50"
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
+              type="button"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -204,8 +206,8 @@ const PublicNavigation = () => {
         {/* Mobile Menu */}
         <div className={`md:hidden transition-all duration-300 ease-in-out ${
           isMenuOpen 
-            ? 'max-h-96 opacity-100' 
-            : 'max-h-0 opacity-0 overflow-hidden'
+            ? 'max-h-[600px] opacity-100 visible' 
+            : 'max-h-0 opacity-0 invisible overflow-hidden'
         }`}>
           <div className="py-4 space-y-2 border-t border-white/20 bg-white/40 backdrop-blur-sm rounded-b-xl">
             {navigationItems.map((item) => (

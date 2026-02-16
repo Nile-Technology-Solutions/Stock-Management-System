@@ -14,6 +14,14 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Auth routes (public)
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
+// Admin routes (protected - mount additional routes here)
+const stockRoutes = require('./routes/stockRoutes');
+app.use('/api/stock', stockRoutes);
+
 app.use(notFoundHandler);
 app.use(errorHandler);
 

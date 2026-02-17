@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-
-const { errorHandler, notFoundHandler } = require('./middleware/errorMiddleware');
+const logger = require('../middleware/logger'); 
+const errorHandler = require('../middleware/errorHandler');
 
 const app = express();
 
@@ -22,7 +22,11 @@ app.use('/api/auth', authRoutes);
 const stockRoutes = require('./routes/stockRoutes');
 app.use('/api/stock', stockRoutes);
 
-app.use(notFoundHandler);
+app.use(logger);
+
+// Routes
+ app.use('/api/auth', authRoutes);
+
 app.use(errorHandler);
 
 module.exports = app;

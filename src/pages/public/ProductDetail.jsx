@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { stockApi } from '../../../frontend/src/services/stockApi';
-import ProductImageGallery from '../../../frontend/src/components/public/ProductImageGallery';
-import ProductSpecs from '../../../frontend/src/components/public/ProductSpecs';
-import Button from '../../../frontend/src/components/common/Button';
-import Loader from '../../../frontend/src/components/common/Loader';
-import ErrorState from '../../../frontend/src/components/common/ErrorState';
+import { stockApi } from '../../services/stockApi';
+import ProductImageGallery from '../../components/public/ProductImageGallery';
+import ProductSpecs from '../../components/public/ProductSpecs';
+import Button from '../../components/common/Button';
+import Loader from '../../components/common/Loader';
+import ErrorState from '../../components/common/ErrorState';
 
 const ProductDetail = () => {
   const { id } = useParams();

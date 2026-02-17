@@ -16,13 +16,17 @@ export const apiConfig = {
   retryDelay: 1000,
   
   // Token storage key
-  tokenKey: 'sms_token'
+  tokenKey: 'sms_token',
+  
+  // Mock configuration - set to false when backend is ready
+  useMock: import.meta.env.VITE_USE_MOCK !== 'false' // Default to true, set VITE_USE_MOCK=false to use real API
 };
 
 // Export individual values for convenience
 export const API_BASE_URL = apiConfig.baseURL;
 export const API_TIMEOUT = apiConfig.timeout;
 export const TOKEN_KEY = apiConfig.tokenKey;
+export const USE_MOCK = apiConfig.useMock;
 
 // Environment helpers
 export const getMode = () => import.meta.env.MODE || 'development';

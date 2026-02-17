@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { stockApi } from '../../../frontend/src/services/stockApi';
-import ProductCard from '../../../frontend/src/components/public/ProductCard';
-import ProductCardSkeleton from '../../../frontend/src/components/public/ProductCardSkeleton';
-import CategoryFilter from '../../../frontend/src/components/public/CategoryFilter';
-import SearchInput from '../../../frontend/src/components/public/SearchInput';
-import EmptyState from '../../../frontend/src/components/common/EmptyState';
-import ErrorState from '../../../frontend/src/components/common/ErrorState';
-import Button from '../../../frontend/src/components/common/Button';
+import { stockApi } from '../../services/stockApi';
+import ProductCard from '../../components/public/ProductCard';
+import ProductCardSkeleton from '../../components/public/ProductCardSkeleton';
+import CategoryFilter from '../../components/public/CategoryFilter';
+import SearchInput from '../../components/public/SearchInput';
+import EmptyState from '../../components/common/EmptyState';
+import ErrorState from '../../components/common/ErrorState';
+import Button from '../../components/common/Button';
 
 const Products = () => {
   const [products, setProducts] = useState([]);

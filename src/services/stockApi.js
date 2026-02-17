@@ -153,6 +153,43 @@ export const stockApi = {
       console.error('Delete stock error:', error);
       return { success: false, error: error.message };
     }
+  },
+
+  /** Aliases for public-facing components */
+  async getProducts(params) {
+    const data = await this.getAllStock();
+    if (data.success) {
+      let products = data.data;
+      if (params.category && params.category !== 'all') {
+        products = products.filter(p => p.category === params.category);
+      }
+      if (params.search) {
+        const query = params.search.toLowerCase();
+        products = products.filter(p => 
+          p.name.toLowerCase().includes(query) || 
+          p.typeNote?.toLowerCase().includes(query)
+        );
+      }
+      return products;
+    }
+    throw new Error(data.error);
+  },
+
+  async getCategories() {
+    const data = await this.getAllStock();
+    if (data.success) {
+      const categories = [...new Set(data.data.map(p => p.category).filter(Boolean))];
+      return categories;
+    }
+    return [];
+  },
+
+  async getProductById(id) {
+    const data = await this.getStockById(id);
+    if (data.success) {
+      return data.data;
+    }
+    throw new Error(data.error);
   }
 };
 

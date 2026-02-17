@@ -1,1 +1,0 @@
-// PaymentPending.jsx

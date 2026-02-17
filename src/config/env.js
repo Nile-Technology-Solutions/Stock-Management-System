@@ -24,4 +24,9 @@ export const API_BASE_URL = apiConfig.baseURL;
 export const API_TIMEOUT = apiConfig.timeout;
 export const TOKEN_KEY = apiConfig.tokenKey;
 
+// Environment helpers
+export const getMode = () => import.meta.env.MODE || 'development';
+export const isProduction = () => getMode() === 'production';
+export const isDevelopment = () => getMode() === 'development';
+
 export default apiConfig;

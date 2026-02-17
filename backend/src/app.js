@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('../middleware/logger'); 
 const errorHandler = require('../middleware/errorHandler');
+const authRoutes = require('./routes/authRoutes');
+const stockRoutes = require('./routes/stockRoutes');
 
 const app = express();
 
@@ -13,20 +15,13 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
-
+// Routes
 // Auth routes (public)
-const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
-
 // Admin routes (protected - mount additional routes here)
-const stockRoutes = require('./routes/stockRoutes');
 app.use('/api/stock', stockRoutes);
 
 app.use(logger);
-
-// Routes
- app.use('/api/auth', authRoutes);
-
 app.use(errorHandler);
 
 module.exports = app;

@@ -32,6 +32,18 @@ const stockSchema = Joi.object({
   typeNote: Joi.string().optional(),
 });
 
+// Update schema: all fields optional but require at least one
+const stockUpdateSchema = Joi.object({
+  name: Joi.string().optional(),
+  quantity: Joi.number().integer().min(0).optional(),
+  color: Joi.string().optional(),
+  size: Joi.string().optional(),
+  thickness: Joi.string().optional(),
+  laminated: Joi.boolean().optional(),
+  origin: Joi.string().valid('Local', 'Imported').optional(),
+  typeNote: Joi.string().optional(),
+}).min(1);
+
 // ===================== PRODUCTION =====================
 const productionSchema = Joi.object({
   category: Joi.string().valid('Bed', 'Door', 'Table', 'Cabinet', 'Other').required(),
@@ -108,10 +120,22 @@ module.exports = {
   validateLogin: validate(loginSchema),
   validateUser: validate(userSchema),
   validateStock: validate(stockSchema),
+  validateStockUpdate: validate(stockUpdateSchema),
   validateProduction: validate(productionSchema),
   validateFinishedProduct: validate(finishedProductSchema),
   validateOrder: validate(orderSchema),
   validatePayment: validate(paymentSchema),
   validateTodo: validate(todoSchema),
   validateNews: validate(newsSchema),
+};
+
+// ID param validator (exports separated because it validates params not body)
+module.exports.validateIdParam = (req, res, next) => {
+  const { id } = req.params;
+  const parsed = parseInt(id, 10);
+  if (isNaN(parsed) || parsed <= 0 || parsed.toString() !== id.toString()) {
+    return next({ statusCode: 400, message: 'Invalid ID parameter', details: [] });
+  }
+  req.params.id = parsed;
+  next();
 };

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
-const { ADMIN_ROLES } = require('../constants/roles');
+const { ADMIN_ROLES } = require('../constans/roles');
 const stockController = require('../controllers/stockController');
 const { validateStock, validateStockUpdate, validateIdParam } = require('../middleware/validation');
 

@@ -1,0 +1,905 @@
+openapi: 3.0.0
+info:
+  title: Stock Management System - Full Mock-Ready API
+  version: 1.4.0
+  description: >
+    Complete Stock Management System (SMS) API with pre-defined mock data examples.
+    This API includes full CRUD operations for all modules and reporting endpoints.
+    Use these examples for frontend development and backend validation.
+  contact:
+    name: SMS Development Team
+servers:
+  - url: http://localhost:5000
+    description: Development Server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    # ===================== AUTH & USERS =====================
+    User:
+      type: object
+      properties:
+        id: { type: integer, example: 101 }
+        fullName: { type: string, example: "Abebe Kebede" }
+        username: { type: string, example: "abebe_admin" }
+        role:
+          type: string
+          enum: [Super Admin, Admin, Customer]
+          example: "Admin"
+    # ===================== STOCK MODULE =====================
+    StockMaterial:
+      type: object
+      required: [name, quantity, color, size, thickness, origin]
+      properties:
+        id: { type: integer, example: 1 }
+        name: { type: string, example: "Laminated MDF Board" }
+        quantity: { type: integer, example: 50 }
+        color: { type: string, example: "Dark Oak" }
+        size: { type: string, example: "1220mm x 2440mm" }
+        thickness: { type: string, example: "18mm" }
+        laminated: { type: boolean, example: true }
+        origin:
+          type: string
+          enum: [Local, Imported]
+          example: "Imported"
+        typeNote: { type: string, example: "High-density water resistant" }
+        lastUpdated: { type: string, format: date-time, example: "2023-10-27T10:00:00Z" }
+    # ===================== PRODUCTION =====================
+    ProductionRecord:
+      type: object
+      required: [category, status, progressPercentage]
+      properties:
+        id: { type: integer, example: 505 }
+        category:
+          type: string
+          enum: [Bed, Door, Table, Cabinet, Other]
+          example: "King Size Bed"
+        status:
+          type: string
+          enum: [Under Process, Completed, Rejected]
+          example: "Under Process"
+        progressPercentage: { type: integer, example: 75 }
+        startedDate: { type: string, format: date, example: "2023-10-01" }
+        submittingDate: { type: string, format: date, example: "2023-11-15" }
+        workInstructions: { type: string, example: "Use silver handles and glossy finish" }
+        paymentNote: { type: string, example: "Down payment of 5000 ETB received" }
+        photos:
+          type: array
+          items: { type: string }
+          example: ["https://example.com/uploads/prod1_1.jpg", "https://example.com/uploads/prod1_2.jpg"]
+    # ===================== FINISHED PRODUCTS (SHOWCASE) =====================
+    FinishedProduct:
+      type: object
+      required: [category, color, amount]
+      properties:
+        id: { type: integer, example: 201 }
+        category:
+          type: string
+          enum: [Bed, Door, Table, Cabinet, Other]
+          example: "Office Table"
+        photos:
+          type: array
+          items: { type: string }
+          example: ["https://example.com/uploads/fin1_1.jpg"]
+        color: { type: string, example: "Walnut" }
+        amount: { type: integer, example: 10 }
+        price: { type: number, example: 15000.00 }
+        description: { type: string, example: "Ergonomic office table with drawers" }
+    # ===================== ORDERS & PAYMENTS =====================
+    Order:
+      type: object
+      required: [productName, quantity, clientName, phone]
+      properties:
+        id: { type: integer, example: 99 }
+        productName: { type: string, example: "Modern Office Desk" }
+        quantity: { type: integer, example: 2 }
+        clientName: { type: string, example: "Sara Hailu" }
+        phone: { type: string, example: "+251911223344" }
+        address: { type: string, example: "Bole Atlas, Addis Ababa" }
+        status:
+          type: string
+          enum: [Order Submitted, Payment Confirmed, Under Process, Completed]
+          example: "Order Submitted"
+    Payment:
+      type: object
+      properties:
+        orderId: { type: integer, example: 99 }
+        amount: { type: number, example: 12500.50 }
+        method: { type: string, enum: [Chapa, Telebirr], example: "Chapa" }
+        status: { type: string, example: "Pending" }
+        transactionRef: { type: string, example: "TXN_77889900" }
+    # ===================== TO-DO & NEWS =====================
+    TodoItem:
+      type: object
+      required: [day, task]
+      properties:
+        id: { type: integer, example: 10 }
+        day:
+          type: string
+          enum: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+          example: "Monday"
+        task: { type: string, example: "Inventory check for imported boards" }
+        isCompleted: { type: boolean, example: false }
+    NewsPost:
+      type: object
+      required: [title, content]
+      properties:
+        id: { type: integer, example: 1 }
+        title: { type: string, example: "New Arrival: Italian Leather Sofas" }
+        content: { type: string, example: "We have just received a premium shipment of luxury sofas available in 5 colors..." }
+        status: { type: string, example: "Published" }
+        publishDate: { type: string, format: date-time, example: "2023-10-25T08:30:00Z" }
+    # ===================== REPORTS =====================
+    StockReport:
+      type: object
+      properties:
+        totalMaterials: { type: integer, example: 150 }
+        lowStockItems: { type: integer, example: 5 }
+        materials:
+          type: array
+          items: { $ref: '#/components/schemas/StockMaterial' }
+    ProductionReport:
+      type: object
+      properties:
+        totalUnderProcess: { type: integer, example: 10 }
+        totalCompleted: { type: integer, example: 20 }
+        totalRejected: { type: integer, example: 2 }
+        records:
+          type: array
+          items: { $ref: '#/components/schemas/ProductionRecord' }
+    OrderReport:
+      type: object
+      properties:
+        totalOrders: { type: integer, example: 50 }
+        totalRevenue: { type: number, example: 250000.00 }
+        orders:
+          type: array
+          items: { $ref: '#/components/schemas/Order' }
+    PaymentReport:
+      type: object
+      properties:
+        totalPayments: { type: integer, example: 45 }
+        totalAmount: { type: number, example: 225000.00 }
+        payments:
+          type: array
+          items: { $ref: '#/components/schemas/Payment' }
+    SalesReport:
+      type: object
+      properties:
+        period: { type: string, example: "2023-10-01 to 2023-11-01" }
+        totalSales: { type: number, example: 300000.00 }
+        topProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              productName: { type: string, example: "Office Desk" }
+              salesCount: { type: integer, example: 15 }
+              revenue: { type: number, example: 225000.00 }
+paths:
+  # --- AUTHENTICATION ---
+  /api/auth/login:
+    post:
+      tags: [Authentication]
+      summary: User Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string, example: "admin_user" }
+                password: { type: string, example: "securePass123" }
+      responses:
+        "200":
+          description: Successful Authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string, example: "eyJhbGciOiJIUzI1NiIsInR..." }
+                  user: { $ref: '#/components/schemas/User' }
+  /api/auth/register:
+    post:
+      tags: [Authentication]
+      summary: User Registration (for Customers)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, username, password, role]
+              properties:
+                fullName: { type: string, example: "New Customer" }
+                username: { type: string, example: "new_customer" }
+                password: { type: string, example: "pass123" }
+                role: { type: string, example: "Customer" }
+      responses:
+        "201":
+          description: User Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+  # --- USERS (Super Admin only) ---
+  /api/users:
+    get:
+      tags: [User Management]
+      security: [{ bearerAuth: [] }]
+      summary: Get all users (Super Admin)
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/User' } }
+    post:
+      tags: [User Management]
+      security: [{ bearerAuth: [] }]
+      summary: Create new user (Super Admin)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/User' }
+      responses:
+        "201":
+          description: User Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+  /api/users/{id}:
+    get:
+      tags: [User Management]
+      security: [{ bearerAuth: [] }]
+      summary: Get user by ID (Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+    put:
+      tags: [User Management]
+      security: [{ bearerAuth: [] }]
+      summary: Update user (Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/User' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+    delete:
+      tags: [User Management]
+      security: [{ bearerAuth: [] }]
+      summary: Delete user (Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- STOCK ---
+  /api/stock:
+    get:
+      tags: [Stock Management]
+      security: [{ bearerAuth: [] }]
+      summary: Get all stock materials
+      responses:
+        "200":
+          description: List of stock materials
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/StockMaterial' } }
+    post:
+      tags: [Stock Management]
+      security: [{ bearerAuth: [] }]
+      summary: Add new stock material
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/StockMaterial' }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StockMaterial' }
+  /api/stock/{id}:
+    get:
+      tags: [Stock Management]
+      security: [{ bearerAuth: [] }]
+      summary: Get stock material by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Stock material details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StockMaterial' }
+    put:
+      tags: [Stock Management]
+      security: [{ bearerAuth: [] }]
+      summary: Update stock material
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/StockMaterial' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StockMaterial' }
+    delete:
+      tags: [Stock Management]
+      security: [{ bearerAuth: [] }]
+      summary: Delete stock material
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- PRODUCTION ---
+  /api/production:
+    get:
+      tags: [Production Tracking]
+      security: [{ bearerAuth: [] }]
+      summary: Get all production records
+      responses:
+        "200":
+          description: List of production records
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/ProductionRecord' } }
+    post:
+      tags: [Production Tracking]
+      security: [{ bearerAuth: [] }]
+      summary: Create new production record
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                category: { type: string, example: "Table" }
+                progressPhotos: { type: array, items: { type: string, format: binary } }
+                notes: { type: string, example: "Sanding stage complete" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductionRecord' }
+  /api/production/{id}:
+    get:
+      tags: [Production Tracking]
+      security: [{ bearerAuth: [] }]
+      summary: Get production record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Production record details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductionRecord' }
+    put:
+      tags: [Production Tracking]
+      security: [{ bearerAuth: [] }]
+      summary: Update production record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                status: { type: string, example: "Completed" }
+                progressPercentage: { type: integer, example: 100 }
+                progressPhotos: { type: array, items: { type: string, format: binary } }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductionRecord' }
+    delete:
+      tags: [Production Tracking]
+      security: [{ bearerAuth: [] }]
+      summary: Delete production record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- FINISHED PRODUCTS (SHOWCASE) ---
+  /api/products:
+    get:
+      tags: [Product Showcase]
+      summary: Get all finished products (Public)
+      responses:
+        "200":
+          description: List of finished products
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/FinishedProduct' } }
+    post:
+      tags: [Product Showcase]
+      security: [{ bearerAuth: [] }]
+      summary: Add new finished product (Admin/Super Admin)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FinishedProduct' }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FinishedProduct' }
+  /api/products/{id}:
+    get:
+      tags: [Product Showcase]
+      summary: Get finished product by ID (Public)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Finished product details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FinishedProduct' }
+    put:
+      tags: [Product Showcase]
+      security: [{ bearerAuth: [] }]
+      summary: Update finished product (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FinishedProduct' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FinishedProduct' }
+    delete:
+      tags: [Product Showcase]
+      security: [{ bearerAuth: [] }]
+      summary: Delete finished product (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- ORDERS ---
+  /api/orders:
+    get:
+      tags: [Orders]
+      security: [{ bearerAuth: [] }]
+      summary: Get all orders (Admin/Super Admin)
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Order' } }
+    post:
+      tags: [Orders]
+      summary: Place new order (Customer)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Order' }
+      responses:
+        "201":
+          description: Order Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Order' }
+  /api/orders/{id}:
+    get:
+      tags: [Orders]
+      security: [{ bearerAuth: [] }]
+      summary: Get order by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Order details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Order' }
+    put:
+      tags: [Orders]
+      security: [{ bearerAuth: [] }]
+      summary: Update order (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Order' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Order' }
+    delete:
+      tags: [Orders]
+      security: [{ bearerAuth: [] }]
+      summary: Delete order (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- PAYMENTS ---
+  /api/payments/initiate:
+    post:
+      tags: [Payments]
+      summary: Initiate payment for order
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orderId, gateway]
+              properties:
+                orderId: { type: integer, example: 99 }
+                gateway: { type: string, enum: [Chapa, Telebirr], example: "Telebirr" }
+      responses:
+        "200":
+          description: Payment initiation success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkoutUrl: { type: string, example: "https://checkout.chapa.co/checkout/pay/..." }
+  /api/payments/callback:
+    post:
+      tags: [Payments]
+      summary: Payment callback (from gateway)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Payment' }
+      responses:
+        "200": { description: Payment processed }
+  /api/payments/{orderId}:
+    get:
+      tags: [Payments]
+      security: [{ bearerAuth: [] }]
+      summary: Get payment details by order ID
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Payment details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Payment' }
+  # --- TO-DO ---
+  /api/todo:
+    get:
+      tags: [To-Do List]
+      security: [{ bearerAuth: [] }]
+      summary: Get to-do items by day
+      parameters:
+        - name: day
+          in: query
+          required: false
+          schema: { type: string, example: "Monday" }
+      responses:
+        "200":
+          description: List of to-do items
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/TodoItem' } }
+    post:
+      tags: [To-Do List]
+      security: [{ bearerAuth: [] }]
+      summary: Add new to-do item
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TodoItem' }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TodoItem' }
+  /api/todo/{id}:
+    get:
+      tags: [To-Do List]
+      security: [{ bearerAuth: [] }]
+      summary: Get to-do item by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: To-do item details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TodoItem' }
+    put:
+      tags: [To-Do List]
+      security: [{ bearerAuth: [] }]
+      summary: Update to-do item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TodoItem' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TodoItem' }
+    delete:
+      tags: [To-Do List]
+      security: [{ bearerAuth: [] }]
+      summary: Delete to-do item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- NEWS ---
+  /api/news:
+    get:
+      tags: [News & Announcements]
+      summary: Get all news posts (Public)
+      responses:
+        "200":
+          description: List of news posts
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/NewsPost' } }
+    post:
+      tags: [News & Announcements]
+      security: [{ bearerAuth: [] }]
+      summary: Create new news post (Admin/Super Admin)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewsPost' }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NewsPost' }
+  /api/news/{id}:
+    get:
+      tags: [News & Announcements]
+      summary: Get news post by ID (Public)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: News post details
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NewsPost' }
+    put:
+      tags: [News & Announcements]
+      security: [{ bearerAuth: [] }]
+      summary: Update news post (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/NewsPost' }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/NewsPost' }
+    delete:
+      tags: [News & Announcements]
+      security: [{ bearerAuth: [] }]
+      summary: Delete news post (Admin/Super Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+  # --- REPORTS ---
+  /api/reports/stock:
+    get:
+      tags: [Reports]
+      security: [{ bearerAuth: [] }]
+      summary: Get stock report (Super Admin)
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema: { type: string, enum: [json, csv, pdf], example: "json" }
+      responses:
+        "200":
+          description: Stock report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StockReport' }
+  /api/reports/production:
+    get:
+      tags: [Reports]
+      security: [{ bearerAuth: [] }]
+      summary: Get production report (Super Admin)
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-10-01" }
+        - name: to_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-11-01" }
+        - name: format
+          in: query
+          required: false
+          schema: { type: string, enum: [json, csv, pdf], example: "json" }
+      responses:
+        "200":
+          description: Production report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ProductionReport' }
+  /api/reports/orders:
+    get:
+      tags: [Reports]
+      security: [{ bearerAuth: [] }]
+      summary: Get orders report (Super Admin)
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-10-01" }
+        - name: to_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-11-01" }
+        - name: format
+          in: query
+          required: false
+          schema: { type: string, enum: [json, csv, pdf], example: "json" }
+      responses:
+        "200":
+          description: Orders report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OrderReport' }
+  /api/reports/payments:
+    get:
+      tags: [Reports]
+      security: [{ bearerAuth: [] }]
+      summary: Get payments report (Super Admin)
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-10-01" }
+        - name: to_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-11-01" }
+        - name: format
+          in: query
+          required: false
+          schema: { type: string, enum: [json, csv, pdf], example: "json" }
+      responses:
+        "200":
+          description: Payments report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PaymentReport' }
+  /api/reports/sales:
+    get:
+      tags: [Reports]
+      security: [{ bearerAuth: [] }]
+      summary: Get sales report (Super Admin)
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-10-01" }
+        - name: to_date
+          in: query
+          required: false
+          schema: { type: string, format: date, example: "2023-11-01" }
+        - name: format
+          in: query
+          required: false
+          schema: { type: string, enum: [json, csv, pdf], example: "json" }
+      responses:
+        "200":
+          description: Sales report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SalesReport' }

@@ -38,7 +38,31 @@ async function login(req, res, next) {
   }
 }
 
+async function me(req, res, next) {
+  try {
+    // authMiddleware attaches `user` to req
+    return res.status(200).json({ success: true, data: { user: req.user } });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function changePassword(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const { oldPassword, newPassword } = req.body;
+
+    await authService.changePassword({ userId, oldPassword, newPassword });
+
+    return res.status(200).json({ success: true, message: 'Password changed successfully' });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   register,
   login,
+  me,
+  changePassword,
 };

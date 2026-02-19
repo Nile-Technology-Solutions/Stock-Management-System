@@ -76,7 +76,42 @@ async function login(data) {
   return { user: safeUser, token };
 }
 
+/**
+ * Change password for a user after verifying the old password.
+ * @param {{ userId: number, oldPassword: string, newPassword: string }} data
+ */
+async function changePassword(data) {
+  const { userId, oldPassword, newPassword } = data;
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) {
+    const err = new Error('User not found');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const valid = await comparePassword(oldPassword, user.password);
+  if (!valid) {
+    const err = new Error('Old password is incorrect');
+    err.statusCode = 401;
+    throw err;
+  }
+
+  const hashed = await hashPassword(newPassword);
+  await prisma.user.update({ where: { id: userId }, data: { password: hashed } });
+  return true;
+}
+
+async function getUserById(id) {
+  return prisma.user.findUnique({
+    where: { id },
+    select: { id: true, username: true, fullName: true, role: true, createdAt: true },
+  });
+}
+
 module.exports = {
   register,
   login,
+  changePassword,
+  getUserById,
 };

@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const logger = require('../middleware/logger'); 
-const errorHandler = require('../middleware/errorHandler');
+const logger = require('./middleware/logger'); 
+const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 

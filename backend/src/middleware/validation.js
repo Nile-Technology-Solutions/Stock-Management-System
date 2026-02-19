@@ -5,12 +5,18 @@ const registerSchema = Joi.object({
   fullName: Joi.string().required(),
   username: Joi.string().required(),
   password: Joi.string().min(6).required(),
-  role: Joi.string().valid('Super Admin', 'Admin', 'Customer').required(),
+  // role is assigned server-side for normal registration; optional for admin-created users
+  role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').optional(),
 });
 
 const loginSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required(),
+});
+
+const changePasswordSchema = Joi.object({
+  oldPassword: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
 });
 
 // ===================== USERS =====================
@@ -47,7 +53,7 @@ const stockUpdateSchema = Joi.object({
 // ===================== PRODUCTION =====================
 const productionSchema = Joi.object({
   category: Joi.string().valid('Bed', 'Door', 'Table', 'Cabinet', 'Other').required(),
-  status: Joi.string().valid('Under Process', 'Completed', 'Rejected').optional(),
+  status: Joi.string().valid('UnderProcess', 'Completed', 'Rejected').optional(),
   progressPercentage: Joi.number().integer().min(0).max(100).required(),
   startedDate: Joi.date().optional(),
   submittingDate: Joi.date().optional(),
@@ -73,7 +79,7 @@ const orderSchema = Joi.object({
   clientName: Joi.string().required(),
   phone: Joi.string().required(),
   address: Joi.string().optional(),
-  status: Joi.string().valid('Order Submitted', 'Payment Confirmed', 'Under Process', 'Completed').optional(),
+  status: Joi.string().valid('OrderSubmitted', 'PaymentConfirmed', 'UnderProcess', 'Completed').optional(),
 });
 
 // ===================== PAYMENTS =====================
@@ -118,6 +124,7 @@ function validate(schema) {
 module.exports = {
   validateRegister: validate(registerSchema),
   validateLogin: validate(loginSchema),
+  validateChangePassword: validate(changePasswordSchema),
   validateUser: validate(userSchema),
   validateStock: validate(stockSchema),
   validateStockUpdate: validate(stockUpdateSchema),

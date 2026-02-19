@@ -23,8 +23,17 @@ const changePasswordSchema = Joi.object({
 const userSchema = Joi.object({
   fullName: Joi.string().required(),
   username: Joi.string().required(),
-  role: Joi.string().valid('Super Admin', 'Admin', 'Customer').required(),
+  password: Joi.string().min(6).required(),
+  role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').required(),
 });
+
+// Update schema: all fields optional but require at least one
+const userUpdateSchema = Joi.object({
+  fullName: Joi.string().optional(),
+  username: Joi.string().optional(),
+  password: Joi.string().min(6).optional(),
+  role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').optional(),
+}).min(1);
 
 // ===================== STOCK =====================
 const stockSchema = Joi.object({
@@ -126,6 +135,7 @@ module.exports = {
   validateLogin: validate(loginSchema),
   validateChangePassword: validate(changePasswordSchema),
   validateUser: validate(userSchema),
+  validateUserUpdate: validate(userUpdateSchema),
   validateStock: validate(stockSchema),
   validateStockUpdate: validate(stockUpdateSchema),
   validateProduction: validate(productionSchema),

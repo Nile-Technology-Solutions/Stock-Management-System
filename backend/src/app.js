@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const logger = require('./middleware/logger'); 
+const logger = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const stockRoutes = require('./routes/stockRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 // Admin routes (protected - mount additional routes here)
 app.use('/api/stock', stockRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(logger);
 app.use(errorHandler);

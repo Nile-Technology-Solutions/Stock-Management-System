@@ -91,6 +91,17 @@ const finishedProductSchema = Joi.object({
   photos: Joi.array().items(Joi.string().uri()).optional(),
 });
 
+// Update schema: all fields optional but require at least one
+const finishedProductUpdateSchema = Joi.object({
+  category: Joi.string().valid('Bed', 'Door', 'Table', 'Cabinet', 'Other').optional(),
+  color: Joi.string().optional(),
+  amount: Joi.number().integer().min(0).optional(),
+  price: Joi.number().positive().optional(),
+  description: Joi.string().optional(),
+  photos: Joi.array().items(Joi.string().uri()).optional(),
+  featured: Joi.boolean().optional(),
+}).min(1);
+
 // ===================== ORDERS =====================
 const orderSchema = Joi.object({
   productName: Joi.string().required(),
@@ -175,6 +186,7 @@ module.exports = {
   validateProduction: validateMultipart(productionSchema),
   validateProductionUpdate: validateMultipart(productionUpdateSchema),
   validateFinishedProduct: validate(finishedProductSchema),
+  validateFinishedProductUpdate: validate(finishedProductUpdateSchema),
   validateOrder: validate(orderSchema),
   validatePayment: validate(paymentSchema),
   validateTodo: validate(todoSchema),

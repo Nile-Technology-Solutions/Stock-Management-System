@@ -66,10 +66,20 @@ const productionSchema = Joi.object({
   progressPercentage: Joi.number().integer().min(0).max(100).required(),
   startedDate: Joi.date().optional(),
   submittingDate: Joi.date().optional(),
-  workInstructions: Joi.string().optional(),
-  paymentNote: Joi.string().optional(),
-  photos: Joi.array().items(Joi.string().uri()).optional(),
+  workInstructions: Joi.string().optional().allow(''),
+  paymentNote: Joi.string().optional().allow(''),
 });
+
+// Update schema: all fields optional but require at least one
+const productionUpdateSchema = Joi.object({
+  category: Joi.string().valid('Bed', 'Door', 'Table', 'Cabinet', 'Other').optional(),
+  status: Joi.string().valid('UnderProcess', 'Completed', 'Rejected').optional(),
+  progressPercentage: Joi.number().integer().min(0).max(100).optional(),
+  startedDate: Joi.date().optional(),
+  submittingDate: Joi.date().optional(),
+  workInstructions: Joi.string().optional().allow(''),
+  paymentNote: Joi.string().optional().allow(''),
+}).min(1);
 
 // ===================== FINISHED PRODUCTS =====================
 const finishedProductSchema = Joi.object({
@@ -130,6 +140,30 @@ function validate(schema) {
   };
 }
 
+/**
+ * Multipart-safe validator for form-data routes (used with Multer).
+ * - Strips unknown keys (e.g. file fields that end up in req.body)
+ * - Writes coerced values back to req.body (e.g. "25" → 25 for numbers)
+ */
+function validateMultipart(schema) {
+  return (req, res, next) => {
+    const { error, value } = schema.validate(req.body, {
+      abortEarly: false,
+      allowUnknown: true,
+      stripUnknown: true,
+    });
+    if (error) {
+      return next({
+        statusCode: 400,
+        message: 'Validation failed',
+        details: error.details.map(d => d.message),
+      });
+    }
+    req.body = value; // write back coerced/stripped values
+    next();
+  };
+}
+
 module.exports = {
   validateRegister: validate(registerSchema),
   validateLogin: validate(loginSchema),
@@ -138,7 +172,8 @@ module.exports = {
   validateUserUpdate: validate(userUpdateSchema),
   validateStock: validate(stockSchema),
   validateStockUpdate: validate(stockUpdateSchema),
-  validateProduction: validate(productionSchema),
+  validateProduction: validateMultipart(productionSchema),
+  validateProductionUpdate: validateMultipart(productionUpdateSchema),
   validateFinishedProduct: validate(finishedProductSchema),
   validateOrder: validate(orderSchema),
   validatePayment: validate(paymentSchema),

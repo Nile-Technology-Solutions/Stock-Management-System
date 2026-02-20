@@ -12,6 +12,9 @@ yarn-error.log*
 prisma/*.db
 prisma/*.db-journal
 
+# Uploaded files
+uploads/
+
 # Logs
 logs/
 *.log

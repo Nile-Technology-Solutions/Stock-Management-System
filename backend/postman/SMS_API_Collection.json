@@ -1,0 +1,509 @@
+{
+  "info": {
+    "name": "SMS - User & Production API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Stock Management System - User Management & Production Tracking endpoints"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login as Super Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.data.token);",
+                  "  console.log('Token saved!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"superadmin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login"
+            }
+          }
+        },
+        {
+          "name": "Login as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management (Super Admin)",
+      "item": [
+        {
+          "name": "GET - List All Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            }
+          }
+        },
+        {
+          "name": "POST - Create New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Abebe Kebede\",\n  \"username\": \"abebe_admin\",\n  \"password\": \"secure123\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            }
+          }
+        },
+        {
+          "name": "GET - Get User by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/1"
+            }
+          }
+        },
+        {
+          "name": "PUT - Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Abebe Kebede Updated\",\n  \"role\": \"SuperAdmin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/4"
+            }
+          }
+        },
+        {
+          "name": "PUT - Update User Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"newPassword456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/4"
+            }
+          }
+        },
+        {
+          "name": "DELETE - Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/4"
+            }
+          }
+        },
+        {
+          "name": "POST - Create Customer User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Sara Hailu\",\n  \"username\": \"sara_customer\",\n  \"password\": \"cust12345\",\n  \"role\": \"Customer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Production Tracking",
+      "item": [
+        {
+          "name": "GET - List All Production Records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            }
+          }
+        },
+        {
+          "name": "GET - Filter by Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/production?status=UnderProcess"
+            }
+          }
+        },
+        {
+          "name": "GET - Filter by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/production?categoryId=4"
+            }
+          }
+        },
+        {
+          "name": "POST - Create Production (no photos)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Custom Bed Frame",
+                  "type": "text"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "progressPercentage",
+                  "value": "25",
+                  "type": "text"
+                },
+                {
+                  "key": "startedDate",
+                  "value": "2026-02-20",
+                  "type": "text"
+                },
+                {
+                  "key": "submittingDate",
+                  "value": "2026-03-15",
+                  "type": "text"
+                },
+                {
+                  "key": "workInstructions",
+                  "value": "Use silver handles and glossy finish",
+                  "type": "text"
+                },
+                {
+                  "key": "paymentNote",
+                  "value": "Down payment of 5000 ETB received",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            }
+          }
+        },
+        {
+          "name": "POST - Create Production (with photos)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Office Table",
+                  "type": "text"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "3",
+                  "type": "text"
+                },
+                {
+                  "key": "progressPercentage",
+                  "value": "50",
+                  "type": "text"
+                },
+                {
+                  "key": "startedDate",
+                  "value": "2026-02-15",
+                  "type": "text"
+                },
+                {
+                  "key": "workInstructions",
+                  "value": "Ergonomic office table with drawers",
+                  "type": "text"
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": [],
+                  "description": "Select image files here"
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": [],
+                  "description": "Select more images (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            }
+          }
+        },
+        {
+          "name": "GET - Get Production by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/production/1"
+            }
+          }
+        },
+        {
+          "name": "PUT - Update Production Status & Progress",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "status",
+                  "value": "Completed",
+                  "type": "text"
+                },
+                {
+                  "key": "progressPercentage",
+                  "value": "100",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production/1"
+            }
+          }
+        },
+        {
+          "name": "PUT - Add Photos to Existing Record",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": [],
+                  "description": "New photos to append"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production/1"
+            }
+          }
+        },
+        {
+          "name": "DELETE - Delete Production Record",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/production/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Users - 403 Forbidden (Admin token, not SuperAdmin)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            },
+            "description": "Login as 'admin' first, then try this - should get 403"
+          }
+        },
+        {
+          "name": "Users - 409 Duplicate Username",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Duplicate User\",\n  \"username\": \"superadmin\",\n  \"password\": \"test123456\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            }
+          }
+        },
+        {
+          "name": "Users - 404 Not Found",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/9999"
+            }
+          }
+        },
+        {
+          "name": "Production - 400 Invalid Progress (>100)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "categoryId",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "progressPercentage",
+                  "value": "150",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            }
+          }
+        },
+        {
+          "name": "Production - 400 Invalid Status Enum",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "categoryId",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "progressPercentage",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "InvalidStatus",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -7,6 +7,8 @@ const USER_SELECT = {
     fullName: true,
     username: true,
     role: true,
+    phone: true,
+    addresses: true,
     createdAt: true,
     updatedAt: true,
 };

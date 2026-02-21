@@ -4,17 +4,26 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
+// ────────────────────────────────────────────────
+// User & Role
+// ────────────────────────────────────────────────
 model User {
   id        Int      @id @default(autoincrement())
   fullName  String
   username  String   @unique
-  password  String // Hashed password
+  password  String   // hashed
   role      UserRole @default(Customer)
+  phone     String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  addresses Address[]
+  orders    Order[]
+  todoItems TodoItem[]
+  newsPosts NewsPost[]
 }
 
 enum UserRole {
@@ -22,19 +31,61 @@ enum UserRole {
   Admin
   Customer
 }
-// ===================== STOCK MODULE =====================
+
+// ────────────────────────────────────────────────
+// Address
+// ────────────────────────────────────────────────
+model Address {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  street    String
+  city      String
+  state     String?
+  country   String   @default("Ethiopia")
+  zipCode   String?
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+}
+
+// ────────────────────────────────────────────────
+// Category (dynamic, with optional sub-categories)
+// ────────────────────────────────────────────────
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  parentId    Int?
+
+  parent            Category?          @relation("CategoryToSubCategory", fields: [parentId], references: [id])
+  subCategories     Category[]         @relation("CategoryToSubCategory")
+  stockMaterials    StockMaterial[]
+  productionRecords ProductionRecord[]
+  finishedProducts  FinishedProduct[]
+}
+
+// ────────────────────────────────────────────────
+// Stock Material
+// ────────────────────────────────────────────────
 model StockMaterial {
   id          Int            @id @default(autoincrement())
   name        String
-  quantity    Int
-  color       String
-  size        String
-  thickness   String
-  laminated   Boolean
+  quantity    Int            @default(0)
+  color       String?
+  size        String?
+  thickness   String?
+  laminated   Boolean        @default(false)
   origin      MaterialOrigin
   typeNote    String?
+  categoryId  Int?
   lastUpdated DateTime       @updatedAt
   createdAt   DateTime       @default(now())
+
+  category Category?                @relation(fields: [categoryId], references: [id])
+  usages   ProductionMaterialUsage[]
 }
 
 enum MaterialOrigin {
@@ -42,19 +93,55 @@ enum MaterialOrigin {
   Imported
 }
 
-// ===================== PRODUCTION =====================
+// ────────────────────────────────────────────────
+// Photo (separate FKs for each parent entity)
+// ────────────────────────────────────────────────
+model Photo {
+  id                 Int      @id @default(autoincrement())
+  url                String
+  description        String?
+  productionRecordId Int?
+  finishedProductId  Int?
+  uploadedAt         DateTime @default(now())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  productionRecord ProductionRecord? @relation(fields: [productionRecordId], references: [id], onDelete: Cascade)
+  finishedProduct  FinishedProduct?  @relation(fields: [finishedProductId], references: [id], onDelete: Cascade)
+}
+
+// ────────────────────────────────────────────────
+// Production Tracking
+// ────────────────────────────────────────────────
 model ProductionRecord {
   id                 Int              @id @default(autoincrement())
-  category           ProductCategory
+  orderId            Int?             @unique
+  categoryId         Int
+  title              String?
   status             ProductionStatus @default(UnderProcess)
-  progressPercentage Int
+  progressPercentage Int              @default(0)
   startedDate        DateTime         @db.Date
   submittingDate     DateTime?        @db.Date
   workInstructions   String?
   paymentNote        String?
-  photos             String[] // Array of photo URLs
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
+
+  order          Order?                    @relation(fields: [orderId], references: [id])
+  category       Category                  @relation(fields: [categoryId], references: [id])
+  materialUsages ProductionMaterialUsage[]
+  photos         Photo[]
+}
+
+model ProductionMaterialUsage {
+  id                 Int      @id @default(autoincrement())
+  productionRecordId Int
+  stockMaterialId    Int
+  quantityUsed       Int
+  createdAt          DateTime @default(now())
+
+  productionRecord ProductionRecord @relation(fields: [productionRecordId], references: [id], onDelete: Cascade)
+  stockMaterial    StockMaterial    @relation(fields: [stockMaterialId], references: [id])
 }
 
 enum ProductionStatus {
@@ -63,40 +150,47 @@ enum ProductionStatus {
   Rejected
 }
 
-// ===================== FINISHED PRODUCTS (SHOWCASE) =====================
+// ────────────────────────────────────────────────
+// Finished Products (Showcase)
+// ────────────────────────────────────────────────
 model FinishedProduct {
-  id          Int             @id @default(autoincrement())
-  category    ProductCategory
-  photos      String[]
-  color       String          // Changed back to String
-  amount      Int
-  price       Float
-  description String?
-  featured    Boolean         @default(false)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id            Int      @id @default(autoincrement())
+  name          String
+  categoryId    Int
+  color         String
+  stockQuantity Int      @default(0)
+  price         Decimal? @db.Decimal(10, 2)
+  description   String?
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id])
+  photos   Photo[]
+  orders   Order[]
 }
 
-enum ProductCategory {
-  Bed
-  Door
-  Table
-  Cabinet
-  Other
-}
-
-// ===================== ORDERS & PAYMENTS =====================
+// ────────────────────────────────────────────────
+// Orders & Payments
+// ────────────────────────────────────────────────
 model Order {
-  id          Int         @id @default(autoincrement())
-  productName String
-  quantity    Int
-  clientName  String
-  phone       String
-  address     String?
-  status      OrderStatus @default(OrderSubmitted)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  Payment     Payment[]
+  id                Int         @id @default(autoincrement())
+  userId            Int
+  deliveryAddressId Int?
+  productId         Int?
+  productName       String
+  quantity          Int
+  customNotes       String?
+  status            OrderStatus @default(OrderSubmitted)
+  totalPrice        Decimal?    @db.Decimal(10, 2)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user             User              @relation(fields: [userId], references: [id])
+  deliveryAddress  Address?          @relation(fields: [deliveryAddressId], references: [id])
+  product          FinishedProduct?  @relation(fields: [productId], references: [id], onDelete: SetNull)
+  payments         Payment[]
+  productionRecord ProductionRecord?
 }
 
 enum OrderStatus {
@@ -104,18 +198,20 @@ enum OrderStatus {
   PaymentConfirmed
   UnderProcess
   Completed
+  Cancelled
 }
 
 model Payment {
   id             Int           @id @default(autoincrement())
   orderId        Int
-  amount         Float
+  amount         Decimal       @db.Decimal(10, 2)
   method         PaymentMethod
-  status         String        @default("Pending")
+  status         PaymentStatus @default(Pending)
   transactionRef String?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
-  Order          Order         @relation(fields: [orderId], references: [id])
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 enum PaymentMethod {
@@ -123,14 +219,25 @@ enum PaymentMethod {
   Telebirr
 }
 
-// ===================== TO-DO & NEWS =====================
+enum PaymentStatus {
+  Pending
+  Completed
+  Failed
+}
+
+// ────────────────────────────────────────────────
+// To-Do & News
+// ────────────────────────────────────────────────
 model TodoItem {
   id          Int      @id @default(autoincrement())
+  userId      Int?
   day         WeekDay
   task        String
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id])
 }
 
 enum WeekDay {
@@ -143,11 +250,20 @@ enum WeekDay {
 }
 
 model NewsPost {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
+  authorId    Int?
   title       String
   content     String
-  status      String   @default("Published")
-  publishDate DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      NewsStatus @default(Published)
+  publishDate DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  author User? @relation(fields: [authorId], references: [id])
+}
+
+enum NewsStatus {
+  Draft
+  Published
+  Archived
 }

@@ -6,6 +6,12 @@ const prisma = require('../config/db');
 async function getAllProduction(filter = {}) {
     return prisma.productionRecord.findMany({
         where: filter,
+        include: {
+            order: true,
+            category: true,
+            materialUsages: { include: { stockMaterial: true } },
+            photos: true,
+        },
         orderBy: { id: 'asc' },
     });
 }
@@ -14,7 +20,15 @@ async function getAllProduction(filter = {}) {
  * Get a single production record by ID.
  */
 async function getProductionById(id) {
-    const record = await prisma.productionRecord.findUnique({ where: { id } });
+    const record = await prisma.productionRecord.findUnique({
+        where: { id },
+        include: {
+            order: true,
+            category: true,
+            materialUsages: { include: { stockMaterial: true } },
+            photos: true,
+        },
+    });
     if (!record) {
         const err = new Error('Production record not found');
         err.statusCode = 404;
@@ -29,7 +43,8 @@ async function getProductionById(id) {
  */
 async function createProduction(data) {
     const {
-        category,
+        categoryId,
+        title = null,
         status = 'UnderProcess',
         progressPercentage,
         startedDate,
@@ -37,19 +52,25 @@ async function createProduction(data) {
         workInstructions = null,
         paymentNote = null,
         photos = [],
+        orderId = null,
     } = data;
 
     const record = await prisma.productionRecord.create({
         data: {
-            category,
+            categoryId: parseInt(categoryId),
+            title,
             status,
             progressPercentage,
             startedDate: startedDate ? new Date(startedDate) : new Date(),
             submittingDate: submittingDate ? new Date(submittingDate) : null,
             workInstructions,
             paymentNote,
-            photos,
+            orderId: orderId ? parseInt(orderId) : null,
+            photos: {
+                create: photos.map((url) => ({ url })),
+            },
         },
+        include: { category: true, photos: true },
     });
 
     return record;
@@ -57,7 +78,7 @@ async function createProduction(data) {
 
 /**
  * Update an existing production record.
- * Merges new photos with existing ones if provided.
+ * If new photos are provided, they are added to the existing set.
  */
 async function updateProduction(id, updateData) {
     const existing = await prisma.productionRecord.findUnique({ where: { id } });
@@ -67,22 +88,29 @@ async function updateProduction(id, updateData) {
         throw err;
     }
 
-    // If new photos are provided, append to existing array
-    if (updateData.photos && updateData.photos.length > 0) {
-        updateData.photos = [...existing.photos, ...updateData.photos];
-    }
+    // Extract photos from updateData to handle separately
+    const { photos, ...fields } = updateData;
 
     // Parse dates if provided as strings
-    if (updateData.startedDate) {
-        updateData.startedDate = new Date(updateData.startedDate);
+    if (fields.startedDate) {
+        fields.startedDate = new Date(fields.startedDate);
     }
-    if (updateData.submittingDate) {
-        updateData.submittingDate = new Date(updateData.submittingDate);
+    if (fields.submittingDate) {
+        fields.submittingDate = new Date(fields.submittingDate);
+    }
+    if (fields.categoryId) {
+        fields.categoryId = parseInt(fields.categoryId);
     }
 
     const updated = await prisma.productionRecord.update({
         where: { id },
-        data: updateData,
+        data: {
+            ...fields,
+            ...(photos && photos.length > 0
+                ? { photos: { create: photos.map((url) => ({ url })) } }
+                : {}),
+        },
+        include: { category: true, photos: true },
     });
 
     return updated;

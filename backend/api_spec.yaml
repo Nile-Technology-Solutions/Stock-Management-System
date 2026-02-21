@@ -25,10 +25,21 @@ components:
         id: { type: integer, example: 101 }
         fullName: { type: string, example: "Abebe Kebede" }
         username: { type: string, example: "abebe_admin" }
+        phone: { type: string, example: "+251911223344" }
         role:
           type: string
-          enum: [Super Admin, Admin, Customer]
+          enum: [SuperAdmin, Admin, Customer]
           example: "Admin"
+    Address:
+      type: object
+      properties:
+        id: { type: integer, example: 1 }
+        userId: { type: integer, example: 101 }
+        street: { type: string, example: "Bole Road" }
+        city: { type: string, example: "Addis Ababa" }
+        state: { type: string, example: "Addis Ababa" }
+        country: { type: string, example: "Ethiopia" }
+        zipCode: { type: string, example: "1000" }
     # ===================== STOCK MODULE =====================
     StockMaterial:
       type: object
@@ -53,14 +64,15 @@ components:
       required: [category, status, progressPercentage]
       properties:
         id: { type: integer, example: 505 }
+        orderId: { type: integer, example: 99 }
         category:
           type: string
           enum: [Bed, Door, Table, Cabinet, Other]
-          example: "King Size Bed"
+          example: "Bed"
         status:
           type: string
-          enum: [Under Process, Completed, Rejected]
-          example: "Under Process"
+          enum: [UnderProcess, Completed, Rejected]
+          example: "UnderProcess"
         progressPercentage: { type: integer, example: 75 }
         startedDate: { type: string, format: date, example: "2023-10-01" }
         submittingDate: { type: string, format: date, example: "2023-11-15" }
@@ -70,6 +82,14 @@ components:
           type: array
           items: { type: string }
           example: ["https://example.com/uploads/prod1_1.jpg", "https://example.com/uploads/prod1_2.jpg"]
+    ProductionMaterialUsage:
+      type: object
+      required: [productionRecordId, stockMaterialId, quantityUsed]
+      properties:
+        id: { type: integer, example: 1 }
+        productionRecordId: { type: integer, example: 505 }
+        stockMaterialId: { type: integer, example: 1 }
+        quantityUsed: { type: integer, example: 5 }
     # ===================== FINISHED PRODUCTS (SHOWCASE) =====================
     FinishedProduct:
       type: object
@@ -79,7 +99,7 @@ components:
         category:
           type: string
           enum: [Bed, Door, Table, Cabinet, Other]
-          example: "Office Table"
+          example: "Table"
         photos:
           type: array
           items: { type: string }
@@ -91,25 +111,24 @@ components:
     # ===================== ORDERS & PAYMENTS =====================
     Order:
       type: object
-      required: [productName, quantity, clientName, phone]
+      required: [productName, quantity, userId]
       properties:
         id: { type: integer, example: 99 }
+        userId: { type: integer, example: 101 }
+        deliveryAddressId: { type: integer, example: 1 }
         productName: { type: string, example: "Modern Office Desk" }
         quantity: { type: integer, example: 2 }
-        clientName: { type: string, example: "Sara Hailu" }
-        phone: { type: string, example: "+251911223344" }
-        address: { type: string, example: "Bole Atlas, Addis Ababa" }
         status:
           type: string
-          enum: [Order Submitted, Payment Confirmed, Under Process, Completed]
-          example: "Order Submitted"
+          enum: [OrderSubmitted, PaymentConfirmed, UnderProcess, Completed]
+          example: "OrderSubmitted"
     Payment:
       type: object
       properties:
         orderId: { type: integer, example: 99 }
         amount: { type: number, example: 12500.50 }
         method: { type: string, enum: [Chapa, Telebirr], example: "Chapa" }
-        status: { type: string, example: "Pending" }
+        status: { type: string, enum: [Pending, Completed, Failed], example: "Pending" }
         transactionRef: { type: string, example: "TXN_77889900" }
     # ===================== TO-DO & NEWS =====================
     TodoItem:
@@ -117,6 +136,7 @@ components:
       required: [day, task]
       properties:
         id: { type: integer, example: 10 }
+        userId: { type: integer, example: 101 }
         day:
           type: string
           enum: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
@@ -128,9 +148,13 @@ components:
       required: [title, content]
       properties:
         id: { type: integer, example: 1 }
+        authorId: { type: integer, example: 101 }
         title: { type: string, example: "New Arrival: Italian Leather Sofas" }
         content: { type: string, example: "We have just received a premium shipment of luxury sofas available in 5 colors..." }
-        status: { type: string, example: "Published" }
+        status:
+          type: string
+          enum: [Draft, Published, Archived]
+          example: "Published"
         publishDate: { type: string, format: date-time, example: "2023-10-25T08:30:00Z" }
     # ===================== REPORTS =====================
     StockReport:
@@ -225,6 +249,105 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/User' }
+  /api/auth/me:
+    get:
+      tags: [Authentication]
+      security: [{ bearerAuth: [] }]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean, example: true }
+                  data:
+                    type: object
+                    properties:
+                      user: { $ref: '#/components/schemas/User' }
+  /api/auth/change-password:
+    put:
+      tags: [Authentication]
+      security: [{ bearerAuth: [] }]
+      summary: Change user password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [oldPassword, newPassword]
+              properties:
+                oldPassword: { type: string, example: "oldPass123" }
+                newPassword: { type: string, example: "newPass456" }
+      responses:
+        "200":
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean, example: true }
+                  message: { type: string, example: "Password changed successfully" }
+  # --- ADDRESSES ---
+  /api/addresses:
+    get:
+      tags: [Addresses]
+      security: [{ bearerAuth: [] }]
+      summary: Get all addresses for the logged in user
+      responses:
+        "200":
+          description: List of addresses
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Address' } }
+    post:
+      tags: [Addresses]
+      security: [{ bearerAuth: [] }]
+      summary: Add a new address
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Address' }
+      responses:
+        "201":
+          description: Address created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Address' }
+  /api/addresses/{id}:
+    put:
+      tags: [Addresses]
+      security: [{ bearerAuth: [] }]
+      summary: Update an address
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Address' }
+      responses:
+        "200":
+          description: Address updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Address' }
+    delete:
+      tags: [Addresses]
+      security: [{ bearerAuth: [] }]
+      summary: Delete an address
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
   # --- USERS (Super Admin only) ---
   /api/users:
     get:

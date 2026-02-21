@@ -4,12 +4,13 @@ async function createStock(data) {
 	const {
 		name,
 		quantity,
-		color,
-		size,
-		thickness,
+		color = null,
+		size = null,
+		thickness = null,
 		laminated = false,
 		origin,
 		typeNote = null,
+		categoryId = null,
 	} = data;
 
 	const stock = await prisma.stockMaterial.create({
@@ -22,7 +23,9 @@ async function createStock(data) {
 			laminated,
 			origin,
 			typeNote,
+			categoryId: categoryId ? parseInt(categoryId) : null,
 		},
+		include: { category: true },
 	});
 
 	return stock;
@@ -36,7 +39,15 @@ async function updateStock(id, updateData) {
 		throw err;
 	}
 
-	const updated = await prisma.stockMaterial.update({ where: { id }, data: updateData });
+	if (updateData.categoryId !== undefined) {
+		updateData.categoryId = updateData.categoryId ? parseInt(updateData.categoryId) : null;
+	}
+
+	const updated = await prisma.stockMaterial.update({
+		where: { id },
+		data: updateData,
+		include: { category: true },
+	});
 	return updated;
 }
 
@@ -53,12 +64,19 @@ async function deleteStock(id) {
 }
 
 async function getAllStock(filter = {}) {
-	const items = await prisma.stockMaterial.findMany({ where: filter, orderBy: { id: 'asc' } });
+	const items = await prisma.stockMaterial.findMany({
+		where: filter,
+		include: { category: true },
+		orderBy: { id: 'asc' },
+	});
 	return items;
 }
 
 async function getStockById(id) {
-	const stock = await prisma.stockMaterial.findUnique({ where: { id } });
+	const stock = await prisma.stockMaterial.findUnique({
+		where: { id },
+		include: { category: true },
+	});
 	if (!stock) {
 		const err = new Error('Stock item not found');
 		err.statusCode = 404;

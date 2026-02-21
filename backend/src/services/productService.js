@@ -2,18 +2,21 @@ const prisma = require('../config/db');
 
 /**
  * Get all finished products with optional filtering.
- * Supports: category, featured, color, search (name/description), minPrice, maxPrice
+ * Supports: categoryId, featured, color, search (name/description), minPrice, maxPrice
  */
 async function getAllProducts(query = {}) {
     const where = {};
 
-    if (query.category) where.category = query.category;
+    if (query.categoryId) where.categoryId = parseInt(query.categoryId);
     if (query.featured !== undefined) where.featured = query.featured === 'true' || query.featured === true;
     if (query.color) where.color = { contains: query.color, mode: 'insensitive' };
 
-    // Search across description
+    // Search across name and description
     if (query.search) {
-        where.description = { contains: query.search, mode: 'insensitive' };
+        where.OR = [
+            { name: { contains: query.search, mode: 'insensitive' } },
+            { description: { contains: query.search, mode: 'insensitive' } },
+        ];
     }
 
     // Price range filters
@@ -25,6 +28,7 @@ async function getAllProducts(query = {}) {
 
     return prisma.finishedProduct.findMany({
         where,
+        include: { category: true, photos: true },
         orderBy: { id: 'asc' },
     });
 }
@@ -33,7 +37,10 @@ async function getAllProducts(query = {}) {
  * Get a single finished product by ID.
  */
 async function getProductById(id) {
-    const product = await prisma.finishedProduct.findUnique({ where: { id } });
+    const product = await prisma.finishedProduct.findUnique({
+        where: { id },
+        include: { category: true, photos: true },
+    });
     if (!product) {
         const err = new Error('Product not found');
         err.statusCode = 404;
@@ -47,10 +54,11 @@ async function getProductById(id) {
  */
 async function createProduct(data) {
     const {
-        category,
+        name,
+        categoryId,
         photos = [],
         color,
-        amount,
+        stockQuantity,
         price,
         description = null,
         featured = false,
@@ -58,14 +66,18 @@ async function createProduct(data) {
 
     return prisma.finishedProduct.create({
         data: {
-            category,
-            photos,
+            name,
+            categoryId: parseInt(categoryId),
             color,
-            amount,
-            price,
+            stockQuantity: parseInt(stockQuantity),
+            price: price ? parseFloat(price) : null,
             description,
             featured,
+            photos: {
+                create: photos.map((url) => ({ url })),
+            },
         },
+        include: { category: true, photos: true },
     });
 }
 
@@ -80,9 +92,22 @@ async function updateProduct(id, updateData) {
         throw err;
     }
 
+    const { photos, ...fields } = updateData;
+
+    // Parse numeric fields if provided
+    if (fields.categoryId) fields.categoryId = parseInt(fields.categoryId);
+    if (fields.stockQuantity !== undefined) fields.stockQuantity = parseInt(fields.stockQuantity);
+    if (fields.price !== undefined) fields.price = parseFloat(fields.price);
+
     return prisma.finishedProduct.update({
         where: { id },
-        data: updateData,
+        data: {
+            ...fields,
+            ...(photos && photos.length > 0
+                ? { photos: { create: photos.map((url) => ({ url })) } }
+                : {}),
+        },
+        include: { category: true, photos: true },
     });
 }
 

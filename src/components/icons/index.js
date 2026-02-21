@@ -35,6 +35,7 @@ export {
 // Status & Feedback Icons
 export { 
   CheckCircle, 
+  CheckCircle2,
   XCircle, 
   AlertCircle,
   Info,
@@ -45,7 +46,9 @@ export {
   Play,
   Pause,
   Square,
-  Save
+  Save,
+  CheckSquare,
+  ListTodo
 } from 'lucide-react';
 
 // Navigation & Actions Icons
@@ -68,6 +71,7 @@ export {
   X,
   Menu,
   MoreHorizontal,
+  MoreVertical,
   RefreshCw,
   Tag,
   Heart,

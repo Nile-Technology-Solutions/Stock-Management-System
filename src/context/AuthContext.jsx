@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { ROLES, hasRoleAccess, isClient } from '../utils/roleUtils';
 
 const AuthContext = createContext();
 
@@ -63,22 +64,11 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user && !!user.token;
 
   const hasRole = (requiredRole) => {
-    if (!user) return false;
-    
-    const roleHierarchy = {
-      'public': 0,
-      'admin': 1,
-      'super_admin': 2
-    };
-
-    const userRoleLevel = roleHierarchy[user.role] || 0;
-    const requiredRoleLevel = roleHierarchy[requiredRole] || 0;
-
-    return userRoleLevel >= requiredRoleLevel;
+    return hasRoleAccess(user?.role, requiredRole);
   };
 
   const isPublicUser = () => {
-    return user && user.role === 'public';
+    return isClient(user?.role);
   };
 
   const value = {

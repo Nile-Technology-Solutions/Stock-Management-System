@@ -78,17 +78,134 @@ export const mockStock = [
   }
 ];
 
+// Mock Users with Demo Credentials
 export const mockUsers = [
-  { id: 101, fullName: "Abebe Kebede", username: "abebe_admin", role: "Admin" },
-  { id: 102, fullName: "Sara Hailu", username: "sara_customer", role: "Customer" }
+  { 
+    id: 101, 
+    fullName: "Abebe Kebede", 
+    username: "admin", 
+    password: "admin123",
+    role: "Admin",
+    email: "admin@sms.com"
+  },
+  { 
+    id: 102, 
+    fullName: "Sara Hailu", 
+    username: "customer", 
+    password: "customer123",
+    role: "Customer",
+    email: "customer@sms.com"
+  },
+  { 
+    id: 103, 
+    fullName: "Super Admin", 
+    username: "superadmin", 
+    password: "super123",
+    role: "Super Admin",
+    email: "superadmin@sms.com"
+  }
 ];
+
+// Demo Credentials Info (for display on login page)
+export const demoCredentials = {
+  admin: {
+    username: "admin",
+    password: "admin123",
+    role: "Admin"
+  },
+  customer: {
+    username: "customer",
+    password: "customer123",
+    role: "Customer"
+  },
+  superadmin: {
+    username: "superadmin",
+    password: "super123",
+    role: "Super Admin"
+  }
+};
 
 export const mockNews = [
   {
     id: 1,
-    title: "New Arrival: Italian Leather Sofas",
-    content: "We have just received a premium shipment of luxury sofas available in 5 colors...",
+    title: "Eco-Friendly Wood Sourcing Initiative",
+    category: "Sustainability",
+    content: "Nile Technology is proud to announce our partnership with local forest reserves to ensure 100% sustainable wood sourcing. Our new initiative aims to plant ten trees for every mahogany board sold, ensuring a greener future for Ethiopia's furniture industry.",
     status: "Published",
-    publishDate: "2023-10-25T08:30:00Z"
+    publishDate: "2026-02-15T10:00:00Z",
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    id: 2,
+    title: "New Smart Inventory Tracking Launched",
+    category: "Technology",
+    content: "We have successfully integrated RFID tracking for all incoming imported boards. This system reduces inventory errors by 40% and allows customers to track their orders in real-time through our new mobile app extension.",
+    status: "Published",
+    publishDate: "2026-02-10T14:30:00Z",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    id: 3,
+    title: "Spring Furniture Expo 2026",
+    category: "Events",
+    content: "Join us at the Addis Ababa Exhibition Center this April as we showcase our upcoming 'Minimalist Series'. The event will feature live demonstrations of our precision wood-cutting technology and networking sessions for interior designers.",
+    status: "Draft",
+    publishDate: "2026-02-18T09:00:00Z",
+    image: "https://images.unsplash.com/photo-1531050171669-011999115de5?auto=format&fit=crop&q=80&w=800"
   }
+];
+
+export const mockProduction = [
+  {
+    id: "B-2023-001",
+    product: "Luxury Leather Sofa",
+    quantity: 5,
+    status: "Completed",
+    startDate: "2023-10-20",
+    completionDate: "2023-10-25",
+    photos: []
+  },
+  {
+    id: "B-2023-002",
+    product: "Oak Dining Table",
+    quantity: 10,
+    status: "Under Process",
+    startDate: "2023-10-24",
+    completionDate: "-",
+    photos: []
+  }
+];
+
+export const mockOrders = [
+  {
+    id: "ORD-7721",
+    customer: "John Doe",
+    items: "Laminated MDF (20), Hardware Kit (5)",
+    total: "12,500 ETB",
+    status: "Under Process",
+    date: "2023-10-26"
+  },
+  {
+    id: "ORD-8812",
+    customer: "Sara Hailu",
+    items: "Mahogany Dining Set (1)",
+    total: "45,000 ETB",
+    status: "Completed",
+    date: "2023-10-25"
+  },
+  {
+    id: "ORD-9910",
+    customer: "Abebe Kebede",
+    items: "Office Chair Series-X (4)",
+    total: "18,000 ETB",
+    status: "Rejected",
+    date: "2023-10-24"
+  }
+];
+
+export const mockTodos = [
+  { id: 1, text: "Check morning stock arrival", completed: false, date: "2026-02-17" },
+  { id: 2, text: "Review production batch B-002", completed: true, date: "2026-02-17" },
+  { id: 3, text: "Approve pending orders", completed: false, date: "2026-02-17" },
+  { id: 4, text: "Monthly inventory audit", completed: false, date: "2026-02-18" }
 ];

@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/authApi';
+import { redirectByRole } from '../../utils/roleUtils';
+import PublicOnlyRoute from '../../routes/PublicOnlyRoute';
 import GlassCard from '../../components/common/GlassCard';
 import Button from '../../components/common/Button';
 import { 
@@ -22,15 +24,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
-    const from = location.state?.from?.pathname || '/';
-    return <Navigate to={from} replace />;
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,9 +44,8 @@ const Login = () => {
         token: response.token
       });
       
-      // Redirect based on user role
-      const from = location.state?.from?.pathname || 
-        (response.user.role === 'Customer' ? '/' : '/admin/dashboard');
+      // Redirect based on user role using centralized utility
+      const from = location.state?.from?.pathname || redirectByRole(response.user.role);
       navigate(from, { replace: true });
       
     } catch (err) {
@@ -75,24 +71,24 @@ const Login = () => {
     });
   };
 
-  // Demo accounts for testing (these should exist in your backend)
+  // Demo accounts for testing (matches mockData.js)
   const demoAccounts = [
     { 
-      username: 'demo_customer', 
-      password: 'demo123', 
+      username: 'customer', 
+      password: 'customer123', 
       role: 'Customer', 
       name: 'Demo Customer',
       description: 'Browse products and place orders'
     },
     { 
-      username: 'admin_user', 
+      username: 'admin', 
       password: 'admin123', 
       role: 'Admin', 
       name: 'Admin User',
       description: 'Manage inventory and orders'
     },
     { 
-      username: 'super_admin', 
+      username: 'superadmin', 
       password: 'super123', 
       role: 'Super Admin', 
       name: 'Super Admin',
@@ -319,4 +315,8 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default () => (
+  <PublicOnlyRoute>
+    <Login />
+  </PublicOnlyRoute>
+);

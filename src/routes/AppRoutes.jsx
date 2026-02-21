@@ -2,16 +2,20 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import PublicLayout from '../components/layout/PublicLayout';
 import AdminLayout from '../components/layout/AdminLayout';
+import SuperAdminLayout from '../components/layout/SuperAdminLayout';
 import ProtectedRoute from './ProtectedRoute';
+import PublicOnlyRoute from './PublicOnlyRoute';
 import Loader from '../components/common/Loader';
+import { ROLES } from '../utils/roleUtils';
 
-// Lazy load all pages for better performance
-const Home = lazy(() => import('../pages/public/Home'));
-const Products = lazy(() => import('../pages/public/Products'));
-const ProductDetail = lazy(() => import('../pages/public/ProductDetail'));
-const News = lazy(() => import('../pages/public/News'));
-const OrderTracking = lazy(() => import('../pages/public/OrderTracking'));
-const OrderPlacement = lazy(() => import('../pages/public/OrderPlacement'));
+// Lazy load all pages
+const Home = lazy(() => import('../modules/public/Home'));
+const Products = lazy(() => import('../modules/public/Products'));
+const ProductDetail = lazy(() => import('../modules/public/ProductDetail'));
+const NewsList = lazy(() => import('../modules/public/news/NewsListPage'));
+const NewsDetail = lazy(() => import('../modules/public/news/NewsDetailPage'));
+const OrderTracking = lazy(() => import('../modules/public/OrderTracking'));
+const OrderPlacement = lazy(() => import('../modules/public/OrderPlacement'));
 
 // Payment Pages
 const PaymentInitialization = lazy(() => import('../pages/payment/PaymentInitialization'));
@@ -23,15 +27,20 @@ const PaymentPending = lazy(() => import('../pages/payment/PaymentPending'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 
-// Admin Pages
-const Dashboard = lazy(() => import('../pages/admin/Dashboard'));
-const Analytics = lazy(() => import('../pages/admin/Analytics'));
-const Stock = lazy(() => import('../pages/admin/Stock'));
-const Production = lazy(() => import('../pages/admin/Production'));
-const Orders = lazy(() => import('../pages/admin/Orders'));
-const Payments = lazy(() => import('../pages/admin/Payments'));
+// Role-Specific Dashboards
+const AdminDashboard = lazy(() => import('../modules/admin/dashboard/AdminDashboardPage'));
+const SuperAdminDashboard = lazy(() => import('../modules/superAdmin/dashboard/SuperAdminDashboardPage'));
 
-// Loading fallback component
+// Modularized Core/Admin Pages
+const Analytics = lazy(() => import('../modules/core/analytics/AnalyticsPage'));
+const Stock = lazy(() => import('../modules/core/stock/StockPage'));
+const Production = lazy(() => import('../modules/core/production/ProductionPage'));
+const Orders = lazy(() => import('../modules/core/orders/OrdersPage'));
+const Payments = lazy(() => import('../modules/core/payments/PaymentsPage'));
+const UserManagement = lazy(() => import('../modules/superAdmin/userManagement/UserManagementPage'));
+const Todo = lazy(() => import('../modules/admin/todo/TodoPage'));
+const NewsAdmin = lazy(() => import('../modules/admin/news/NewsAdminPage'));
+
 const PageLoader = () => (
   <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
     <Loader size="large" text="Loading..." />
@@ -47,52 +56,67 @@ const AppRoutes = () => {
           <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<ProductDetail />} />
-          <Route path="news" element={<News />} />
+          <Route path="news" element={<NewsList />} />
+          <Route path="news/:id" element={<NewsDetail />} />
           <Route path="order/:productId" element={<OrderPlacement />} />
           <Route path="order-tracking" element={<OrderTracking />} />
           
-          {/* Payment Routes */}
           <Route path="payment/initialize" element={<PaymentInitialization />} />
           <Route path="payment/success" element={<PaymentSuccess />} />
           <Route path="payment/failed" element={<PaymentFailed />} />
           <Route path="payment/pending" element={<PaymentPending />} />
         </Route>
 
-        {/* Auth Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* Auth Routes - Protected from logged-in users */}
+        <Route path="/login" element={
+          <PublicOnlyRoute>
+            <Login />
+          </PublicOnlyRoute>
+        } />
+        <Route path="/register" element={
+          <PublicOnlyRoute>
+            <Register />
+          </PublicOnlyRoute>
+        } />
 
         {/* Protected Admin Routes */}
         <Route
           path="/admin"
           element={
-            <ProtectedRoute requiredRole="admin">
+            <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.SUPER_ADMIN]}>
               <AdminLayout />
             </ProtectedRoute>
           }
         >
-          {/* Redirect /admin to /admin/dashboard */}
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          
-          {/* Admin routes - accessible by both admin and super_admin */}
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="stock" element={<Stock />} />
           <Route path="production" element={<Production />} />
           <Route path="orders" element={<Orders />} />
-          
-          {/* Super Admin only routes */}
-          <Route 
-            path="payments" 
-            element={
-              <ProtectedRoute requiredRole="super_admin">
-                <Payments />
-              </ProtectedRoute>
-            } 
-          />
+          <Route path="todo" element={<Todo />} />
+          <Route path="news" element={<NewsAdmin />} />
         </Route>
 
-        {/* 404 Page */}
+        {/* Protected Super Admin Routes */}
+        <Route
+          path="/super-admin"
+          element={
+            <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+              <SuperAdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="/super-admin/dashboard" replace />} />
+          <Route path="dashboard" element={<SuperAdminDashboard />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="payments" element={<Payments />} />
+          <Route path="stock" element={<Stock />} />
+          {/* Add more super-admin routes here */}
+        </Route>
+
+        {/* Error Pages */}
         <Route path="/404" element={
           <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
             <div className="text-center">
@@ -108,7 +132,6 @@ const AppRoutes = () => {
           </div>
         } />
 
-        {/* Catch all route - redirect to 404 */}
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </Suspense>

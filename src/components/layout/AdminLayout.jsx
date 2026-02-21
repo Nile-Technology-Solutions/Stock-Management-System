@@ -20,11 +20,15 @@ import {
   Home,
   Sparkles,
   Zap,
-  ShoppingCart
-} from '../icons';
+  ShoppingCart,
+  ListTodo,
+  FileText
+} from '../icons/index';
+
+import { ROLES, getRoleDisplayName } from '../../utils/roleUtils';
 
 const AdminLayout = () => {
-  const { user, logout, hasRole } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -53,54 +57,55 @@ const AdminLayout = () => {
     navigate('/login');
   };
 
-  // Enhanced navigation items with role-based access and modern icons
+
+  // Navigation items for regular Admin
   const navigationItems = [
     {
       name: 'Dashboard',
       href: '/admin/dashboard',
       icon: <BarChart3 className="w-5 h-5" />,
-      requiredRole: 'admin',
       description: 'Overview & Analytics'
     },
     {
       name: 'Analytics',
       href: '/admin/analytics',
       icon: <Activity className="w-5 h-5" />,
-      requiredRole: 'admin',
       description: 'Performance Insights'
     },
     {
       name: 'Stock Management',
       href: '/admin/stock',
       icon: <Package className="w-5 h-5" />,
-      requiredRole: 'admin',
       description: 'Inventory Control'
     },
     {
       name: 'Production',
       href: '/admin/production',
       icon: <Settings className="w-5 h-5" />,
-      requiredRole: 'admin',
       description: 'Manufacturing Hub'
     },
     {
       name: 'Orders',
       href: '/admin/orders',
       icon: <ShoppingCart className="w-5 h-5" />,
-      requiredRole: 'admin',
       description: 'Order Management'
     },
     {
-      name: 'Payments',
-      href: '/admin/payments',
-      icon: <DollarSign className="w-5 h-5" />,
-      requiredRole: 'super_admin',
-      description: 'Financial Management'
+      name: 'Daily Tasks',
+      href: '/admin/todo',
+      icon: <ListTodo className="w-5 h-5" />,
+      description: 'Operation Checks'
+    },
+    {
+      name: 'News Room',
+      href: '/admin/news',
+      icon: <FileText className="w-5 h-5" />,
+      description: 'Editorial Hub'
     }
   ];
 
-  // Filter navigation items based on user role
-  const allowedNavItems = navigationItems.filter(item => hasRole(item.requiredRole));
+  const allowedNavItems = navigationItems; // For AdminLayout, we show all listed items
+
 
   const isActiveRoute = (href) => {
     return location.pathname === href;
@@ -236,11 +241,11 @@ const AdminLayout = () => {
                   <p className="text-sm font-semibold text-white truncate">{user?.name}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      user?.role === 'super_admin' 
+                      user?.role === ROLES.SUPER_ADMIN 
                         ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' 
                         : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
                     }`}>
-                      {user?.role?.replace('_', ' ').toUpperCase()}
+                      {getRoleDisplayName(user?.role)}
                     </span>
                   </div>
                 </div>
@@ -317,13 +322,13 @@ const AdminLayout = () => {
               
               {/* Role Badge */}
               <div className={`hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg ${
-                user?.role === 'super_admin' 
+                user?.role === ROLES.SUPER_ADMIN 
                   ? 'bg-gradient-to-r from-purple-400/10 to-pink-400/10 border border-purple-400/20' 
                   : 'bg-gradient-to-r from-cyan-400/10 to-sky-400/10 border border-cyan-400/20'
               }`}>
                 <Shield className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  {user?.role?.replace('_', ' ').toUpperCase()}
+                  {getRoleDisplayName(user?.role)}
                 </span>
               </div>
             </div>

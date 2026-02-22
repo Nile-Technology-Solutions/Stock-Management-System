@@ -118,6 +118,10 @@ const orderSchema = Joi.object({
   status: Joi.string().valid('OrderSubmitted', 'PaymentConfirmed', 'UnderProcess', 'Completed', 'Cancelled').optional(),
 });
 
+const orderUpdateSchema = Joi.object({
+  status: Joi.string().valid('PaymentConfirmed', 'Cancelled').required(),
+});
+
 // ===================== PAYMENTS =====================
 const paymentSchema = Joi.object({
   orderId: Joi.number().integer().required(),
@@ -194,6 +198,7 @@ module.exports = {
   validateFinishedProduct: validate(finishedProductSchema),
   validateFinishedProductUpdate: validate(finishedProductUpdateSchema),
   validateOrder: validate(orderSchema),
+  validateOrderUpdate: validate(orderUpdateSchema),
   validatePayment: validate(paymentSchema),
   validateTodo: validate(todoSchema),
   validateNews: validate(newsSchema),

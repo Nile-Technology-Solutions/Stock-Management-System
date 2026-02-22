@@ -9,6 +9,7 @@ const stockRoutes = require('./routes/stockRoutes');
 const userRoutes = require('./routes/userRoutes');
 const productionRoutes = require('./routes/productionRoutes');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use('/api/stock', stockRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/production', productionRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.use(logger);
 app.use(errorHandler);

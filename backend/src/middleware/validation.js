@@ -135,16 +135,33 @@ const paymentSchema = Joi.object({
 const todoSchema = Joi.object({
   day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday').required(),
   task: Joi.string().required(),
+  userId: Joi.number().integer().optional().allow(null),
   isCompleted: Joi.boolean().optional(),
 });
+
+const todoUpdateSchema = Joi.object({
+  day: Joi.string().valid('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday').optional(),
+  task: Joi.string().optional(),
+  userId: Joi.number().integer().optional().allow(null),
+  isCompleted: Joi.boolean().optional(),
+}).min(1);
 
 // ===================== NEWS =====================
 const newsSchema = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
-  status: Joi.string().optional(),
+  status: Joi.string().valid('Draft', 'Published', 'Archived').optional(),
   publishDate: Joi.date().optional(),
+  authorId: Joi.number().integer().optional(),
 });
+
+const newsUpdateSchema = Joi.object({
+  title: Joi.string().optional(),
+  content: Joi.string().optional(),
+  status: Joi.string().valid('Draft', 'Published', 'Archived').optional(),
+  publishDate: Joi.date().optional(),
+  authorId: Joi.number().integer().optional(),
+}).min(1);
 
 // ===================== Middleware Wrapper =====================
 function validate(schema) {
@@ -201,7 +218,9 @@ module.exports = {
   validateOrderUpdate: validate(orderUpdateSchema),
   validatePayment: validate(paymentSchema),
   validateTodo: validate(todoSchema),
-  validateNews: validate(newsSchema),
+  validateTodoUpdate: validate(todoUpdateSchema),
+  validateNews: validateMultipart(newsSchema),
+  validateNewsUpdate: validateMultipart(newsUpdateSchema),
 };
 
 // ID param validator (exports separated because it validates params not body)

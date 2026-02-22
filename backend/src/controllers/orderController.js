@@ -38,7 +38,7 @@ const getOrderById = async (req, res, next) => {
 
     // Customers can only see their own orders
     if (req.user.role === 'Customer' && order.clientName !== req.user.name) {
-      return res.status(403).json({ message: 'Forbidden' });
+      return res.status(403).json({ message: 'forbidden' });
     }
 
     return res.status(200).json(order);

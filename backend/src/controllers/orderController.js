@@ -1,19 +1,14 @@
 const prisma = require('../config/db');
 
-// Admin/SuperAdmin: get all orders
+/**
+ * GET /api/orders
+ * Admin & SuperAdmin only
+ */
 const getAllOrders = async (req, res, next) => {
   try {
-    if (!['Admin','SuperAdmin'].includes(req.user.role)) {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
-
     const orders = await prisma.order.findMany({
       orderBy: { createdAt: 'desc' },
-      include: {
-        user: true,
-        items: { include: { product: true } },
-        payments: true
-      }
+      include: { Payment: true }
     });
 
     return res.status(200).json(orders);
@@ -22,139 +17,162 @@ const getAllOrders = async (req, res, next) => {
   }
 };
 
-// Customer or Admin: get single order
+
+/**
+ * GET /api/orders/:id
+ * Authenticated users
+ */
 const getOrderById = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
-    if (isNaN(id) || id <= 0) return res.status(400).json({ message: 'Invalid order ID' });
+    if (isNaN(id) || id <= 0)
+      return res.status(400).json({ message: 'Invalid order ID' });
 
     const order = await prisma.order.findUnique({
       where: { id },
-      include: { 
-        items: { include: { product: true } },
-         payments: true, 
-         user: true }
+      include: { Payment: true }
     });
 
-    if (!order) return res.status(404).json({ message: 'Order not found' });
+    if (!order)
+      return res.status(404).json({ message: 'Order not found' });
 
     // Customers can only see their own orders
-    if (req.user.role === 'Customer' && order.userId !== req.user.id) {
+    if (req.user.role === 'Customer' && order.clientName !== req.user.name) {
       return res.status(403).json({ message: 'Forbidden' });
     }
 
     return res.status(200).json(order);
+
   } catch (error) {
     next(error);
   }
 };
 
-// Customer: create order
+
+/**
+ * POST /api/orders
+ * Customer places order
+ */
 const createOrder = async (req, res, next) => {
   try {
-    const { items } = req.body; // [{ productId, quantity }, ...]
+    const { productName, quantity, address } = req.body;
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: 'Order must contain at least one product' });
-    }
+    if (!productName || !quantity)
+      return res.status(400).json({ message: 'productName and quantity are required' });
 
-    let total = 0;
-    const orderItemsData = [];
+    if (quantity <= 0)
+      return res.status(400).json({ message: 'Quantity must be greater than 0' });
 
-    for (const item of items) {
-      if (!item.productId || !item.quantity || item.quantity <= 0) {
-        return res.status(400).json({ message: 'Invalid product or quantity' });
-      }
+    // Validate product exists (BE2 link)
+    const product = await prisma.product.findFirst({
+      where: { name: productName }
+    });
 
-      const product = await prisma.product.findUnique({
-         where: { id: item.productId } });
-      if (!product) return res.status(404).json({ message: `Product ${item.productId} not found` });
-
-      total += product.price * item.quantity;
-
-      orderItemsData.push({
-        productId: product.id,
-        quantity: item.quantity,
-        price: product.price
-      });
-    }
+    if (!product)
+      return res.status(404).json({ message: 'Product not found' });
 
     const order = await prisma.order.create({
       data: {
-        userId: req.user.id,
-        total,
-        status: 'OrderSubmitted',
-        items: { create: orderItemsData }
-      },
-      include: { items: true }
+        productName: product.name,
+        quantity,
+        clientName: req.user.name,
+        phone: req.user.phone || '',
+        address: address || null,
+        status: 'OrderSubmitted'
+      }
     });
 
-    return res.status(201).json({ data: order, message: 'Order placed successfully' });
+    return res.status(201).json({
+      message: 'Order placed successfully',
+      data: order
+    });
+
   } catch (error) {
     next(error);
   }
 };
 
-// Admin/SuperAdmin: update order status
+
+/**
+ * PUT /api/orders/:id
+ * Admin/SuperAdmin updates status
+ */
 const updateOrder = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
-    if (isNaN(id) || id <= 0) return res.status(400).json({ message: 'Invalid order ID' });
+    if (isNaN(id) || id <= 0)
+      return res.status(400).json({ message: 'Invalid order ID' });
 
     const { status } = req.body;
-    const validStatuses = ['OrderSubmitted','PaymentConfirmed'];
-    if (!status || !validStatuses.includes(status)) {
-      return res.status(400).json({ message: `Invalid status. Must be: ${validStatuses.join(', ')}` });
-    }
 
-    if (!['Admin','SuperAdmin'].includes(req.user.role)) {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
+    const validStatuses = ['OrderSubmitted', 'PaymentConfirmed'];
+
+    if (!status || !validStatuses.includes(status))
+      return res.status(400).json({
+        message: `Invalid status. Allowed: ${validStatuses.join(', ')}`
+      });
 
     const existingOrder = await prisma.order.findUnique({ where: { id } });
-    if (!existingOrder) return res.status(404).json({ message: 'Order not found' });
+
+    if (!existingOrder)
+      return res.status(404).json({ message: 'Order not found' });
 
     // Enforce status flow
-    if (existingOrder.status === 'PaymentConfirmed' && status === 'OrderSubmitted') {
-      return res.status(400).json({ message: 'Cannot revert status back to OrderSubmitted' });
+    if (
+      existingOrder.status === 'PaymentConfirmed' &&
+      status === 'OrderSubmitted'
+    ) {
+      return res.status(400).json({
+        message: 'Cannot revert status back to OrderSubmitted'
+      });
     }
 
-    const order = await prisma.order.update({
+    const updatedOrder = await prisma.order.update({
       where: { id },
       data: { status },
-      include: { items: true, payments: true }
+      include: { Payment: true }
     });
 
-    return res.status(200).json({ data: order, message: 'Order updated successfully' });
+    return res.status(200).json({
+      message: 'Order updated successfully',
+      data: updatedOrder
+    });
+
   } catch (error) {
     next(error);
   }
 };
 
-// Admin/SuperAdmin: delete order
+
+/**
+ * DELETE /api/orders/:id
+ * SuperAdmin only
+ */
 const deleteOrder = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
-    if (isNaN(id) || id <= 0) return res.status(400).json({ message: 'Invalid order ID' });
-
-    if (!['Admin','SuperAdmin'].includes(req.user.role)) {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
+    if (isNaN(id) || id <= 0)
+      return res.status(400).json({ message: 'Invalid order ID' });
 
     const existingOrder = await prisma.order.findUnique({ where: { id } });
-    if (!existingOrder) return res.status(404).json({ message: 'Order not found' });
+
+    if (!existingOrder)
+      return res.status(404).json({ message: 'Order not found' });
 
     await prisma.$transaction([
       prisma.payment.deleteMany({ where: { orderId: id } }),
-      prisma.orderItem.deleteMany({ where: { orderId: id } }),
       prisma.order.delete({ where: { id } })
     ]);
 
-    return res.status(200).json({ message: 'Order deleted successfully' });
+    return res.status(200).json({
+      message: 'Order deleted successfully'
+    });
+
   } catch (error) {
     next(error);
   }
 };
+
 
 module.exports = {
   getAllOrders,

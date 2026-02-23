@@ -53,7 +53,7 @@ async function createProduction(data) {
         workInstructions = null,
         paymentNote = null,
         photos = [],
-        orderId = null,
+        orderId
     } = data;
 
     const parsedOrderId = orderId ? parseInt(orderId) : null;

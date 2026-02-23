@@ -102,12 +102,14 @@ model Photo {
   description        String?
   productionRecordId Int?
   finishedProductId  Int?
+  newsPostId         Int?
   uploadedAt         DateTime @default(now())
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
   productionRecord ProductionRecord? @relation(fields: [productionRecordId], references: [id], onDelete: Cascade)
   finishedProduct  FinishedProduct?  @relation(fields: [finishedProductId], references: [id], onDelete: Cascade)
+  newsPost         NewsPost?         @relation(fields: [newsPostId], references: [id], onDelete: Cascade)
 }
 
 // ────────────────────────────────────────────────
@@ -260,6 +262,7 @@ model NewsPost {
   updatedAt   DateTime   @updatedAt
 
   author User? @relation(fields: [authorId], references: [id])
+  photos Photo[]
 }
 
 enum NewsStatus {

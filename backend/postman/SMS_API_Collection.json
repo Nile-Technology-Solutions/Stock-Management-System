@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "SMS - User & Production API",
+    "name": "SMS - Full API Collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Stock Management System - User Management & Production Tracking endpoints"
+    "description": "Stock Management System API Endpoints (Excluding Payments). Includes Auth, Addresses, Users, Stock, Production, Products, Orders, To-Do, News, and Reports."
   },
   "variable": [
     {
@@ -29,27 +29,15 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Login as Super Admin",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData.data && jsonData.data.token) {",
-                  "  pm.collectionVariables.set('token', jsonData.data.token);",
-                  "  console.log('Token saved!');",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
+          "name": "Login (Super Admin)",
           "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login"
+            },
             "auth": {
               "type": "noauth"
             },
-            "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
@@ -59,33 +47,35 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"superadmin\",\n  \"password\": \"password123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login"
             }
-          }
-        },
-        {
-          "name": "Login as Admin",
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "var jsonData = pm.response.json();",
-                  "if (jsonData.data && jsonData.data.token) {",
+                  "if (jsonData.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.token);",
+                  "} else if (jsonData.data && jsonData.data.token) {",
                   "  pm.collectionVariables.set('token', jsonData.data.token);",
                   "}"
                 ],
                 "type": "text/javascript"
               }
             }
-          ],
+          ]
+        },
+        {
+          "name": "Login (Admin)",
           "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login"
+            },
             "auth": {
               "type": "noauth"
             },
-            "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
@@ -95,30 +85,35 @@
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login"
             }
-          }
-        }
-      ]
-    },
-    {
-      "name": "User Management (Super Admin)",
-      "item": [
-        {
-          "name": "GET - List All Users",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/api/users"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.token);",
+                  "} else if (jsonData.data && jsonData.data.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
             }
-          }
+          ]
         },
         {
-          "name": "POST - Create New User",
+          "name": "Login (Customer)",
           "request": {
             "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login"
+            },
+            "auth": {
+              "type": "noauth"
+            },
             "header": [
               {
                 "key": "Content-Type",
@@ -127,15 +122,172 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Abebe Kebede\",\n  \"username\": \"abebe_admin\",\n  \"password\": \"secure123\",\n  \"role\": \"Admin\"\n}"
+              "raw": "{\n  \"username\": \"customer1\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.token);",
+                  "} else if (jsonData.data && jsonData.data.token) {",
+                  "  pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register Customer",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register"
             },
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"New Customer\",\n  \"username\": \"new_customer\",\n  \"password\": \"password123\",\n  \"role\": \"Customer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Me (Profile)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me"
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/change-password"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "Get All Addresses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/addresses"
+            }
+          }
+        },
+        {
+          "name": "Create Address",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/addresses"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"street\": \"Bole Road\",\n  \"city\": \"Addis Ababa\",\n  \"state\": \"Addis Ababa\",\n  \"country\": \"Ethiopia\",\n  \"zipCode\": \"1000\",\n  \"isDefault\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Address",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/addresses/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"street\": \"Bole Road 2\",\n  \"city\": \"Addis Ababa\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Address",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/addresses/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Super Admin)",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/api/users"
             }
           }
         },
         {
-          "name": "GET - Get User by ID",
+          "name": "Create Admin User",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/users"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Admin User\",\n  \"username\": \"admin2\",\n  \"password\": \"password123\",\n  \"role\": \"Admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
           "request": {
             "method": "GET",
             "url": {
@@ -144,9 +296,12 @@
           }
         },
         {
-          "name": "PUT - Update User",
+          "name": "Update User",
           "request": {
             "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/users/1"
+            },
             "header": [
               {
                 "key": "Content-Type",
@@ -155,67 +310,96 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Abebe Kebede Updated\",\n  \"role\": \"SuperAdmin\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users/4"
+              "raw": "{\n  \"fullName\": \"Updated Name\"\n}"
             }
           }
         },
         {
-          "name": "PUT - Update User Password",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"password\": \"newPassword456\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users/4"
-            }
-          }
-        },
-        {
-          "name": "DELETE - Delete User",
+          "name": "Delete User",
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "{{baseUrl}}/api/users/4"
-            }
-          }
-        },
-        {
-          "name": "POST - Create Customer User",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Sara Hailu\",\n  \"username\": \"sara_customer\",\n  \"password\": \"cust12345\",\n  \"role\": \"Customer\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users"
+              "raw": "{{baseUrl}}/api/users/1"
             }
           }
         }
       ]
     },
     {
-      "name": "Production Tracking",
+      "name": "Stock",
       "item": [
         {
-          "name": "GET - List All Production Records",
+          "name": "Get All Stock",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/stock"
+            }
+          }
+        },
+        {
+          "name": "Create Stock Material",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/stock"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MDF Board\",\n  \"quantity\": 50,\n  \"color\": \"Dark Oak\",\n  \"size\": \"1220x2440mm\",\n  \"thickness\": \"18mm\",\n  \"laminated\": true,\n  \"origin\": \"Imported\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Stock by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/stock/1"
+            }
+          }
+        },
+        {
+          "name": "Update Stock",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/stock/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 45\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Stock",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/stock/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Production",
+      "item": [
+        {
+          "name": "Get All Production Records",
           "request": {
             "method": "GET",
             "url": {
@@ -224,36 +408,15 @@
           }
         },
         {
-          "name": "GET - Filter by Status",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/api/production?status=UnderProcess"
-            }
-          }
-        },
-        {
-          "name": "GET - Filter by Category",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/api/production?categoryId=4"
-            }
-          }
-        },
-        {
-          "name": "POST - Create Production (no photos)",
+          "name": "Create Production (No Photos)",
           "request": {
             "method": "POST",
-            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            },
             "body": {
               "mode": "formdata",
               "formdata": [
-                {
-                  "key": "title",
-                  "value": "Custom Bed Frame",
-                  "type": "text"
-                },
                 {
                   "key": "categoryId",
                   "value": "1",
@@ -273,78 +436,37 @@
                   "key": "submittingDate",
                   "value": "2026-03-15",
                   "type": "text"
-                },
-                {
-                  "key": "workInstructions",
-                  "value": "Use silver handles and glossy finish",
-                  "type": "text"
-                },
-                {
-                  "key": "paymentNote",
-                  "value": "Down payment of 5000 ETB received",
-                  "type": "text"
                 }
               ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/production"
             }
           }
         },
         {
-          "name": "POST - Create Production (with photos)",
+          "name": "Create Production (With Photos)",
           "request": {
             "method": "POST",
-            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/production"
+            },
             "body": {
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "title",
-                  "value": "Office Table",
-                  "type": "text"
-                },
-                {
                   "key": "categoryId",
-                  "value": "3",
-                  "type": "text"
-                },
-                {
-                  "key": "progressPercentage",
-                  "value": "50",
-                  "type": "text"
-                },
-                {
-                  "key": "startedDate",
-                  "value": "2026-02-15",
-                  "type": "text"
-                },
-                {
-                  "key": "workInstructions",
-                  "value": "Ergonomic office table with drawers",
+                  "value": "1",
                   "type": "text"
                 },
                 {
                   "key": "photos",
                   "type": "file",
-                  "src": [],
-                  "description": "Select image files here"
-                },
-                {
-                  "key": "photos",
-                  "type": "file",
-                  "src": [],
-                  "description": "Select more images (optional)"
+                  "src": []
                 }
               ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/production"
             }
           }
         },
         {
-          "name": "GET - Get Production by ID",
+          "name": "Get Production by ID",
           "request": {
             "method": "GET",
             "url": {
@@ -353,10 +475,12 @@
           }
         },
         {
-          "name": "PUT - Update Production Status & Progress",
+          "name": "Update Production",
           "request": {
             "method": "PUT",
-            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/production/1"
+            },
             "body": {
               "mode": "formdata",
               "formdata": [
@@ -371,35 +495,11 @@
                   "type": "text"
                 }
               ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/production/1"
             }
           }
         },
         {
-          "name": "PUT - Add Photos to Existing Record",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "photos",
-                  "type": "file",
-                  "src": [],
-                  "description": "New photos to append"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/production/1"
-            }
-          }
-        },
-        {
-          "name": "DELETE - Delete Production Record",
+          "name": "Delete Production",
           "request": {
             "method": "DELETE",
             "url": {
@@ -410,22 +510,24 @@
       ]
     },
     {
-      "name": "Error Cases",
+      "name": "Products Showcase",
       "item": [
         {
-          "name": "Users - 403 Forbidden (Admin token, not SuperAdmin)",
+          "name": "Get All Products",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/users"
-            },
-            "description": "Login as 'admin' first, then try this - should get 403"
+              "raw": "{{baseUrl}}/api/products"
+            }
           }
         },
         {
-          "name": "Users - 409 Duplicate Username",
+          "name": "Create Product",
           "request": {
             "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/products"
+            },
             "header": [
               {
                 "key": "Content-Type",
@@ -434,72 +536,310 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Duplicate User\",\n  \"username\": \"superadmin\",\n  \"password\": \"test123456\",\n  \"role\": \"Admin\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users"
+              "raw": "{\n  \"name\": \"Sofa Set\",\n  \"categoryId\": 1,\n  \"color\": \"Black\",\n  \"stockQuantity\": 5,\n  \"price\": 15000,\n  \"description\": \"Leather Sofa\"\n}"
             }
           }
         },
         {
-          "name": "Users - 404 Not Found",
+          "name": "Get Product by ID",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/users/9999"
+              "raw": "{{baseUrl}}/api/products/1"
             }
           }
         },
         {
-          "name": "Production - 400 Invalid Progress (>100)",
+          "name": "Update Product",
           "request": {
-            "method": "POST",
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "categoryId",
-                  "value": "2",
-                  "type": "text"
-                },
-                {
-                  "key": "progressPercentage",
-                  "value": "150",
-                  "type": "text"
-                }
-              ]
-            },
+            "method": "PUT",
             "url": {
-              "raw": "{{baseUrl}}/api/production"
+              "raw": "{{baseUrl}}/api/products/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 14500\n}"
             }
           }
         },
         {
-          "name": "Production - 400 Invalid Status Enum",
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders"
+            }
+          }
+        },
+        {
+          "name": "Create Order",
           "request": {
             "method": "POST",
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "categoryId",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "progressPercentage",
-                  "value": "10",
-                  "type": "text"
-                },
-                {
-                  "key": "status",
-                  "value": "InvalidStatus",
-                  "type": "text"
-                }
-              ]
-            },
             "url": {
-              "raw": "{{baseUrl}}/api/production"
+              "raw": "{{baseUrl}}/api/orders"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productName\": \"Sofa Set\",\n  \"quantity\": 1,\n  \"customNotes\": \"Urgent delivery\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/1"
+            }
+          }
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PaymentConfirmed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "To-Do",
+      "item": [
+        {
+          "name": "Get All To-Dos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/todos"
+            }
+          }
+        },
+        {
+          "name": "Create To-Do",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/todos"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"day\": \"Monday\",\n  \"task\": \"Check inventory\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get To-Do by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/todos/1"
+            }
+          }
+        },
+        {
+          "name": "Update To-Do",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/todos/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isCompleted\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete To-Do",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/todos/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "item": [
+        {
+          "name": "Get All News",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/news"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Create News",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/news"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Arrival\",\n  \"content\": \"Check out our new products!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get News by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/news/1"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Update News",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/news/1"
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Archived\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete News",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/news/1"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports (Super Admin)",
+      "item": [
+        {
+          "name": "Get Stock Report (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/stock?format=json"
+            }
+          }
+        },
+        {
+          "name": "Get Production Report (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/production?format=json&from_date=2026-01-01&to_date=2026-12-31"
+            }
+          }
+        },
+        {
+          "name": "Get Orders Report (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/orders?format=json"
+            }
+          }
+        },
+        {
+          "name": "Get Sales Report (PDF)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/sales?format=pdf"
+            }
+          }
+        },
+        {
+          "name": "Get Sales Report (CSV)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/sales?format=csv"
             }
           }
         }

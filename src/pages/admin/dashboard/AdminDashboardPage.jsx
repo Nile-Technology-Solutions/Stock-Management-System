@@ -16,7 +16,9 @@ import { RefreshCw, Shield } from '../../../components/icons';
 const AdminDashboardPage = () => {
   const { user } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
   const [dashboardData, setDashboardData] = useState(null);
 
@@ -31,33 +33,61 @@ const AdminDashboardPage = () => {
     loadDashboardData();
   }, [selectedTimeRange]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (isManualRefresh = false) => {
+    if (isManualRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    
+    setError(null);
     try {
-      // Load dashboard data for Admin role using real API
       const data = await getDashboardDataFromAPI(selectedTimeRange, 'Admin');
       setDashboardData(data);
-    } catch (error) {
-      console.error('Failed to load Admin dashboard data:', error);
+    } catch (err) {
+      console.error('Failed to load Admin dashboard data:', err);
+      setError('Unable to sync with operations server. Please check your network connection.');
+    } finally {
+      if (isManualRefresh) {
+        setTimeout(() => setRefreshing(false), 800);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await loadDashboardData();
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setRefreshing(false);
+  const handleRefresh = () => {
+    loadDashboardData(true);
   };
 
-  if (!dashboardData) {
+  if (loading && !dashboardData) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+        <p className="text-slate-500 animate-pulse text-sm font-medium">Loading operational metrics...</p>
+      </div>
+    );
+  }
+
+  if (error && !dashboardData) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
+        <div className="bg-cyan-500/5 p-8 rounded-3xl max-w-md border border-cyan-500/10 backdrop-blur-sm">
+          <div className="w-16 h-16 bg-cyan-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-8 h-8 text-cyan-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Sync Interrupted</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-8">{error}</p>
+          <Button onClick={() => loadDashboardData()} variant="primary" className="w-full">
+            Retry Connection
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 relative">
+    <div className="space-y-8 relative animate-in fade-in duration-500">
       {/* Welcome Section */}
       <GlassCard variant="standard" className="relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
@@ -99,7 +129,7 @@ const AdminDashboardPage = () => {
                   <select 
                     value={selectedTimeRange}
                     onChange={(e) => setSelectedTimeRange(e.target.value)}
-                    className="px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                    className="px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 outline-none transition-all"
                   >
                     <option value="24h">Last 24 Hours</option>
                     <option value="7d">Last 7 Days</option>
@@ -131,7 +161,7 @@ const AdminDashboardPage = () => {
       </GlassCard>
 
       {/* Dashboard Cards - Admin View (no revenue) */}
-      <DashboardCards data={dashboardData} hasRole={() => false} />
+      <DashboardCards data={dashboardData} />
 
       {/* Dashboard Charts and Activities */}
       <DashboardCharts data={dashboardData} />

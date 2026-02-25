@@ -11,10 +11,21 @@ import { superAdminApi } from '../../../services/superAdminApi';
  */
 export const getSystemSettings = async () => {
   try {
-    return await superAdminApi.settings.getSettings();
+    const data = await superAdminApi.settings.getSettings();
+    const defaults = await getDefaultSettings();
+    
+    // Deep merge or at least ensure categories exist
+    return {
+      general: { ...defaults.general, ...(data?.general || {}) },
+      notifications: { ...defaults.notifications, ...(data?.notifications || {}) },
+      security: { ...defaults.security, ...(data?.security || {}) },
+      backup: { ...defaults.backup, ...(data?.backup || {}) },
+      api: { ...defaults.api, ...(data?.api || {}) }
+    };
   } catch (error) {
     console.error('Failed to fetch system settings:', error);
-    throw error;
+    // Return defaults if API fails as a fallback
+    return await getDefaultSettings();
   }
 };
 

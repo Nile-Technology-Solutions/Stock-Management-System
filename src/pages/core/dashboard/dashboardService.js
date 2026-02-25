@@ -87,18 +87,24 @@ const normalizeDashboardData = (raw) => {
  */
 export const getDashboardDataFromAPI = async (timeRange = '7d', userRole = 'Admin') => {
   try {
+    let data;
     if (userRole === 'Super Admin') {
       // Use Super Admin specific endpoint
-      const data = await superAdminApi.getDashboardData({ timeRange });
-      return normalizeDashboardData(data);
+      data = await superAdminApi.getDashboardData({ timeRange });
     } else {
       // Use Admin endpoint
-      const data = await api.get('/api/dashboard/admin', { timeRange });
-      return normalizeDashboardData(data);
+      data = await api.get('/api/dashboard/admin', { timeRange });
     }
+    return normalizeDashboardData(data);
   } catch (error) {
-    console.error('Dashboard API Error:', error);
-    throw error;
+    console.error('Dashboard API Error - Returning fallback data:', error);
+    // Return a safely normalized empty structure instead of throwing
+    return normalizeDashboardData({
+      stats: [],
+      recentActivities: [],
+      topProducts: [],
+      systemHealth: DEFAULT_SYSTEM_HEALTH
+    });
   }
 };
 

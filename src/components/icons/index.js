@@ -197,5 +197,6 @@ export {
   Battery,
   Server,
   HardDrive,
-  Smartphone
+  Smartphone,
+  Terminal
 } from 'lucide-react';

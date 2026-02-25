@@ -38,6 +38,7 @@ const Production = lazy(() => import('../pages/core/production/ProductionPage'))
 const Orders = lazy(() => import('../pages/core/orders/OrdersPage'));
 const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
 const UserManagement = lazy(() => import('../pages/superAdmin/userManagement/UserManagementPage'));
+const Settings = lazy(() => import('../pages/superAdmin/settings'));
 const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));
 const NewsAdmin = lazy(() => import('../pages/admin/news/NewsAdminPage'));
 
@@ -113,6 +114,7 @@ const AppRoutes = () => {
           <Route path="users" element={<UserManagement />} />
           <Route path="payments" element={<Payments />} />
           <Route path="stock" element={<Stock />} />
+          <Route path="settings" element={<Settings />} />
           {/* Add more super-admin routes here */}
         </Route>
 

@@ -164,11 +164,20 @@ const Table = ({
                     {columns.map((column, colIdx) => {
                       const key = column.key || column.accessor;
                       const value = row[key];
+                      
+                      const renderDefault = (val) => {
+                        if (val === null || val === undefined) return '';
+                        if (typeof val === 'object') {
+                          return val.name || val.label || val.title || JSON.stringify(val);
+                        }
+                        return String(val);
+                      };
+
                       return (
                         <td key={key || colIdx} className="px-6 py-4 whitespace-nowrap">
                           {column.render ? column.render(value, row) : (
                             <div className="text-sm text-slate-900 dark:text-slate-100">
-                              {value}
+                              {renderDefault(value)}
                             </div>
                           )}
                         </td>
@@ -183,7 +192,49 @@ const Table = ({
           {responsive && (
             <div className="sm:hidden">
               {sortedData.map((row, index) => (
-                <MobileCard key={row.id || index} row={row} index={index} />
+                <div
+                  key={row.id || index}
+                  className={`p-4 border-b border-slate-200 dark:border-slate-700 last:border-b-0 ${
+                    hoverable ? 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-200' : ''
+                  } ${onRowClick ? 'cursor-pointer' : ''}`}
+                  onClick={onRowClick ? () => onRowClick(row) : undefined}
+                >
+                  <div className="space-y-2">
+                    {columns.map((column, colIndex) => {
+                      if (column.hideOnMobile) return null;
+                      const key = column.key || column.accessor;
+                      const label = column.label || column.header;
+                      const value = row[key];
+                      
+                      const renderDefault = (val) => {
+                        if (val === null || val === undefined) return '';
+                        if (typeof val === 'object') {
+                          return val.name || val.label || val.title || JSON.stringify(val);
+                        }
+                        return String(val);
+                      };
+                      
+                      return (
+                        <div key={key || colIndex} className={colIndex === 0 ? 'mb-3' : ''}>
+                          {colIndex === 0 ? (
+                            <div className="font-medium text-slate-900 dark:text-slate-100">
+                              {column.render ? column.render(value, row) : renderDefault(value)}
+                            </div>
+                          ) : (
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                                {label}:
+                              </span>
+                              <span className="text-sm text-slate-900 dark:text-slate-100">
+                                {column.render ? column.render(value, row) : renderDefault(value)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               ))}
             </div>
           )}

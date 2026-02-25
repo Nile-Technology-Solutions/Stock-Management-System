@@ -9,13 +9,13 @@ import Loader from '../components/common/Loader';
 import { ROLES } from '../utils/roleUtils';
 
 // Lazy load all pages
-const Home = lazy(() => import('../modules/public/Home'));
-const Products = lazy(() => import('../modules/public/Products'));
-const ProductDetail = lazy(() => import('../modules/public/ProductDetail'));
-const NewsList = lazy(() => import('../modules/public/news/NewsListPage'));
-const NewsDetail = lazy(() => import('../modules/public/news/NewsDetailPage'));
-const OrderTracking = lazy(() => import('../modules/public/OrderTracking'));
-const OrderPlacement = lazy(() => import('../modules/public/OrderPlacement'));
+const Home = lazy(() => import('../pages/public/Home'));
+const Products = lazy(() => import('../pages/public/Products'));
+const ProductDetail = lazy(() => import('../pages/public/ProductDetail'));
+const NewsList = lazy(() => import('../pages/public/news/NewsListPage'));
+const NewsDetail = lazy(() => import('../pages/public/news/NewsDetailPage'));
+const OrderTracking = lazy(() => import('../pages/public/OrderTracking'));
+const OrderPlacement = lazy(() => import('../pages/public/OrderPlacement'));
 
 // Payment Pages
 const PaymentInitialization = lazy(() => import('../pages/payment/PaymentInitialization'));
@@ -28,18 +28,18 @@ const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 
 // Role-Specific Dashboards
-const AdminDashboard = lazy(() => import('../modules/admin/dashboard/AdminDashboardPage'));
-const SuperAdminDashboard = lazy(() => import('../modules/superAdmin/dashboard/SuperAdminDashboardPage'));
+const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboardPage'));
+const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/dashboard/SuperAdminDashboardPage'));
 
 // Modularized Core/Admin Pages
-const Analytics = lazy(() => import('../modules/core/analytics/AnalyticsPage'));
-const Stock = lazy(() => import('../modules/core/stock/StockPage'));
-const Production = lazy(() => import('../modules/core/production/ProductionPage'));
-const Orders = lazy(() => import('../modules/core/orders/OrdersPage'));
-const Payments = lazy(() => import('../modules/core/payments/PaymentsPage'));
-const UserManagement = lazy(() => import('../modules/superAdmin/userManagement/UserManagementPage'));
-const Todo = lazy(() => import('../modules/admin/todo/TodoPage'));
-const NewsAdmin = lazy(() => import('../modules/admin/news/NewsAdminPage'));
+const Analytics = lazy(() => import('../pages/core/analytics/AnalyticsPage'));
+const Stock = lazy(() => import('../pages/core/stock/StockPage'));
+const Production = lazy(() => import('../pages/core/production/ProductionPage'));
+const Orders = lazy(() => import('../pages/core/orders/OrdersPage'));
+const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
+const UserManagement = lazy(() => import('../pages/superAdmin/userManagement/UserManagementPage'));
+const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));
+const NewsAdmin = lazy(() => import('../pages/admin/news/NewsAdminPage'));
 
 const PageLoader = () => (
   <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">

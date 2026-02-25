@@ -19,9 +19,20 @@ export const ROLE_HIERARCHY = {
 
 // Default dashboard routes for each role
 export const ROLE_DASHBOARDS = {
-  [ROLES.SUPER_ADMIN]: '/super-admin/dashboard',
-  [ROLES.ADMIN]: '/admin/dashboard',
-  [ROLES.CLIENT]: '/'
+  'superadmin': '/super-admin/dashboard',
+  'admin': '/admin/dashboard',
+  'customer': '/',
+  'client': '/'
+};
+
+/**
+ * Normalize role string for consistent comparison
+ * @param {string} role - Original role string
+ * @returns {string} - Normalized role
+ */
+export const normalizeRole = (role) => {
+  if (!role) return '';
+  return role.toString().toLowerCase().trim().replace(/\s+/g, '');
 };
 
 /**
@@ -30,7 +41,8 @@ export const ROLE_DASHBOARDS = {
  * @returns {string} - Redirect path
  */
 export const redirectByRole = (role) => {
-  return ROLE_DASHBOARDS[role] || '/';
+  const normalized = normalizeRole(role);
+  return ROLE_DASHBOARDS[normalized] || '/';
 };
 
 /**
@@ -42,8 +54,15 @@ export const redirectByRole = (role) => {
 export const hasRoleAccess = (userRole, requiredRole) => {
   if (!userRole || !requiredRole) return false;
   
-  const userLevel = ROLE_HIERARCHY[userRole] ?? -1;
-  const requiredLevel = ROLE_HIERARCHY[requiredRole] ?? 0;
+  const normalizedUser = normalizeRole(userRole);
+  const normalizedRequired = normalizeRole(requiredRole);
+  
+  // Find which key in ROLES matches the normalized string
+  const roleKey = Object.keys(ROLES).find(k => normalizeRole(ROLES[k]) === normalizedUser);
+  const userLevel = roleKey ? (ROLE_HIERARCHY[ROLES[roleKey]] ?? -1) : -1;
+  
+  const reqKey = Object.keys(ROLES).find(k => normalizeRole(ROLES[k]) === normalizedRequired);
+  const requiredLevel = reqKey ? (ROLE_HIERARCHY[ROLES[reqKey]] ?? 0) : 0;
   
   return userLevel >= requiredLevel;
 };
@@ -55,7 +74,8 @@ export const hasRoleAccess = (userRole, requiredRole) => {
  * @returns {boolean}
  */
 export const hasExactRole = (userRole, targetRole) => {
-  return userRole === targetRole;
+  if (!userRole || !targetRole) return false;
+  return normalizeRole(userRole) === normalizeRole(targetRole);
 };
 
 /**
@@ -68,7 +88,11 @@ export const isRoleAllowed = (userRole, allowedRoles = []) => {
   if (!Array.isArray(allowedRoles) || allowedRoles.length === 0) {
     return true; // No restrictions
   }
-  return allowedRoles.includes(userRole);
+  
+  if (!userRole) return false;
+  
+  const normalizedUserRole = normalizeRole(userRole);
+  return allowedRoles.some(r => normalizeRole(r) === normalizedUserRole);
 };
 
 /**

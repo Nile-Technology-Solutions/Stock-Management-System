@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { stockApi } from '../../services/stockApi';
+import { orderApi } from '../../services/orderApi';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
 import ErrorState from '../../components/common/ErrorState';
@@ -31,7 +31,7 @@ const OrderTracking = () => {
       setError(null);
       setSearched(true);
       
-      const data = await stockApi.trackOrder(orderId);
+      const data = await orderApi.trackOrder(orderId);
       setOrderData(data);
     } catch (err) {
       setError(err.message);
@@ -40,6 +40,7 @@ const OrderTracking = () => {
       setLoading(false);
     }
   };
+
 
   const getStatusIndex = (status) => {
     if (status === 'Rejected') return -1;

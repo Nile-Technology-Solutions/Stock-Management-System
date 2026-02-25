@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { stockApi } from '../../services/stockApi';
+import { orderApi } from '../../services/orderApi';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
 import ErrorState from '../../components/common/ErrorState';
@@ -110,18 +111,20 @@ const OrderPlacement = () => {
       };
 
       // Call API to create order
-      const response = await stockApi.createOrder(orderData);
+      const response = await orderApi.createOrder(orderData);
 
       // Response should contain orderId and paymentUrl
-      if (response.paymentUrl) {
+      if (response && response.paymentUrl) {
         // Redirect to payment gateway
         window.location.href = response.paymentUrl;
-      } else {
+      } else if (response && response.orderId) {
         // If no payment URL, navigate to success page
         navigate(`/payment/success?orderId=${response.orderId}`);
+      } else {
+        throw new Error('Invalid response from order service');
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Failed to place order');
       setSubmitting(false);
     }
   };
@@ -141,6 +144,7 @@ const OrderPlacement = () => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/20 to-sky-50/10 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 py-12">

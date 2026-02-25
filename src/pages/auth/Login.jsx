@@ -3,7 +3,6 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/authApi';
 import { redirectByRole } from '../../utils/roleUtils';
-import PublicOnlyRoute from '../../routes/PublicOnlyRoute';
 import GlassCard from '../../components/common/GlassCard';
 import Button from '../../components/common/Button';
 import { 
@@ -24,7 +23,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,20 +34,32 @@ const Login = () => {
     setError('');
 
     try {
+      // Clear any stale previous session BEFORE logging in
+      logout();
+
       // Call actual API endpoint
       const response = await authApi.login(credentials.username, credentials.password);
-      
+
+      // Robust role detection - check common nesting patterns
+      const userObj = response.user || response.data?.user || response.data || response;
+      const userRole = userObj.role || response.role || 'Customer';
+
+      console.log('Login successful. Detected role:', userRole);
+
+      // Determine where to redirect based purely on the returned role
+      const destination = redirectByRole(userRole);
+
       // Store token and user data
       login({
-        ...response.user,
-        token: response.token
+        ...userObj,
+        token: response.token || response.data?.token || response.authToken
       });
-      
-      // Redirect based on user role using centralized utility
-      const from = location.state?.from?.pathname || redirectByRole(response.user.role);
-      navigate(from, { replace: true });
-      
+
+      // Navigate to the role-specific dashboard
+      navigate(destination, { replace: true });
+
     } catch (err) {
+      console.error('Login Error:', err);
       setError(err.message || 'Login failed. Please check your credentials and try again.');
     } finally {
       setLoading(false);
@@ -71,30 +82,86 @@ const Login = () => {
     });
   };
 
-  // Demo accounts for testing (matches mockData.js)
+  // Demo accounts for testing (matches user request)
   const demoAccounts = [
     { 
+      id: 'customer-demo',
       username: 'customer', 
       password: 'customer123', 
       role: 'Customer', 
       name: 'Demo Customer',
-      description: 'Browse products and place orders'
+      description: 'Standard customer account'
     },
     { 
+      id: 'admin-demo-1',
+      username: 'admin', 
+      password: 'admin', 
+      role: 'Admin', 
+      name: 'Admin User',
+      description: 'Admin account (password: admin)'
+    },
+    { 
+      id: 'admin-demo-2',
       username: 'admin', 
       password: 'admin123', 
       role: 'Admin', 
       name: 'Admin User',
-      description: 'Manage inventory and orders'
+      description: 'Admin account (password: admin123)'
     },
     { 
+      id: 'super-admin-demo',
       username: 'superadmin', 
-      password: 'super123', 
+      password: 'superadmin', 
       role: 'Super Admin', 
       name: 'Super Admin',
-      description: 'Full system access'
+      description: 'Super Admin account'
     }
   ];
+
+  const handleSystemInit = async () => {
+    setLoading(true);
+    setError('');
+    const results = [];
+    
+    // Use a Set to track processed usernames to avoid duplicate registration attempts
+    const registeredUsernames = new Set();
+    
+    try {
+      for (const account of demoAccounts) {
+        if (registeredUsernames.has(account.username)) {
+          results.push(`Skipping duplicate register for ${account.username}`);
+          continue;
+        }
+
+        try {
+          await authApi.register({
+            fullName: account.name,
+            username: account.username,
+            password: account.password,
+            role: account.role
+          });
+          results.push(`Registered ${account.username} (${account.password})`);
+          registeredUsernames.add(account.username);
+        } catch (err) {
+          if (err.message.toLowerCase().includes('exist') || err.message.toLowerCase().includes('taken')) {
+            results.push(`${account.username} already exists`);
+            registeredUsernames.add(account.username);
+          } else {
+            console.warn(`Failed to register ${account.username}:`, err);
+            results.push(`Error registering ${account.username}`);
+          }
+        }
+      }
+      alert('System Setup Check Complete:\n' + results.join('\n'));
+    } catch (err) {
+      setError('System verification failed: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
@@ -154,11 +221,12 @@ const Login = () => {
               <div className="space-y-3">
                 {demoAccounts.map((demo) => (
                   <button
-                    key={demo.username}
+                    key={demo.id}
                     type="button"
                     onClick={() => handleDemoLogin(demo)}
                     className="w-full text-left p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 transition-all duration-200 hover:scale-105 group"
                   >
+
                     <div className="flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                         demo.role === 'Super Admin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
@@ -282,10 +350,39 @@ const Login = () => {
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 backdrop-blur-sm rounded-full">
+                    System Maintenance
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 text-center">
+                <button
+                  type="button"
+                  onClick={handleSystemInit}
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 backdrop-blur-md border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition-all duration-200 hover:shadow-lg group"
+                >
+                  <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform duration-200 text-cyan-500" />
+                  Initial System Setup
+                </button>
+                <p className="text-[10px] text-slate-500 mt-2 italic px-8">
+                  Click once to register the default Admin, Super Admin, and Customer accounts if they don't exist yet.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 backdrop-blur-sm rounded-full">
                     New to SMS Nile Tech?
                   </span>
                 </div>
               </div>
+
 
               <div className="mt-6 text-center">
                 <Link 
@@ -315,8 +412,4 @@ const Login = () => {
   );
 };
 
-export default () => (
-  <PublicOnlyRoute>
-    <Login />
-  </PublicOnlyRoute>
-);
+export default Login;

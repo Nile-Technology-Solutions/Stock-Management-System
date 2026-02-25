@@ -2,14 +2,13 @@
  * Stock Management API Service
  * Integrated with SMS Backend API v1.4.0
  * Handles raw materials and inventory for furniture manufacturing
+ * Strictly connects to the real backend
  */
 
 import { apiConfig } from '../config/env';
-import { mockStock } from './mockData';
 
 // API Configuration
 const API_BASE_URL = apiConfig.baseURL || 'http://localhost:5000';
-const USE_MOCK = apiConfig.useMock;
 
 // Get authentication token
 const getAuthToken = () => localStorage.getItem('sms_token') || localStorage.getItem('authToken');
@@ -77,16 +76,6 @@ export const stockApi = {
   /**
    * Add new stock material
    * POST /api/stock
-   * 
-   * Required fields:
-   * - name: string
-   * - quantity: number
-   * - color: string (optional)
-   * - size: string (optional)
-   * - thickness: string (optional)
-   * - laminated: boolean (optional)
-   * - origin: "Imported" | "Local" (optional)
-   * - typeNote: string (optional)
    */
   async createStock(stockData) {
     try {
@@ -159,25 +148,6 @@ export const stockApi = {
 
   /** Aliases for public-facing components */
   async getProducts(params = {}) {
-    // Use mock data if configured
-    if (USE_MOCK) {
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
-      let products = [...mockStock];
-      
-      if (params.category && params.category !== 'all') {
-        products = products.filter(p => p.category === params.category);
-      }
-      if (params.search) {
-        const query = params.search.toLowerCase();
-        products = products.filter(p => 
-          p.name.toLowerCase().includes(query) || 
-          p.typeNote?.toLowerCase().includes(query) ||
-          p.description?.toLowerCase().includes(query)
-        );
-      }
-      return products;
-    }
-
     // Use real API
     const data = await this.getAllStock();
     if (data.success) {
@@ -198,13 +168,6 @@ export const stockApi = {
   },
 
   async getCategories() {
-    // Use mock data if configured
-    if (USE_MOCK) {
-      await new Promise(resolve => setTimeout(resolve, 300)); // Simulate API delay
-      const categories = [...new Set(mockStock.map(p => p.category).filter(Boolean))];
-      return categories;
-    }
-
     // Use real API
     const data = await this.getAllStock();
     if (data.success) {
@@ -215,16 +178,6 @@ export const stockApi = {
   },
 
   async getProductById(id) {
-    // Use mock data if configured
-    if (USE_MOCK) {
-      await new Promise(resolve => setTimeout(resolve, 400)); // Simulate API delay
-      const product = mockStock.find(p => p.id === parseInt(id));
-      if (product) {
-        return product;
-      }
-      throw new Error('Product not found');
-    }
-
     // Use real API
     const data = await this.getStockById(id);
     if (data.success) {
@@ -301,3 +254,5 @@ export const stockApiHelpers = {
 };
 
 export default stockApi;
+
+

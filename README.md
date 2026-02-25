@@ -1,343 +1,94 @@
-<<<<<<< HEAD
-# Stock Management System (SMS) - Frontend
+# Nile Technology Solutions - Stock Management System (SMS)
 
-A modern, responsive web application for comprehensive stock management with role-based access control and Neo-Enterprise UI design.
+A premium, modern web application for comprehensive stock management, production tracking, and order fulfillment. Designed with a high-performance Neo-Enterprise UI featuring glassmorphism aesthetics and role-based access control.
 
-## Overview
+## 🌟 Key Features
 
-The Stock Management System frontend provides a secure, intuitive interface for managing inventory, orders, and user accounts across three distinct user roles: Super Admin, Admin, and Customer. Built with modern web technologies and featuring a sleek Neo-Enterprise design with subtle Glassmorphism elements.
+### 🏢 Core Modules
+- **Inventory Management**: Real-time tracking of raw materials and hardware with low-stock alerts.
+- **Production Control**: Manage manufacturing batches, track progress, and document production with photo uploads.
+- **Order Pipeline**: Full sales lifecycle from public product showcase to admin fulfillment.
+- **Financial Oversight**: Comprehensive revenue tracking and financial reporting (Super Admin only).
+- **User Management**: Advanced RBAC for managing system users, roles, and permissions.
 
-## Key Features
+### 🔐 Security & Access (RBAC)
+- **Super Admin**: Full oversight, system analytics, financial reports, and user governance.
+- **Admin**: Daily operations, stock control, production tracking, and order management.
+- **Customer**: Public product browsing, secure ordering, and real-time order tracking.
 
-### Role-Based Access Control (RBAC)
-- **Super Admin**: Full system access, user management, system configuration
-- **Admin**: Inventory management, order processing, reporting
-- **Customer**: Product browsing, order placement, account management
+### 🎨 Design & Experience
+- **Premium UI**: Ultra-clean Neo-Enterprise design with smooth glassmorphism effects.
+- **Fully Responsive**: Optimized for desktop, tablet, and mobile workflows.
+- **Interactive Analytics**: Dynamic charts and real-time status indicators.
+- **Advanced UX**: Robust form validation, loading states, and error handling.
 
-### Core Functionality
-- Real-time inventory tracking
-- Order management and processing
-- User authentication and authorization
-- Responsive dashboard interfaces
-- Advanced search and filtering
-- Comprehensive reporting tools
+## 🚀 Tech Stack
 
-### Design System
-- Neo-Enterprise UI components
-- Subtle Glassmorphism effects
-- Fully responsive design
-- Accessibility compliant (WCAG guidelines)
-- Dark/light theme support
+- **Frontend**: React 18+ with Vite
+- **Styling**: Tailwind CSS (Glassmorphism design system)
+- **State/Auth**: React Context + JWT Authorization
+- **Icons**: Lucide-inspired custom icon pack
+- **API**: Centralized service layer (Axios-ready fetch architecture)
 
-## Technology Stack
-
-- **Framework**: React 18+ with TypeScript
-- **State Management**: Redux Toolkit / Zustand
-- **Styling**: Tailwind CSS with custom design tokens
-- **UI Components**: Custom component library
-- **Authentication**: JWT-based with refresh tokens
-- **API Integration**: Axios with interceptors
-- **Routing**: React Router v6
-- **Testing**: Jest + React Testing Library
-
-## Getting Started
+## 🛠️ Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn package manager
+- Node.js 18.x or higher
+- npm or yarn
 
 ### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd sms-frontend
-=======
-# Stock Management System
-
-A comprehensive stock management system with public-facing product showcase, order placement, and tracking capabilities.
-
-## 🚀 Quick Start
-
-```bash
-# Navigate to frontend
-cd frontend
->>>>>>> 2575d33ea8b59622354ae50a7ff958893a33b4dd
-
-# Install dependencies
-npm install
-
-<<<<<<< HEAD
-# Set up environment variables
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-=======
-# Start development server
-npm run dev
-```
-
-Visit `http://localhost:5173` to view the application.
-
----
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure environment variables:
+   - Create a `.env` file based on `.env.development` or `.env.production`.
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## 📁 Project Structure
 
-```
-Stock-Management-System/
-├── frontend/                    # React frontend application
-│   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   │   ├── common/        # Common components (Button, Modal, etc.)
-│   │   │   ├── public/        # Public-facing components
-│   │   │   ├── layout/        # Layout components
-│   │   │   └── ...
-│   │   ├── pages/             # Page components
-│   │   │   ├── public/        # Public pages (Home, Products, etc.)
-│   │   │   ├── auth/          # Authentication pages
-│   │   │   ├── admin/         # Admin pages
-│   │   │   └── payment/       # Payment result pages
-│   │   ├── services/          # API services
-│   │   │   ├── api.js         # Base API configuration
-│   │   │   ├── stockApi.js    # Public API endpoints
-│   │   │   └── authApi.js     # Authentication API
-│   │   ├── routes/            # Routing configuration
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── utils/             # Utility functions
-│   │   ├── context/           # React context providers
-│   │   ├── App.jsx            # Main app component
-│   │   ├── main.jsx           # React entry point
-│   │   └── index.css          # Global styles
-│   ├── public/                # Static assets
-│   ├── package.json           # Dependencies
-│   └── vite.config.js         # Vite configuration
-└── README.md                  # This file
+```bash
+src/
+├── components/          # Design system components (GlassCard, Button, Table, etc.)
+├── context/             # Auth and global state providers
+├── pages/
+│   ├── public/          # Public product showcase and tracking
+│   ├── auth/            # Secure login and registration
+│   ├── admin/           # Admin operational dashboards
+│   └── superAdmin/      # Enterprise oversight and user management
+├── services/            # API integration layer (Stock, Orders, Users, etc.)
+├── routes/              # Protected and public routing logic
+└── utils/               # Formatting and role-based helpers
 ```
 
----
+## 🔧 Environment Configuration
 
-## ✨ Features
-
-### Public Interface
-- **Product Showcase**: Browse products with filtering and search
-- **Product Details**: View detailed product information
-- **Order Placement**: Complete order flow with payment integration
-- **Order Tracking**: Real-time order status tracking
-- **News**: Latest announcements and updates
-
-### Technical Features
-- **Mobile-First Design**: Responsive across all devices
-- **Modern UI**: Clean, premium design with Tailwind CSS
-- **Form Validation**: Real-time validation with error messages
-- **Loading States**: Smooth loading indicators
-- **Error Handling**: Graceful error states with retry options
-- **Payment Integration**: Chapa and Telebirr support
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 19** - UI library
-- **React Router DOM** - Routing
-- **Tailwind CSS** - Styling
-- **Vite** - Build tool
-- **ESLint** - Code linting
-
-### Backend (To be implemented)
-- API endpoints for products, orders, news
-- Payment gateway integration
-- Order management system
-
----
-
-## 🎯 Available Routes
-
-### Public Routes
-- `/` - Home page
-- `/products` - Product showcase
-- `/products/:id` - Product details
-- `/order/:productId` - Order placement
-- `/order-tracking` - Track orders
-- `/news` - Latest news
-
-### Authentication
-- `/login` - User login
-- `/register` - User registration
-
-### Payment
-- `/payment/success` - Payment successful
-- `/payment/failed` - Payment failed
-- `/payment/pending` - Payment pending
-
-### Admin (Protected)
-- `/admin/dashboard` - Admin dashboard
-- `/admin/analytics` - Analytics
-- `/admin/stock` - Stock management
-- `/admin/production` - Production management
-- `/admin/orders` - Order management
-- `/admin/payments` - Payment management (Super Admin only)
-
----
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create `.env` file in the `frontend` directory:
-
+Ensure your `.env` file contains the correct API base URL:
 ```env
-VITE_API_BASE_URL=http://localhost:5000
+VITE_API_BASE_URL=http://your-api-endpoint:5000
+VITE_USE_MOCK=false
 ```
 
----
+## 📋 Available Roles & Credentials (Demo/Dev)
 
-## 📦 API Endpoints
-
-### Products
-- `GET /api/products` - Get all products
-- `GET /api/products/:id` - Get product by ID
-
-### Categories
-- `GET /api/categories` - Get all categories
-
-### News
-- `GET /api/news` - Get published news
-
-### Orders
-- `POST /api/orders` - Create new order
-- `GET /api/orders/:id` - Get order details
-- `GET /api/orders/track/:id` - Track order
-
----
-
-## 🧪 Testing
-
-### Manual Testing
-```bash
-npm run dev
-```
-
-Then test:
-1. Product browsing and filtering
-2. Order placement flow
-3. Order tracking
-4. Responsive design
-5. Error states
-6. Loading states
-
-### Build Testing
-```bash
-npm run build
-npm run preview
-```
-
----
-
-## 🚀 Deployment
-
-### Build for Production
-```bash
-cd frontend
-npm run build
-```
-
-The optimized build will be in `frontend/dist/`
-
-### Deploy to Hosting
-Upload the `dist` folder to your hosting provider (Vercel, Netlify, etc.)
-
----
-
-## 👥 Development Team Roles
-
-### Public UI Developer (Current Implementation)
-- ✅ Public product showcase
-- ✅ Order placement flow
-- ✅ Order tracking
-- ✅ News display
-- ✅ Reusable components
-
-### Backend Developer (Pending)
-- ⏳ API implementation
-- ⏳ Payment gateway integration
-- ⏳ Order management
-- ⏳ Database setup
-
-### Admin Developer
-- ⏳ Admin dashboard
-- ⏳ Stock management
-- ⏳ Analytics
-- ⏳ Production management
-
----
-
-## 📝 Contributing
-
-### Code Style
-- Use ESLint for code quality
-- Follow existing code patterns
-- Write clear comments
-- Use meaningful variable names
-
-### Pull Request Process
-1. Create feature branch
-2. Make changes
-3. Test thoroughly
-4. Commit with clear messages
-5. Create pull request
-6. Wait for review
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue: Dependencies not installing**
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**Issue: API calls failing**
-- Check backend is running
-- Verify `.env` configuration
-- Check browser console for errors
-
-**Issue: Styles not loading**
-- Restart dev server
-- Clear browser cache
-- Check Tailwind configuration
-
----
+| Role | Access Level | Responsibilities |
+| :--- | :--- | :--- |
+| **Super Admin** | Full | System Governance, Finance, User Management |
+| **Admin** | Managerial | Operations, Stock, Production, Orders |
+| **Customer** | Limited | Browsing, Purchasing, Tracking |
 
 ## 📄 License
 
-This project is proprietary and confidential.
+Proprietary and Confidential - Nile Technology Solutions.
 
 ---
 
-## 📞 Support
-
-For questions or issues:
-1. Check documentation files
-2. Review code comments
-3. Contact development team
-
----
-
-## 🎉 Status
-
-✅ **Public UI**: Complete and ready for testing
-⏳ **Backend API**: Pending implementation
-⏳ **Admin Interface**: Pending implementation
-⏳ **Payment Integration**: Pending implementation
-
----
-
-**Last Updated**: February 14, 2026
-
-**Version**: 1.0.0 (Public UI)
->>>>>>> 2575d33ea8b59622354ae50a7ff958893a33b4dd
+**Last Updated**: February 25, 2026  
+**Version**: 1.5.0 (Enterprise Suite)

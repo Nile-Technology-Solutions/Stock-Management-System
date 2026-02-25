@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { redirectByRole } from '../utils/roleUtils';
 
@@ -11,7 +11,6 @@ import { redirectByRole } from '../utils/roleUtils';
  */
 const PublicOnlyRoute = ({ children }) => {
   const { isAuthenticated, user, loading } = useAuth();
-  const location = useLocation();
   
   // Show loading state while checking authentication
   if (loading) {
@@ -25,15 +24,9 @@ const PublicOnlyRoute = ({ children }) => {
     );
   }
   
-  // If user is authenticated, redirect to their dashboard
+  // If user is authenticated, always redirect to their role-based dashboard
   if (isAuthenticated && user) {
-    // Check if there's a return URL from the location state
-    const from = location.state?.from?.pathname;
-    
-    // If there's a valid return URL, use it; otherwise use role-based redirect
-    const redirectPath = from || redirectByRole(user.role);
-    
-    return <Navigate to={redirectPath} replace />;
+    return <Navigate to={redirectByRole(user.role)} replace />;
   }
   
   // User is not authenticated, show the public page

@@ -34,14 +34,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
+    // Map fullName → name (mock API uses fullName, real API may use name)
+    const resolvedName = userData.name || userData.fullName || (userData.email ? userData.email.split('@')[0] : 'User');
+    const resolvedRole = userData.role || 'Customer';
+
     const userWithDefaults = {
+      ...userData,
       id: userData.id || Date.now(),
-      email: userData.email,
-      name: userData.name || userData.email.split('@')[0],
-      role: userData.role || 'admin',
+      email: userData.email || '',
+      name: resolvedName,
+      role: resolvedRole,
       token: userData.token || `mock_token_${Date.now()}`,
       loginTime: new Date().toISOString(),
-      ...userData
     };
 
     setUser(userWithDefaults);

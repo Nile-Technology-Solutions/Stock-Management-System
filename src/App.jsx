@@ -2,17 +2,30 @@
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import { AuthProvider } from './context/AuthContext';
+import LogoutModal from './components/common/LogoutModal';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+
+// Wrapper component to access auth context
+const AppContent = () => {
+  const { showLogoutModal, closeLogoutModal } = useAuth();
+  
+  return (
+    <>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+      <LogoutModal isOpen={showLogoutModal} onClose={closeLogoutModal} />
+    </>
+  );
+};
 
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <AppContent />
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>

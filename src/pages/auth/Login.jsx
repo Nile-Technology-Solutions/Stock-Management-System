@@ -34,8 +34,8 @@ const Login = () => {
     setError('');
 
     try {
-      // Clear any stale previous session BEFORE logging in
-      logout();
+      // Clear any stale previous session BEFORE logging in (without showing modal)
+      logout(false);
 
       // Call actual API endpoint
       const response = await authApi.login(credentials.username, credentials.password);

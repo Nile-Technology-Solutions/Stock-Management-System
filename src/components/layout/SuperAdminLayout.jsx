@@ -116,14 +116,41 @@ const SuperAdminLayout = () => {
         <div className="p-6 border-b border-slate-800/50 dark:border-slate-700/50 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-400/5 to-pink-400/5" />
           <div className="relative flex items-center justify-between">
-            {!sidebarCollapsed && (
+            {!sidebarCollapsed ? (
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/25">
-                  <Shield className="w-5 h-5 text-white" />
+                {/* Logo with futuristic styling - purple theme for super admin */}
+                <div className="relative group">
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Logo container with white bg */}
+                  <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-purple-500/25 ring-2 ring-purple-500/30 group-hover:ring-purple-500/50 transition-all duration-300">
+                    <img 
+                      src="/src/assets/LOGO.png" 
+                      alt="SMS Logo" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  
+                  {/* Animated corner dot */}
+                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-purple-400 rounded-full animate-pulse shadow-lg shadow-purple-400/50" />
                 </div>
+                
                 <div>
                   <h1 className="text-xl font-bold text-white">SMS Pro</h1>
                   <p className="text-sm text-slate-400 dark:text-slate-500">Super Admin Console</p>
+                </div>
+              </div>
+            ) : (
+              <div className="relative group mx-auto">
+                {/* Collapsed logo */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-purple-500/25 ring-2 ring-purple-500/30 group-hover:ring-purple-500/50 transition-all duration-300">
+                  <img 
+                    src="/src/assets/LOGO.png" 
+                    alt="SMS Logo" 
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
             )}

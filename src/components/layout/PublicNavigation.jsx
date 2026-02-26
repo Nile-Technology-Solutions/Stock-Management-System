@@ -59,9 +59,35 @@ const PublicNavigation = () => {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="text-xl font-semibold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200"
+              className="flex items-center gap-3 group"
             >
-              SMS Nile Tech
+              {/* Logo Image with Futuristic Container */}
+              <div className="relative">
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-sky-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                {/* Logo container with white bg in dark mode */}
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white dark:bg-white p-1.5 shadow-lg shadow-slate-900/10 dark:shadow-cyan-400/10 ring-2 ring-transparent group-hover:ring-cyan-400/50 transition-all duration-300 group-hover:scale-105">
+                  <img 
+                    src="/src/assets/LOGO.png" 
+                    alt="SMS Nile Tech Logo" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                
+                {/* Animated corner accent */}
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping" />
+              </div>
+              
+              {/* Text Logo */}
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-200">
+                  SMS Nile Tech
+                </span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">
+                  Stock Management
+                </span>
+              </div>
             </Link>
           </div>
 

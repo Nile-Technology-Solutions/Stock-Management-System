@@ -29,7 +29,35 @@ const Footer = () => {
           {/* Company Description */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-white mb-4">SMS Nile Tech</h3>
+              {/* Logo with futuristic styling */}
+              <div className="flex items-center gap-3 mb-4 group">
+                {/* Logo container with permanent white background */}
+                <div className="relative">
+                  {/* Subtle glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-sky-400/10 rounded-xl blur-lg" />
+                  
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-white p-2 shadow-lg shadow-cyan-400/20 ring-2 ring-cyan-400/30 group-hover:ring-cyan-400/50 transition-all duration-300 group-hover:scale-105">
+                    <img 
+                      src="/src/assets/LOGO.png" 
+                      alt="SMS Nile Tech Logo" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  
+                  {/* Animated pulse dot */}
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50" />
+                </div>
+                
+                <div>
+                  <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-200">
+                    SMS Nile Tech
+                  </h3>
+                  <p className="text-xs text-slate-400 font-medium tracking-wider uppercase">
+                    Enterprise Solutions
+                  </p>
+                </div>
+              </div>
+              
               <p className="text-slate-300 leading-relaxed max-w-md">
                 A modern stock and production management system built for efficiency and growth. 
                 Delivering premium furniture solutions with precision and reliability.

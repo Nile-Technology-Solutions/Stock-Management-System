@@ -2,20 +2,20 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import ThemeToggle from '../common/ThemeToggle';
-import { 
-  Menu, 
-  X, 
-  BarChart3, 
-  Activity, 
-  Package, 
-  Settings, 
-  DollarSign, 
-  LogOut, 
-  Bell, 
-  Search, 
-  Shield, 
-  User, 
-  ChevronLeft, 
+import {
+  Menu,
+  X,
+  BarChart3,
+  Activity,
+  Package,
+  Settings,
+  DollarSign,
+  LogOut,
+  Bell,
+  Search,
+  Shield,
+  User,
+  ChevronLeft,
   ChevronRight,
   Home,
   Sparkles,
@@ -55,13 +55,14 @@ const SuperAdminLayout = () => {
     navigate('/login');
   };
 
-  // Full navigation items for Super Admin
+  // Full navigation items
   const navigationItems = [
     {
       name: 'System Dashboard',
       href: '/super-admin/dashboard',
       icon: <BarChart3 className="w-5 h-5" />,
-      description: 'System-wide Overview'
+      description: 'System-wide Overview',
+      role: 'SuperAdmin'
     },
     {
       name: 'User Management',
@@ -107,12 +108,10 @@ const SuperAdminLayout = () => {
       </div>
 
       {/* Sidebar */}
-      <div className={`${
-        sidebarCollapsed ? 'w-20' : 'w-72'
-      } bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md transition-all duration-300 flex flex-col fixed md:relative inset-y-0 left-0 z-50 transform ${
-        mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 border-r border-slate-800/50 dark:border-slate-700/50`}>
-        
+      <div className={`${sidebarCollapsed ? 'w-20' : 'w-72'
+        } bg-slate-900/95 dark:bg-slate-800/95 backdrop-blur-md transition-all duration-300 flex flex-col fixed md:relative inset-y-0 left-0 z-50 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 border-r border-slate-800/50 dark:border-slate-700/50`}>
+
         {/* Sidebar Header */}
         <div className="p-6 border-b border-slate-800/50 dark:border-slate-700/50 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-400/5 to-pink-400/5" />
@@ -143,11 +142,10 @@ const SuperAdminLayout = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`group flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 relative overflow-hidden ${
-                isActiveRoute(item.href)
+              className={`group flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 relative overflow-hidden ${isActiveRoute(item.href)
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
-              }`}
+                }`}
             >
               <span className="flex-shrink-0 relative z-10">{item.icon}</span>
               {!sidebarCollapsed && (
@@ -177,12 +175,11 @@ const SuperAdminLayout = () => {
               </div>
             </div>
           )}
-          
+
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center px-4 py-3 text-sm font-medium text-slate-300 hover:text-white hover:bg-red-500/20 rounded-xl transition-all ${
-              sidebarCollapsed ? 'justify-center' : ''
-            }`}
+            className={`w-full flex items-center px-4 py-3 text-sm font-medium text-slate-300 hover:text-white hover:bg-red-500/20 rounded-xl transition-all ${sidebarCollapsed ? 'justify-center' : ''
+              }`}
           >
             <LogOut className="w-5 h-5" />
             {!sidebarCollapsed && <span className="ml-3">System Logout</span>}
@@ -201,7 +198,7 @@ const SuperAdminLayout = () => {
               {getCurrentPageTitle()}
             </h2>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <button className="relative p-2 text-slate-400 hover:text-indigo-500 transition-colors">

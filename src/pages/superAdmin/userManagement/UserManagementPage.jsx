@@ -11,7 +11,7 @@ import { UserPlus, Edit3, Trash2, Search, Filter, Shield, User, RefreshCw } from
 // id, fullName (required), username (required), password (required),
 // role (required: Admin|Super Admin|Customer), phone
 
-const ROLE_OPTIONS = ['Admin', 'Super Admin', 'Customer'];
+const ROLE_OPTIONS = ['Admin', 'SuperAdmin', 'Customer'];
 
 const UserManagementPage = () => {
   const { user: loggedInUser } = useAuth();
@@ -136,8 +136,8 @@ const UserManagementPage = () => {
       header: 'Role',
       accessor: 'role',
       render: (role) => (
-        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${role === 'Super Admin' ? 'bg-purple-100 text-purple-700' :
-            role === 'Admin' ? 'bg-cyan-100 text-cyan-700' : 'bg-slate-100 text-slate-700'
+        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${role === 'SuperAdmin' ? 'bg-purple-100 text-purple-700' :
+          role === 'Admin' ? 'bg-cyan-100 text-cyan-700' : 'bg-slate-100 text-slate-700'
           }`}>
           {role}
         </span>

@@ -7,7 +7,7 @@
 export const ROLES = {
   CLIENT: 'Customer',
   ADMIN: 'Admin',
-  SUPER_ADMIN: 'Super Admin'
+  SUPER_ADMIN: 'SuperAdmin'
 };
 
 // Role hierarchy for permission checking
@@ -53,17 +53,17 @@ export const redirectByRole = (role) => {
  */
 export const hasRoleAccess = (userRole, requiredRole) => {
   if (!userRole || !requiredRole) return false;
-  
+
   const normalizedUser = normalizeRole(userRole);
   const normalizedRequired = normalizeRole(requiredRole);
-  
+
   // Find which key in ROLES matches the normalized string
   const roleKey = Object.keys(ROLES).find(k => normalizeRole(ROLES[k]) === normalizedUser);
   const userLevel = roleKey ? (ROLE_HIERARCHY[ROLES[roleKey]] ?? -1) : -1;
-  
+
   const reqKey = Object.keys(ROLES).find(k => normalizeRole(ROLES[k]) === normalizedRequired);
   const requiredLevel = reqKey ? (ROLE_HIERARCHY[ROLES[reqKey]] ?? 0) : 0;
-  
+
   return userLevel >= requiredLevel;
 };
 
@@ -88,9 +88,9 @@ export const isRoleAllowed = (userRole, allowedRoles = []) => {
   if (!Array.isArray(allowedRoles) || allowedRoles.length === 0) {
     return true; // No restrictions
   }
-  
+
   if (!userRole) return false;
-  
+
   const normalizedUserRole = normalizeRole(userRole);
   return allowedRoles.some(r => normalizeRole(r) === normalizedUserRole);
 };
@@ -102,7 +102,7 @@ export const isRoleAllowed = (userRole, allowedRoles = []) => {
  */
 export const getRoleDisplayName = (role) => {
   const displayNames = {
-    [ROLES.SUPER_ADMIN]: 'Super Admin',
+    [ROLES.SUPER_ADMIN]: 'SuperAdmin',
     [ROLES.ADMIN]: 'Admin',
     [ROLES.CLIENT]: 'Customer'
   };

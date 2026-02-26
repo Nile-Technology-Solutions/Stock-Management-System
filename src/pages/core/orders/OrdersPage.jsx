@@ -6,6 +6,13 @@ import Modal from '../../../components/common/Modal';
 import { ShoppingCart, Package, RefreshCw, Plus, Search, Filter, CheckCircle2, XCircle, Clock, MoreVertical, Edit3 } from '../../../components/icons';
 import { orderApi } from '../../../services/orderApi';
 
+/**
+ * OrdersPage - Aligned with Swagger v1.4.0
+ * Status Enums: Ordered, Processing, Shipping, Delivering, Delivered, Canceled
+ */
+
+const ORDER_STATUSES = ['Ordered', 'Processing', 'Shipping', 'Delivering', 'Delivered', 'Canceled'];
+
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +47,7 @@ const OrdersPage = () => {
     setUpdating(true);
     try {
       await orderApi.updateOrder(selectedOrder.id, { ...selectedOrder, status: newStatus });
-      setOrders(prev => prev.map(o => 
+      setOrders(prev => prev.map(o =>
         o.id === selectedOrder.id ? { ...o, status: newStatus } : o
       ));
       setIsEditModalOpen(false);
@@ -56,7 +63,7 @@ const OrdersPage = () => {
     const customerName = order.customer || order.userName || 'Unknown';
     const orderId = String(order.id);
     const matchesSearch = customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          orderId.toLowerCase().includes(searchTerm.toLowerCase());
+      orderId.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -99,25 +106,29 @@ const OrdersPage = () => {
       header: 'Status',
       accessor: 'status',
       render: (status) => {
-        const roleLabel = typeof status === 'object' ? (status?.name || status?.label || JSON.stringify(status)) : status;
-        const safeStatus = roleLabel || 'Under Process';
         const styles = {
-          'Completed': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200 dark:border-green-800',
-          'Under Process': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 border-cyan-200 dark:border-cyan-800',
-          'Rejected': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200 dark:border-red-800'
+          'Ordered': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200',
+          'Processing': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400 border-indigo-200',
+          'Shipping': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-purple-200',
+          'Delivering': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 border-cyan-200',
+          'Delivered': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200',
+          'Canceled': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200'
         };
-        const DotColors = {
-          'Completed': 'bg-green-500',
-          'Under Process': 'bg-cyan-500',
-          'Rejected': 'bg-red-500'
+        const dotColors = {
+          'Ordered': 'bg-blue-500',
+          'Processing': 'bg-indigo-500',
+          'Shipping': 'bg-purple-500',
+          'Delivering': 'bg-cyan-500',
+          'Delivered': 'bg-green-500',
+          'Canceled': 'bg-red-500'
         };
-        const style = styles[safeStatus] || styles['Under Process'];
-        const dotColor = DotColors[safeStatus] || DotColors['Under Process'];
-        
+        const style = styles[status] || 'bg-slate-100 text-slate-700 border-slate-200';
+        const dotColor = dotColors[status] || 'bg-slate-500';
+
         return (
           <span className={`px-3 py-1 rounded-lg text-xs font-bold border flex items-center gap-2 w-fit ${style}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
-            {safeStatus}
+            {status}
           </span>
         );
       }
@@ -139,7 +150,7 @@ const OrdersPage = () => {
       header: 'Actions',
       accessor: 'id',
       render: (_, order) => (
-        <button 
+        <button
           onClick={() => handleOpenEdit(order)}
           className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors group"
         >
@@ -199,23 +210,21 @@ const OrdersPage = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="All">All Statuses</option>
-            <option value="Under Process">Under Process</option>
-            <option value="Completed">Completed</option>
-            <option value="Rejected">Rejected</option>
+            {ORDER_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
       </div>
 
       <GlassCard className="p-4 overflow-hidden">
         {loading ? (
-            <div className="text-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
-              <p className="text-slate-500 mt-4 font-bold uppercase tracking-widest">Loading Orders...</p>
-            </div>
+          <div className="text-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+            <p className="text-slate-500 mt-4 font-bold uppercase tracking-widest">Loading Orders...</p>
+          </div>
         ) : (
-          <Table 
-            columns={columns} 
-            data={filteredOrders} 
+          <Table
+            columns={columns}
+            data={filteredOrders}
             pagination={true}
             pageSize={6}
           />
@@ -242,31 +251,18 @@ const OrdersPage = () => {
 
           <div className="space-y-3">
             <label className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest px-1">Set New Status</label>
-            <div className="grid grid-cols-1 gap-3">
-              {[
-                { label: 'Under Process', color: 'border-cyan-400 text-cyan-600', icon: <Clock /> },
-                { label: 'Completed', color: 'border-green-400 text-green-600', icon: <CheckCircle2 /> },
-                { label: 'Rejected', color: 'border-red-400 text-red-600', icon: <XCircle /> }
-              ].map((status) => (
+            <div className="grid grid-cols-2 gap-3">
+              {ORDER_STATUSES.map((status) => (
                 <button
-                  key={status.label}
+                  key={status}
                   disabled={updating}
-                  onClick={() => handleStatusUpdate(status.label)}
-                  className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all hover:scale-[1.02] active:scale-[0.98] ${
-                    selectedOrder?.status === status.label 
-                      ? `${status.color} bg-white dark:bg-slate-900 shadow-lg` 
-                      : 'border-transparent bg-slate-50 dark:bg-slate-800 text-slate-500'
-                  }`}
+                  onClick={() => handleStatusUpdate(status)}
+                  className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all hover:scale-[1.02] active:scale-[0.98] ${selectedOrder?.status === status
+                    ? `border-green-400 bg-green-50 dark:bg-green-900/10 text-green-600 shadow-md`
+                    : 'border-transparent bg-slate-50 dark:bg-slate-800 text-slate-500 text-xs'
+                    }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className={selectedOrder?.status === status.label ? status.color : 'text-slate-400'}>
-                      {status.icon}
-                    </span>
-                    <span className="font-bold">{status.label}</span>
-                  </div>
-                  {selectedOrder?.status === status.label && (
-                    <span className="text-[10px] font-bold uppercase py-1 px-2 bg-slate-900 text-white rounded">Active</span>
-                  )}
+                  <span className="font-bold">{status}</span>
                 </button>
               ))}
             </div>
@@ -279,9 +275,9 @@ const OrdersPage = () => {
                 <span className="text-sm font-bold uppercase tracking-widest">Updating System...</span>
               </div>
             )}
-            <Button 
-              variant="secondary" 
-              className="w-full" 
+            <Button
+              variant="secondary"
+              className="w-full"
               onClick={() => setIsEditModalOpen(false)}
               disabled={updating}
             >
@@ -295,4 +291,3 @@ const OrdersPage = () => {
 };
 
 export default OrdersPage;
-

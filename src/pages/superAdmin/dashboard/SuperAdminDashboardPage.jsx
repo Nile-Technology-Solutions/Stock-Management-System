@@ -5,14 +5,12 @@ import DashboardCharts from '../../core/dashboard/DashboardCharts';
 import { getDashboardDataFromAPI } from '../../core/dashboard/dashboardService';
 import GlassCard from '../../../components/common/GlassCard';
 import Button from '../../../components/common/Button';
-import { RefreshCw, Shield, TrendingUp } from '../../../components/icons';
+import { RefreshCw, Shield } from '../../../components/icons';
 
 /**
  * Super Admin Dashboard Page
- * Displays comprehensive dashboard for Super Admin role users
- * Access: Super Admin only
- * API Integration: Dashboard data + revenue stats + user management data
- * Swagger Endpoints: /api/reports/*, /api/users
+ * Displays comprehensive dashboard for SuperAdmin role users
+ * Access: SuperAdmin only
  */
 const SuperAdminDashboardPage = () => {
   const { user } = useAuth();
@@ -40,17 +38,17 @@ const SuperAdminDashboardPage = () => {
     } else {
       setLoading(true);
     }
-    
+
     setError(null);
     try {
-      const data = await getDashboardDataFromAPI(selectedTimeRange, 'Super Admin');
+      // Use standardized role 'SuperAdmin'
+      const data = await getDashboardDataFromAPI(selectedTimeRange, 'SuperAdmin');
       setDashboardData(data);
     } catch (err) {
-      console.error('Failed to load Super Admin dashboard data:', err);
+      console.error('Failed to load SuperAdmin dashboard data:', err);
       setError('Connection to security server timed out. Please check your backend connection.');
     } finally {
       if (isManualRefresh) {
-        // Smooth transition for refresh
         setTimeout(() => setRefreshing(false), 800);
       } else {
         setLoading(false);
@@ -102,24 +100,19 @@ const SuperAdminDashboardPage = () => {
                 </div>
                 <div>
                   <h1 className="text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-slate-100">
-                    Welcome back, {user?.name}
+                    SuperAdmin Dashboard
                   </h1>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
-                      SUPER ADMIN
-                    </span>
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" />
-                      Full Access
-                    </span>
-                  </div>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5">Control Center for SMS Nile Tech</p>
                 </div>
               </div>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                Complete system oversight with financial reports, user management, and advanced analytics.
-              </p>
+              <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl w-fit">
+                <Shield className="w-4 h-4 text-purple-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">
+                  God Mode: Authorized
+                </span>
+              </div>
             </div>
-            
+
             <div className="mt-6 lg:mt-0 lg:text-right">
               <div className="flex flex-col lg:items-end gap-2">
                 <div className="flex items-center gap-4">
@@ -132,7 +125,7 @@ const SuperAdminDashboardPage = () => {
                     <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                     {refreshing ? 'Refreshing...' : 'Refresh Data'}
                   </Button>
-                  <select 
+                  <select
                     value={selectedTimeRange}
                     onChange={(e) => setSelectedTimeRange(e.target.value)}
                     className="px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-purple-400 focus:border-purple-400 outline-none transition-all"
@@ -145,16 +138,16 @@ const SuperAdminDashboardPage = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentTime.toLocaleDateString('en-US', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                    {currentTime.toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
                     })}
                   </p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {currentTime.toLocaleTimeString('en-US', { 
-                      hour: '2-digit', 
+                    {currentTime.toLocaleTimeString('en-US', {
+                      hour: '2-digit',
                       minute: '2-digit',
                       timeZoneName: 'short'
                     })}
@@ -166,10 +159,7 @@ const SuperAdminDashboardPage = () => {
         </div>
       </GlassCard>
 
-      {/* Dashboard Cards - Super Admin View (includes revenue) */}
       <DashboardCards data={dashboardData} />
-
-      {/* Dashboard Charts and Activities */}
       <DashboardCharts data={dashboardData} />
     </div>
   );

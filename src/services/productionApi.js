@@ -70,7 +70,7 @@ export const productionApi = {
   /**
    * Create new production record
    * POST /api/production  (multipart/form-data)
-   * @param {FormData|Object} productionData - Fields: categoryId, title, notes, photos (File[])
+   * @param {FormData|Object} productionData - Fields: categoryId, title, workInstructions, paymentNote, photos (File[])
    * @returns {Promise<Object>} Created production record
    */
   createProduction: async (productionData) => {
@@ -81,7 +81,7 @@ export const productionApi = {
    * Update production record
    * PUT /api/production/{id}  (multipart/form-data)
    * @param {number} id - Production ID
-   * @param {FormData|Object} productionData - Fields: status, progressPercentage, photos (File[])
+   * @param {FormData|Object} productionData - Fields: status (UnderProcess|Completed|Rejected), progressPercentage, photos (File[])
    * @returns {Promise<Object>} Updated record
    */
   updateProduction: async (id, productionData) => {

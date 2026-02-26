@@ -5,14 +5,14 @@ import { authApi } from '../../services/authApi';
 import { redirectByRole } from '../../utils/roleUtils';
 import GlassCard from '../../components/common/GlassCard';
 import Button from '../../components/common/Button';
-import { 
-  User, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  Shield, 
-  ArrowRight, 
-  Sparkles, 
+import {
+  User,
+  Lock,
+  Eye,
+  EyeOff,
+  Shield,
+  ArrowRight,
+  Sparkles,
   CheckCircle,
   AlertTriangle,
   Home
@@ -84,35 +84,35 @@ const Login = () => {
 
   // Demo accounts for testing (matches user request)
   const demoAccounts = [
-    { 
+    {
       id: 'customer-demo',
-      username: 'customer', 
-      password: 'customer123', 
-      role: 'Customer', 
+      username: 'customer',
+      password: 'customer123',
+      role: 'Customer',
       name: 'Demo Customer',
       description: 'Standard customer account'
     },
-    { 
+    {
       id: 'admin-demo-1',
-      username: 'admin', 
-      password: 'admin', 
-      role: 'Admin', 
+      username: 'admin',
+      password: 'admin',
+      role: 'Admin',
       name: 'Admin User',
       description: 'Admin account (password: admin)'
     },
-    { 
+    {
       id: 'admin-demo-2',
-      username: 'admin', 
-      password: 'admin123', 
-      role: 'Admin', 
+      username: 'admin',
+      password: 'admin123',
+      role: 'Admin',
       name: 'Admin User',
       description: 'Admin account (password: admin123)'
     },
-    { 
+    {
       id: 'super-admin-demo',
-      username: 'superadmin', 
-      password: 'superadmin', 
-      role: 'Super Admin', 
+      username: 'superadmin',
+      password: 'superadmin',
+      role: 'SuperAdmin',
       name: 'Super Admin',
       description: 'Super Admin account'
     }
@@ -122,10 +122,10 @@ const Login = () => {
     setLoading(true);
     setError('');
     const results = [];
-    
+
     // Use a Set to track processed usernames to avoid duplicate registration attempts
     const registeredUsernames = new Set();
-    
+
     try {
       for (const account of demoAccounts) {
         if (registeredUsernames.has(account.username)) {
@@ -170,7 +170,7 @@ const Login = () => {
         <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-cyan-400/5 to-sky-400/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-sky-400/5 to-cyan-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/2 via-transparent to-sky-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
-        
+
         {/* Floating particles */}
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
         <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-sky-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
@@ -180,7 +180,7 @@ const Login = () => {
       <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10">
         {/* Back to Home */}
         <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8">
-          <Link 
+          <Link
             to="/"
             className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 group"
           >
@@ -196,11 +196,11 @@ const Login = () => {
               <Shield className="w-4 h-4 text-cyan-600 animate-pulse" />
               <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">Secure Login</span>
             </div>
-            
+
             <div className="mx-auto w-20 h-20 bg-gradient-to-br from-slate-900 to-slate-800 dark:from-cyan-400 dark:to-sky-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20 dark:shadow-cyan-400/20">
               <span className="text-3xl font-semibold text-white">SMS</span>
             </div>
-            
+
             <h1 className="text-3xl lg:text-4xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
               Welcome Back
             </h1>
@@ -228,11 +228,10 @@ const Login = () => {
                   >
 
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        demo.role === 'Super Admin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
-                        demo.role === 'Admin' ? 'bg-gradient-to-r from-orange-400 to-red-400' :
-                        'bg-gradient-to-r from-cyan-400 to-sky-400'
-                      } text-white shadow-lg`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${demo.role === 'SuperAdmin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
+                          demo.role === 'Admin' ? 'bg-gradient-to-r from-orange-400 to-red-400' :
+                            'bg-gradient-to-r from-cyan-400 to-sky-400'
+                        } text-white shadow-lg`}>
                         {demo.role === 'Customer' ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -385,7 +384,7 @@ const Login = () => {
 
 
               <div className="mt-6 text-center">
-                <Link 
+                <Link
                   to="/register"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/10 group"
                 >

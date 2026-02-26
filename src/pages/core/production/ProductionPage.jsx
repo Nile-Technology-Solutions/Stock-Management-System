@@ -5,24 +5,27 @@ import Table from '../../../components/common/Table';
 import Modal from '../../../components/common/Modal';
 import {
   Settings, Activity, RefreshCw, Plus, Image as ImageIcon,
-  Upload, CheckCircle2, XCircle, Clock, Camera
+  Upload, CheckCircle2, XCircle, Clock, Camera, FileText, DollarSign
 } from '../../../components/icons';
 import { productionApi } from '../../../services/productionApi';
 
-// Swagger ProductionRecord schema:
-// id, batchNumber (required), productId (required), quantity (required),
-// status (required: Planned|In Progress|Completed|Delayed|Rejected),
-// startDate, completionDate, photos (Array of Photo objects)
+/**
+ * ProductionPage - Refined for Swagger v1.4.0
+ * Schema: ProductionRecord
+ * Enums: UnderProcess, Completed, Rejected
+ */
 
-const STATUS_OPTIONS = ['Planned', 'In Progress', 'Completed', 'Delayed', 'Rejected'];
+const STATUS_OPTIONS = ['UnderProcess', 'Completed', 'Rejected'];
 
 const emptyForm = {
-  batchNumber: '',
-  productId: '',
-  quantity: '',
-  status: 'Planned',
-  startDate: '',
-  completionDate: '',
+  categoryId: '',
+  title: '',
+  status: 'UnderProcess',
+  progressPercentage: 0,
+  startedDate: '',
+  submittingDate: '',
+  workInstructions: '',
+  paymentNote: '',
 };
 
 const ProductionPage = () => {
@@ -63,19 +66,20 @@ const ProductionPage = () => {
   const handleOpenEditModal = (batch) => {
     setSelectedBatch(batch);
     setFormData({
-      batchNumber: batch.batchNumber || '',
-      productId: String(batch.productId || ''),
-      quantity: String(batch.quantity || ''),
-      status: batch.status || 'Planned',
-      startDate: batch.startDate || '',
-      completionDate: batch.completionDate || '',
+      categoryId: String(batch.categoryId || ''),
+      title: batch.title || '',
+      status: batch.status || 'UnderProcess',
+      progressPercentage: batch.progressPercentage || 0,
+      startedDate: batch.startedDate || '',
+      submittingDate: batch.submittingDate || '',
+      workInstructions: batch.workInstructions || '',
+      paymentNote: batch.paymentNote || '',
     });
     setIsModalOpen(true);
   };
 
   const handleOpenUpload = (batch) => {
     setSelectedBatch(batch);
-    // Transform Photo objects {id, url, description} to just URLs for previews
     const photoUrls = (batch.photos || []).map(p => typeof p === 'string' ? p : p.url);
     setPreviews(photoUrls);
     setUploadProgress(0);
@@ -84,25 +88,21 @@ const ProductionPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'progressPercentage' || name === 'categoryId' ? parseInt(value) || 0 : value
+    }));
   };
 
   const handleSubmitBatch = async (e) => {
     e.preventDefault();
     setFormLoading(true);
     try {
-      const payload = {
-        ...formData,
-        productId: parseInt(formData.productId),
-        quantity: parseInt(formData.quantity),
-      };
-
       if (selectedBatch) {
-        await productionApi.updateProduction(selectedBatch.id, payload);
+        await productionApi.updateProduction(selectedBatch.id, formData);
       } else {
-        await productionApi.createProduction(payload);
+        await productionApi.createProduction(formData);
       }
-
       setIsModalOpen(false);
       fetchProduction(true);
     } catch (error) {
@@ -115,7 +115,6 @@ const ProductionPage = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    // In a real app, these would be uploaded to get URLs
     const newPreviews = files.map(file => URL.createObjectURL(file));
     setPreviews(prev => [...prev, ...newPreviews]);
   };
@@ -123,26 +122,17 @@ const ProductionPage = () => {
   const handleUploadPhotos = async () => {
     if (previews.length === 0) return;
     setIsUploading(true);
-
     try {
-      // Simulate progress
       for (let i = 0; i <= 100; i += 25) {
         setUploadProgress(i);
         await new Promise(r => setTimeout(r, 100));
       }
-
-      // Prepare photos as Photo objects
       const photoObjects = previews.map((url, idx) => ({
         id: Date.now() + idx,
         url: url,
         description: `Production photo ${idx + 1}`
       }));
-
-      const updatedBatch = {
-        ...selectedBatch,
-        photos: photoObjects
-      };
-
+      const updatedBatch = { ...selectedBatch, photos: photoObjects };
       await productionApi.updateProduction(selectedBatch.id, updatedBatch);
       setIsUploadModalOpen(false);
       fetchProduction(true);
@@ -156,37 +146,43 @@ const ProductionPage = () => {
 
   const columns = [
     {
-      header: 'Batch #',
-      accessor: 'batchNumber',
-      render: (num, batch) => (
+      header: 'ID',
+      accessor: 'id',
+      render: (id) => <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">#{id}</span>
+    },
+    {
+      header: 'Title / Category',
+      accessor: 'title',
+      render: (title, batch) => (
         <div className="flex flex-col">
-          <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{num || batch.id}</span>
-          <span className="text-[10px] text-slate-500">ID: {batch.id}</span>
+          <span className="font-semibold text-slate-900 dark:text-slate-100">{title || 'No Title'}</span>
+          <span className="text-[10px] text-slate-500 uppercase">Category {batch.categoryId}</span>
         </div>
       )
     },
     {
-      header: 'Product ID',
-      accessor: 'productId',
-      render: (id) => <span className="font-semibold text-slate-900 dark:text-slate-100">Item #{id}</span>
-    },
-    {
-      header: 'Qty',
-      accessor: 'quantity',
+      header: 'Progress',
+      accessor: 'progressPercentage',
+      render: (pct) => (
+        <div className="flex items-center gap-2">
+          <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-cyan-500" style={{ width: `${pct}%` }} />
+          </div>
+          <span className="text-xs font-medium">{pct}%</span>
+        </div>
+      )
     },
     {
       header: 'Status',
       accessor: 'status',
       render: (status) => {
         const styles = {
+          'UnderProcess': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
           'Completed': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-          'In Progress': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-          'Planned': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400',
-          'Delayed': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
           'Rejected': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
         };
         return (
-          <span className={`px-3 py-1 rounded-full text-xs font-bold w-fit ${styles[status] || styles['Planned']}`}>
+          <span className={`px-3 py-1 rounded-full text-xs font-bold w-fit ${styles[status] || styles['UnderProcess']}`}>
             {status}
           </span>
         );
@@ -194,11 +190,11 @@ const ProductionPage = () => {
     },
     {
       header: 'Timeline',
-      accessor: 'startDate',
+      accessor: 'startedDate',
       render: (start, batch) => (
-        <div className="text-xs text-slate-500">
-          <div>Start: {start || '—'}</div>
-          <div>End: {batch.completionDate || '—'}</div>
+        <div className="text-[10px] text-slate-500">
+          <div>Started: {start || '—'}</div>
+          <div>Submit: {batch.submittingDate || '—'}</div>
         </div>
       )
     },
@@ -206,12 +202,9 @@ const ProductionPage = () => {
       header: 'Photos',
       accessor: 'photos',
       render: (photos, batch) => (
-        <button
-          onClick={() => handleOpenUpload(batch)}
-          className="flex items-center gap-2 text-cyan-500 hover:text-cyan-600 transition-colors"
-        >
+        <button onClick={() => handleOpenUpload(batch)} className="flex items-center gap-2 text-cyan-500 hover:text-cyan-600">
           <Camera className="w-4 h-4" />
-          <span className="text-sm font-medium">{(photos || []).length} Captured</span>
+          <span className="text-xs font-medium">{(photos || []).length}</span>
         </button>
       )
     },
@@ -219,9 +212,7 @@ const ProductionPage = () => {
       header: 'Actions',
       accessor: 'id',
       render: (_, batch) => (
-        <Button variant="ghost" size="small" onClick={() => handleOpenEditModal(batch)}>
-          Edit
-        </Button>
+        <Button variant="ghost" size="small" onClick={() => handleOpenEditModal(batch)}>Edit</Button>
       )
     }
   ];
@@ -231,141 +222,96 @@ const ProductionPage = () => {
       <GlassCard variant="standard" className="border-none shadow-xl shadow-slate-200/50 dark:shadow-none">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/30">
+            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl">
               <Settings className="w-8 h-8 text-white" />
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-                Production Hub
+                Production Tracking
               </h1>
-              <p className="text-slate-500 dark:text-slate-400 mt-0.5">
-                Manufacturing queue and quality control
-              </p>
+              <p className="text-slate-500 dark:text-slate-400 mt-0.5">Refined v1.4.0 Alignment</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <Button variant="glass-secondary" onClick={() => fetchProduction(true)}>
-              <RefreshCw className="w-4 h-4" />
-            </Button>
-            <Button variant="primary" onClick={handleOpenAddModal} className="flex items-center gap-2 shadow-lg shadow-indigo-500/25">
-              <Plus className="w-5 h-5" />
-              New Batch
-            </Button>
+            <Button variant="glass-secondary" onClick={() => fetchProduction(true)}><RefreshCw className="w-4 h-4" /></Button>
+            <Button variant="primary" onClick={handleOpenAddModal} className="flex items-center gap-2"><Plus className="w-5 h-5" /> New Record</Button>
           </div>
         </div>
       </GlassCard>
 
       <GlassCard className="p-4">
         {loading ? (
-          <div className="text-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto"></div>
-            <p className="text-slate-500 mt-4 font-bold uppercase tracking-widest">Syncing Factory Floor...</p>
-          </div>
+          <div className="text-center py-20 animate-pulse text-slate-500 font-bold uppercase tracking-widest">Initialising Factory Floor...</div>
         ) : (
           <Table columns={columns} data={batches} pagination={true} pageSize={5} />
         )}
       </GlassCard>
 
       {/* Batch Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={selectedBatch ? 'Edit Batch' : 'Start New Batch'}
-      >
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={selectedBatch ? 'Update Production' : 'New Production Record'}>
         <form onSubmit={handleSubmitBatch} className="space-y-4 pt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Batch Number *</label>
-              <input
-                required name="batchNumber" value={formData.batchNumber} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" placeholder="BT-101"
-              />
+              <label className="text-sm font-medium">Title *</label>
+              <input required name="title" value={formData.title} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
             </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium">Product ID *</label>
-              <input
-                required name="productId" type="number" value={formData.productId} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" placeholder="1"
-              />
+              <label className="text-sm font-medium">Category ID *</label>
+              <input required name="categoryId" type="number" value={formData.categoryId} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Quantity *</label>
-              <input
-                required name="quantity" type="number" value={formData.quantity} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900"
-              />
-            </div>
-            <div className="space-y-1">
               <label className="text-sm font-medium">Status *</label>
-              <select
-                name="status" value={formData.status} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900"
-              >
+              <select name="status" value={formData.status} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900">
                 {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
+            <div className="space-y-1">
+              <label className="text-sm font-medium">Progress (%) *</label>
+              <input required name="progressPercentage" type="number" min="0" max="100" value={formData.progressPercentage} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-sm font-medium">Start Date</label>
-              <input
-                name="startDate" type="date" value={formData.startDate} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900"
-              />
+              <label className="text-sm font-medium">Started Date</label>
+              <input name="startedDate" type="date" value={formData.startedDate} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
             </div>
             <div className="space-y-1">
-              <label className="text-sm font-medium">Completion Date</label>
-              <input
-                name="completionDate" type="date" value={formData.completionDate} onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900"
-              />
+              <label className="text-sm font-medium">Submitting Date</label>
+              <input name="submittingDate" type="date" value={formData.submittingDate} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
             </div>
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Work Instructions</label>
+            <textarea name="workInstructions" value={formData.workInstructions} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900 min-h-[80px]" />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Payment Note</label>
+            <input name="paymentNote" value={formData.paymentNote} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg dark:bg-slate-900" />
           </div>
           <div className="flex gap-3 pt-4">
             <Button variant="secondary" className="flex-1" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button type="submit" variant="primary" className="flex-1" disabled={formLoading}>
-              {formLoading ? 'Saving...' : 'Save Records'}
-            </Button>
+            <Button type="submit" variant="primary" className="flex-1" disabled={formLoading}>{formLoading ? 'Saving...' : 'Save Record'}</Button>
           </div>
         </form>
       </Modal>
 
-      {/* Upload Modal */}
-      <Modal
-        isOpen={isUploadModalOpen}
-        onClose={() => !isUploading && setIsUploadModalOpen(false)}
-        title={`Batch Photos: ${selectedBatch?.batchNumber || selectedBatch?.id}`}
-      >
+      {/* Upload Modal - same as before but keeping it simple */}
+      <Modal isOpen={isUploadModalOpen} onClose={() => !isUploading && setIsUploadModalOpen(false)} title="Upload Progress Photos">
         <div className="space-y-6 pt-4">
-          {isUploading && (
-            <div className="space-y-2">
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-cyan-500" style={{ width: `${uploadProgress}%` }} />
-              </div>
-            </div>
-          )}
           <div className="grid grid-cols-3 gap-3">
             {previews.map((src, idx) => (
-              <div key={idx} className="aspect-square rounded-xl overflow-hidden relative group">
-                <img src={src} className="w-full h-full object-cover" alt="Preview" />
-              </div>
+              <div key={idx} className="aspect-square rounded-xl overflow-hidden"><img src={src} className="w-full h-full object-cover" alt="" /></div>
             ))}
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-slate-400 hover:text-cyan-500 hover:border-cyan-500"
-            >
-              <Upload className="w-6 h-6" />
-              <span className="text-[10px] font-bold mt-2">Add</span>
+            <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-slate-400 hover:text-cyan-500 hover:border-cyan-500">
+              <Upload className="w-6 h-6" /><span className="text-[10px] font-bold mt-2">Add</span>
             </button>
           </div>
           <input type="file" multiple accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
           <div className="flex gap-3">
             <Button variant="secondary" className="flex-1" onClick={() => setIsUploadModalOpen(false)}>Cancel</Button>
-            <Button variant="primary" className="flex-1" onClick={handleUploadPhotos} disabled={isUploading || previews.length === 0}>
-              {isUploading ? 'Uploading...' : 'Upload Photos'}
-            </Button>
+            <Button variant="primary" className="flex-1" onClick={handleUploadPhotos} disabled={isUploading || previews.length === 0}>{isUploading ? 'Uploading...' : 'Upload'}</Button>
           </div>
         </div>
       </Modal>

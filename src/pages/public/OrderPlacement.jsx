@@ -25,6 +25,7 @@ const OrderPlacement = () => {
     quantity: 1,
     deliveryAddressId: '', // Should be an integer link to an Address
     paymentMethod: 'Chapa',
+    customNotes: '',
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -86,6 +87,7 @@ const OrderPlacement = () => {
         quantity: parseInt(formData.quantity),
         deliveryAddressId: formData.deliveryAddressId ? parseInt(formData.deliveryAddressId) : null,
         paymentMethod: formData.paymentMethod,
+        customNotes: formData.customNotes,
       };
 
       const response = await orderApi.createOrder(orderData);
@@ -148,6 +150,15 @@ const OrderPlacement = () => {
                     placeholder="Enter saved address ID"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Custom Notes (Optional)</label>
+                  <textarea
+                    name="customNotes" value={formData.customNotes} onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg border dark:bg-slate-900 min-h-[100px]"
+                    placeholder="E.g. Special delivery instructions..."
+                  />
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-3">Payment Method</label>
                   <div className="flex gap-4">

@@ -80,28 +80,28 @@ export const mockStock = [
 
 // Mock Users with Demo Credentials
 export const mockUsers = [
-  { 
-    id: 101, 
-    fullName: "Abebe Kebede", 
-    username: "admin", 
+  {
+    id: 101,
+    fullName: "Abebe Kebede",
+    username: "admin",
     password: "admin123",
     role: "Admin",
     email: "admin@sms.com"
   },
-  { 
-    id: 102, 
-    fullName: "Sara Hailu", 
-    username: "customer", 
+  {
+    id: 102,
+    fullName: "Sara Hailu",
+    username: "customer",
     password: "customer123",
     role: "Customer",
     email: "customer@sms.com"
   },
-  { 
-    id: 103, 
-    fullName: "Super Admin", 
-    username: "superadmin", 
+  {
+    id: 103,
+    fullName: "Super Admin",
+    username: "superadmin",
     password: "super123",
-    role: "Super Admin",
+    role: "SuperAdmin",
     email: "superadmin@sms.com"
   }
 ];
@@ -121,7 +121,7 @@ export const demoCredentials = {
   superadmin: {
     username: "superadmin",
     password: "super123",
-    role: "Super Admin"
+    role: "SuperAdmin"
   }
 };
 
@@ -169,7 +169,7 @@ export const mockProduction = [
     id: "B-2023-002",
     product: "Oak Dining Table",
     quantity: 10,
-    status: "Under Process",
+    status: "UnderProcess",
     startDate: "2023-10-24",
     completionDate: "-",
     photos: []
@@ -182,7 +182,7 @@ export const mockOrders = [
     customer: "John Doe",
     items: "Laminated MDF (20), Hardware Kit (5)",
     total: "12,500 ETB",
-    status: "Under Process",
+    status: "Processing",
     date: "2023-10-26"
   },
   {
@@ -190,7 +190,7 @@ export const mockOrders = [
     customer: "Sara Hailu",
     items: "Mahogany Dining Set (1)",
     total: "45,000 ETB",
-    status: "Completed",
+    status: "Delivered",
     date: "2023-10-25"
   },
   {
@@ -198,7 +198,7 @@ export const mockOrders = [
     customer: "Abebe Kebede",
     items: "Office Chair Series-X (4)",
     total: "18,000 ETB",
-    status: "Rejected",
+    status: "Canceled",
     date: "2023-10-24"
   }
 ];

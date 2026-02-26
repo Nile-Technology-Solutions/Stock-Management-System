@@ -1,6 +1,6 @@
 /**
- * System Settings Service for Super Admin
- * Integrates with Super Admin API for system settings operations
+ * System Settings Service for SuperAdmin
+ * Integrates with SuperAdmin API for system settings operations
  */
 
 import { superAdminApi } from '../../../services/superAdminApi';
@@ -13,7 +13,7 @@ export const getSystemSettings = async () => {
   try {
     const data = await superAdminApi.settings.getSettings();
     const defaults = await getDefaultSettings();
-    
+
     // Deep merge or at least ensure categories exist
     return {
       general: { ...defaults.general, ...(data?.general || {}) },
@@ -282,7 +282,7 @@ const isValidEmail = (email) => {
 export const exportSettings = async (format = 'json') => {
   try {
     const settings = await getSystemSettings();
-    
+
     switch (format.toLowerCase()) {
       case 'json':
         return new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
@@ -308,13 +308,13 @@ export const importSettings = async (file) => {
   try {
     const text = await file.text();
     const settings = JSON.parse(text);
-    
+
     // Validate imported settings
     const validation = validateSettings(settings);
     if (!validation.isValid) {
       throw new Error(`Invalid settings: ${validation.errors.join(', ')}`);
     }
-    
+
     return await updateSystemSettings(settings);
   } catch (error) {
     console.error('Failed to import settings:', error);
@@ -329,11 +329,11 @@ export const importSettings = async (file) => {
  */
 const convertSettingsToCSV = (settings) => {
   const rows = [];
-  
+
   // Helper function to flatten nested objects
   const flattenObject = (obj, prefix = '') => {
     const flattened = {};
-    
+
     for (const key in obj) {
       if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
         const nested = flattenObject(obj[key], `${prefix}${key}.`);
@@ -342,18 +342,18 @@ const convertSettingsToCSV = (settings) => {
         flattened[`${prefix}${key}`] = obj[key];
       }
     }
-    
+
     return flattened;
   };
-  
+
   const flattened = flattenObject(settings);
-  
+
   // Add header row
   rows.push(Object.keys(flattened).join(','));
-  
+
   // Add data row
   rows.push(Object.values(flattened).map(value => `"${value}"`).join(','));
-  
+
   return rows.join('\n');
 };
 

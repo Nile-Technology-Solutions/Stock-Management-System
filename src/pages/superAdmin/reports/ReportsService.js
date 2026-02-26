@@ -1,6 +1,6 @@
 /**
- * Reports Service for Super Admin
- * Integrates with Super Admin API for all report endpoints
+ * Reports Service for SuperAdmin
+ * Integrates with SuperAdmin API for all report endpoints
  */
 
 import { superAdminApi } from '../../../services/superAdminApi';
@@ -150,7 +150,7 @@ export const exportReport = async (reportType, format, params = {}) => {
     // This would call a different endpoint for exporting
     // For now, we'll simulate the export
     const reportData = await getReportByType(reportType, params);
-    
+
     // Convert to blob based on format
     switch (format.toLowerCase()) {
       case 'csv':

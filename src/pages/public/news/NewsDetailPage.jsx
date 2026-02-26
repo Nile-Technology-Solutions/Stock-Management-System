@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { newsApi } from '../../../services/newsApi';
 import GlassCard from '../../../components/common/GlassCard';
-import { ArrowLeft, Calendar, Share2, Facebook, Twitter, Linkedin, Tag } from '../../../components/icons';
+import { ArrowLeft, Calendar, Share2, Twitter, Linkedin, Tag } from '../../../components/icons';
 
 const NewsDetailPage = () => {
   const { id } = useParams();
@@ -115,9 +115,6 @@ const NewsDetailPage = () => {
                     <Share2 className="w-4 h-4" /> Share Article
                   </span>
                   <div className="flex gap-2">
-                    <button className="p-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-blue-500 hover:text-white transition-all">
-                      <Facebook className="w-4 h-4" />
-                    </button>
                     <button className="p-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-sky-400 hover:text-white transition-all">
                       <Twitter className="w-4 h-4" />
                     </button>

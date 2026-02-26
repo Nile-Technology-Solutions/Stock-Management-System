@@ -11,23 +11,18 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    // Check for stored theme preference
+  const [theme, setTheme] = useState(() => {
+    // Initialize theme immediately from localStorage, default to 'light'
     const storedTheme = localStorage.getItem('sms_theme');
-    
     if (storedTheme) {
-      setTheme(storedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      return storedTheme;
     }
-  }, []);
+    // Default to light mode
+    return 'light';
+  });
 
   useEffect(() => {
-    // Apply theme to document
+    // Apply theme to document immediately
     const root = document.documentElement;
     
     if (theme === 'dark') {
@@ -38,6 +33,11 @@ export const ThemeProvider = ({ children }) => {
     
     // Store theme preference
     localStorage.setItem('sms_theme', theme);
+    
+    // Remove no-transition class after a brief delay to enable smooth transitions
+    setTimeout(() => {
+      root.classList.remove('no-transition');
+    }, 100);
   }, [theme]);
 
   const toggleTheme = () => {

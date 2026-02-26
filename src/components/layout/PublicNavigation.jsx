@@ -50,8 +50,8 @@ const PublicNavigation = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-white/80 backdrop-blur-md border-b border-white/30 shadow-lg shadow-black/5' 
-        : 'bg-white/60 backdrop-blur-md border-b border-white/30'
+        ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-white/30 dark:border-slate-700/30 shadow-lg shadow-black/5' 
+        : 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-white/30 dark:border-slate-700/30'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -59,7 +59,7 @@ const PublicNavigation = () => {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="text-xl font-semibold text-slate-900 hover:text-cyan-600 transition-colors duration-200"
+              className="text-xl font-semibold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200"
             >
               SMS Nile Tech
             </Link>
@@ -73,8 +73,8 @@ const PublicNavigation = () => {
                 to={item.path}
                 className={`relative font-medium transition-all duration-200 group ${
                   isActiveLink(item.path)
-                    ? 'text-cyan-600 drop-shadow-sm'
-                    : 'text-slate-700 hover:text-cyan-600'
+                    ? 'text-cyan-600 dark:text-cyan-400 drop-shadow-sm'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'
                 }`}
               >
                 {item.name}
@@ -94,7 +94,7 @@ const PublicNavigation = () => {
             
             {/* Language Switch (UI only, future-ready) */}
             <button 
-              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 text-slate-600 hover:text-slate-800"
+              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100"
               aria-label="Switch language"
             >
               <Globe className="w-5 h-5" />
@@ -113,7 +113,7 @@ const PublicNavigation = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 text-slate-700 hover:text-slate-900"
+                  className="flex items-center gap-2 p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
                 >
                   {user.avatar ? (
                     <img
@@ -131,24 +131,24 @@ const PublicNavigation = () => {
 
                 {/* User Dropdown Menu */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white/90 backdrop-blur-md border border-white/30 rounded-xl shadow-lg shadow-black/10 py-2">
-                    <div className="px-4 py-3 border-b border-slate-200">
-                      <p className="text-sm font-medium text-slate-900">{user.name}</p>
-                      <p className="text-xs text-slate-600">{user.email}</p>
+                  <div className="absolute right-0 mt-2 w-64 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border border-white/30 dark:border-slate-700/30 rounded-xl shadow-lg shadow-black/10 py-2">
+                    <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{user.name}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">{user.email}</p>
                       <div className="flex items-center gap-1 mt-1">
                         {user.role === 'public' ? (
                           <User className="w-3 h-3 text-cyan-500" />
                         ) : (
                           <Shield className="w-3 h-3 text-orange-500" />
                         )}
-                        <span className="text-xs text-slate-500 capitalize">{user.role} User</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user.role} User</span>
                       </div>
                     </div>
                     
                     {!isPublicUser() && (
                       <Link
                         to="/admin/dashboard"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 transition-colors duration-200"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
                         <Shield className="w-4 h-4" />
@@ -158,7 +158,7 @@ const PublicNavigation = () => {
                     
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out
@@ -189,7 +189,7 @@ const PublicNavigation = () => {
             <ThemeToggle className="text-slate-600 hover:text-slate-800" />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 text-slate-600 hover:text-slate-800"
+              className="p-2 rounded-lg transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
@@ -207,15 +207,15 @@ const PublicNavigation = () => {
             ? 'max-h-96 opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className="py-4 space-y-2 border-t border-white/20 bg-white/40 backdrop-blur-sm rounded-b-xl">
+          <div className="py-4 space-y-2 border-t border-white/20 dark:border-slate-700/20 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm rounded-b-xl">
             {navigationItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
                 className={`block px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
                   isActiveLink(item.path)
-                    ? 'text-cyan-600 bg-cyan-50 shadow-sm'
-                    : 'text-slate-700 hover:text-cyan-600 hover:bg-slate-50'
+                    ? 'text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 shadow-sm'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 }`}
               >
                 {item.name}
@@ -223,9 +223,9 @@ const PublicNavigation = () => {
             ))}
             
             {/* Mobile Actions */}
-            <div className="pt-4 border-t border-white/20 space-y-3">
+            <div className="pt-4 border-t border-white/20 dark:border-slate-700/20 space-y-3">
               <button 
-                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors duration-200"
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-200"
                 aria-label="Switch language"
               >
                 <Globe className="w-5 h-5" />
@@ -242,7 +242,7 @@ const PublicNavigation = () => {
               {/* Mobile Authentication */}
               {isAuthenticated ? (
                 <div className="px-4 space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                  <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                     {user.avatar ? (
                       <img
                         src={user.avatar}
@@ -255,8 +255,8 @@ const PublicNavigation = () => {
                       </div>
                     )}
                     <div>
-                      <p className="font-medium text-slate-900">{user.name}</p>
-                      <p className="text-xs text-slate-600">{user.email}</p>
+                      <p className="font-medium text-slate-900 dark:text-slate-100">{user.name}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400">{user.email}</p>
                     </div>
                   </div>
                   
@@ -272,7 +272,7 @@ const PublicNavigation = () => {
                   <Button
                     onClick={handleLogout}
                     variant="ghost"
-                    className="w-full flex items-center justify-center gap-2 text-red-600 hover:bg-red-50"
+                    className="w-full flex items-center justify-center gap-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out

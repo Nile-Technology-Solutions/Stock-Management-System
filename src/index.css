@@ -1,6 +1,9 @@
 /* index.css */
 @import "tailwindcss";
 
+/* Configure dark mode for Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
+
 /* Custom theme configuration for Tailwind CSS v4 */
 @theme {
   /* Custom animations */
@@ -17,4 +20,16 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Ensure proper text color in dark mode */
+body {
+  @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+}
+
+/* Smooth transitions for theme changes - but not on initial load */
+html:not(.no-transition) * {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
 }

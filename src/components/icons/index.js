@@ -111,6 +111,7 @@ export {
 
 // Social Media Icons
 export {
+  Facebook,
   Github,
   Linkedin,
   Twitter

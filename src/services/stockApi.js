@@ -10,6 +10,27 @@ import { apiConfig } from '../config/env';
 // API Configuration
 const API_BASE_URL = apiConfig.baseURL || 'http://localhost:5000';
 
+const getCategoryLabel = (category) => {
+  if (!category) return '';
+  if (typeof category === 'string') return category;
+  if (typeof category === 'object') return category.name || category.title || '';
+  return String(category);
+};
+
+const normalizeProductForPublic = (product) => {
+  if (!product || typeof product !== 'object') return product;
+
+  const photos = Array.isArray(product.photos) ? product.photos : [];
+  const firstPhoto = photos[0];
+  const firstPhotoUrl = typeof firstPhoto === 'string' ? firstPhoto : firstPhoto?.url;
+
+  return {
+    ...product,
+    category: getCategoryLabel(product.category),
+    image: product.image || firstPhotoUrl || null
+  };
+};
+
 // Get authentication token
 const getAuthToken = () => localStorage.getItem('sms_token') || localStorage.getItem('authToken');
 
@@ -151,7 +172,9 @@ export const stockApi = {
     // Use real API
     const data = await this.getAllStock();
     if (data.success) {
-      let products = data.data;
+      const stockItems = Array.isArray(data.data) ? data.data : [];
+      let products = stockItems.map(normalizeProductForPublic);
+
       if (params.category && params.category !== 'all') {
         products = products.filter(p => p.category === params.category);
       }
@@ -171,7 +194,8 @@ export const stockApi = {
     // Use real API
     const data = await this.getAllStock();
     if (data.success) {
-      const categories = [...new Set(data.data.map(p => p.category).filter(Boolean))];
+      const stockItems = Array.isArray(data.data) ? data.data : [];
+      const categories = [...new Set(stockItems.map(p => getCategoryLabel(p.category)).filter(Boolean))];
       return categories;
     }
     return [];
@@ -181,7 +205,7 @@ export const stockApi = {
     // Use real API
     const data = await this.getStockById(id);
     if (data.success) {
-      return data.data;
+      return normalizeProductForPublic(data.data);
     }
     throw new Error(data.error);
   }

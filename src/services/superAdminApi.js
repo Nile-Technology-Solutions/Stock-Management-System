@@ -1,31 +1,24 @@
 /**
  * Super Admin API Service
  * Handles API calls for Super Admin specific endpoints
- * Based on Swagger API specification
+ * Based on Swagger API specification v1.4.0
  * Strictly connects to the real backend
+ *
+ * NOTE: Only endpoints defined in the Swagger spec are included.
+ * Removed: /api/dashboard/super-admin, /api/financial/*, /api/settings
+ * (those paths do not exist in the spec)
  */
 
 import { api } from './api';
 
-/**
- * Super Admin API endpoints
- */
 export const superAdminApi = {
-  /**
-   * Get Super Admin dashboard data with financial statistics
-   * GET /api/dashboard/super-admin
-   * @param {Object} params - Query parameters (timeRange, etc.)
-   * @returns {Promise<Object>} Dashboard data
-   */
-  getDashboardData: async (params = {}) => {
-    return api.get('/api/dashboard/super-admin', params);
-  },
+  // ===================== USER MANAGEMENT =====================
 
   /**
-   * Get users for user management
+   * Get all users
    * GET /api/users
    * @param {Object} params - Query parameters (page, limit, search, etc.)
-   * @returns {Promise<Object>} Users list
+   * @returns {Promise<Array>} Users list
    */
   getUsers: async (params = {}) => {
     return api.get('/api/users', params);
@@ -44,7 +37,7 @@ export const superAdminApi = {
   /**
    * Create new user
    * POST /api/users
-   * @param {Object} userData - User data
+   * @param {Object} userData - User data (fullName, username, password, role, phone)
    * @returns {Promise<Object>} Created user
    */
   createUser: async (userData) => {
@@ -66,116 +59,63 @@ export const superAdminApi = {
    * Delete user
    * DELETE /api/users/{id}
    * @param {number} userId - User ID
-   * @returns {Promise<Object>} Deletion confirmation
    */
   deleteUser: async (userId) => {
     return api.delete(`/api/users/${userId}`);
   },
 
+  // ===================== REPORTS =====================
+
   /**
-   * Reports endpoints for Super Admin
+   * Reports endpoints for Super Admin.
+   * All report endpoints accept optional params: from_date, to_date, format (json|csv|pdf)
    */
   reports: {
     /**
-     * Get stock reports
+     * Get stock report
      * GET /api/reports/stock
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Stock reports
+     * @param {Object} params - { format }
      */
     stock: async (params = {}) => {
       return api.get('/api/reports/stock', params);
     },
 
     /**
-     * Get production reports
+     * Get production report
      * GET /api/reports/production
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Production reports
+     * @param {Object} params - { from_date, to_date, format }
      */
     production: async (params = {}) => {
       return api.get('/api/reports/production', params);
     },
 
     /**
-     * Get order reports
+     * Get orders report
      * GET /api/reports/orders
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Order reports
+     * @param {Object} params - { from_date, to_date, format }
      */
     orders: async (params = {}) => {
       return api.get('/api/reports/orders', params);
     },
 
     /**
-     * Get payment reports
+     * Get payments report
      * GET /api/reports/payments
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Payment reports
+     * @param {Object} params - { from_date, to_date, format }
      */
     payments: async (params = {}) => {
       return api.get('/api/reports/payments', params);
     },
 
     /**
-     * Get sales reports
+     * Get sales report
      * GET /api/reports/sales
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Sales reports
+     * @param {Object} params - { from_date, to_date, format }
      */
     sales: async (params = {}) => {
       return api.get('/api/reports/sales', params);
-    }
-  },
-
-  /**
-   * Financial audit endpoints
-   */
-  financial: {
-    /**
-     * Get revenue statistics
-     * GET /api/financial/revenue
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Revenue statistics
-     */
-    getRevenue: async (params = {}) => {
-      return api.get('/api/financial/revenue', params);
-    },
-
-    /**
-     * Get financial summary
-     * GET /api/financial/summary
-     * @param {Object} params - Query parameters (timeRange, etc.)
-     * @returns {Promise<Object>} Financial summary
-     */
-    getSummary: async (params = {}) => {
-      return api.get('/api/financial/summary', params);
-    }
-  },
-
-  /**
-   * System settings endpoints
-   */
-  settings: {
-    /**
-     * Get system settings
-     * GET /api/settings
-     * @returns {Promise<Object>} System settings
-     */
-    getSettings: async () => {
-      return api.get('/api/settings');
-    },
-
-    /**
-     * Update system settings
-     * PUT /api/settings
-     * @param {Object} settingsData - Settings data
-     * @returns {Promise<Object>} Updated settings
-     */
-    updateSettings: async (settingsData) => {
-      return api.put('/api/settings', settingsData);
     }
   }
 };
 
 export default superAdminApi;
-

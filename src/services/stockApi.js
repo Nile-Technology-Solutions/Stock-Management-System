@@ -157,8 +157,8 @@ export const stockApi = {
       }
       if (params.search) {
         const query = params.search.toLowerCase();
-        products = products.filter(p => 
-          p.name.toLowerCase().includes(query) || 
+        products = products.filter(p =>
+          p.name.toLowerCase().includes(query) ||
           p.typeNote?.toLowerCase().includes(query)
         );
       }
@@ -205,6 +205,12 @@ export const stockApiHelpers = {
       errors.push('Quantity must be a non-negative number');
     }
 
+    // Required by Swagger spec: origin must be 'Local' or 'Imported'
+    const validOrigins = ['Local', 'Imported'];
+    if (!stockData.origin || !validOrigins.includes(stockData.origin)) {
+      errors.push('Origin is required and must be \'Local\' or \'Imported\'');
+    }
+
     return { valid: errors.length === 0, errors };
   },
 
@@ -219,7 +225,10 @@ export const stockApiHelpers = {
       size: stockData.size?.trim() || null,
       thickness: stockData.thickness?.trim() || null,
       laminated: stockData.laminated === true || stockData.laminated === 'true',
+      // origin is required: 'Local' | 'Imported'
       origin: stockData.origin || null,
+      // categoryId links to the Category schema
+      categoryId: stockData.categoryId ? parseInt(stockData.categoryId) : null,
       typeNote: stockData.typeNote?.trim() || null
     };
   },

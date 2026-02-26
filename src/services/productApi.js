@@ -2,6 +2,16 @@
  * Product Showcase API Service
  * Handles finished products (showcase) according to Swagger API spec v1.4.0
  * Endpoints: /api/products
+ *
+ * Schema: FinishedProduct
+ *   - id: integer
+ *   - name: string (required)
+ *   - categoryId: integer (required)
+ *   - photos: Array<{ id, url, description }> (Photo schema)
+ *   - color: string (required)
+ *   - stockQuantity: integer (required)  <-- NOT "amount"
+ *   - price: number
+ *   - description: string
  */
 
 import { api } from './api';
@@ -11,7 +21,7 @@ export const productApi = {
    * Get all finished products (Public)
    * GET /api/products
    * @param {Object} params - Query parameters (category, search, etc.)
-   * @returns {Promise<Array>} List of finished products
+   * @returns {Promise<Array<FinishedProduct>>} List of finished products
    */
   getProducts: async (params = {}) => {
     return api.get('/api/products', params);
@@ -21,7 +31,7 @@ export const productApi = {
    * Get finished product by ID (Public)
    * GET /api/products/{id}
    * @param {number} id - Product ID
-   * @returns {Promise<Object>} Product details
+   * @returns {Promise<FinishedProduct>} Product details
    */
   getProductById: async (id) => {
     return api.get(`/api/products/${id}`);
@@ -31,13 +41,14 @@ export const productApi = {
    * Add new finished product (Admin/Super Admin)
    * POST /api/products
    * @param {Object} productData - Product data
-   * @param {string} productData.category - Product category (Bed, Door, Table, Cabinet, Other)
-   * @param {Array<string>} productData.photos - Product photos URLs
+   * @param {string} productData.name - Product name
+   * @param {number} productData.categoryId - Category ID
+   * @param {Array<{url: string, description?: string}>} productData.photos - Product photos
    * @param {string} productData.color - Product color
-   * @param {number} productData.amount - Available quantity
+   * @param {number} productData.stockQuantity - Available quantity in stock
    * @param {number} productData.price - Product price
    * @param {string} productData.description - Product description
-   * @returns {Promise<Object>} Created product
+   * @returns {Promise<FinishedProduct>} Created product
    */
   createProduct: async (productData) => {
     return api.post('/api/products', productData);
@@ -47,8 +58,8 @@ export const productApi = {
    * Update finished product (Admin/Super Admin)
    * PUT /api/products/{id}
    * @param {number} id - Product ID
-   * @param {Object} productData - Updated product data
-   * @returns {Promise<Object>} Updated product
+   * @param {Object} productData - Updated product data (same shape as createProduct)
+   * @returns {Promise<FinishedProduct>} Updated product
    */
   updateProduct: async (id, productData) => {
     return api.put(`/api/products/${id}`, productData);
@@ -58,7 +69,6 @@ export const productApi = {
    * Delete finished product (Admin/Super Admin)
    * DELETE /api/products/{id}
    * @param {number} id - Product ID
-   * @returns {Promise<Object>} Deletion confirmation
    */
   deleteProduct: async (id) => {
     return api.delete(`/api/products/${id}`);

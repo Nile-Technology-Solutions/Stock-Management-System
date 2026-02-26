@@ -66,20 +66,67 @@ export const authApi = {
   },
 
   /**
+   * Get current user profile
+   * GET /api/auth/me
+   * @returns {Promise<{success: boolean, data: {user: Object}}>} Current user profile
+   */
+  getProfile: async () => {
+    const token = localStorage.getItem('sms_token');
+    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` }),
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to fetch profile' }));
+      throw new Error(error.message || 'Unable to retrieve profile');
+    }
+
+    return await response.json();
+  },
+
+  /**
+   * Change user password
+   * PUT /api/auth/change-password
+   * @param {string} oldPassword - Current password
+   * @param {string} newPassword - New password
+   * @returns {Promise<{success: boolean, message: string}>}
+   */
+  changePassword: async (oldPassword, newPassword) => {
+    const token = localStorage.getItem('sms_token');
+    const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ oldPassword, newPassword }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Password change failed' }));
+      throw new Error(error.message || 'Unable to change password');
+    }
+
+    return await response.json();
+  },
+
+  /**
    * Logout (clear local storage)
    */
   logout: () => {
     localStorage.removeItem('sms_token');
     localStorage.removeItem('sms_user');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
   },
 
   /**
-   * Get current user from token
+   * Get current user from local storage
    */
   getCurrentUser: () => {
-    const userStr = localStorage.getItem('sms_user') || localStorage.getItem('user');
+    const userStr = localStorage.getItem('sms_user');
     if (userStr) {
       try {
         return JSON.parse(userStr);

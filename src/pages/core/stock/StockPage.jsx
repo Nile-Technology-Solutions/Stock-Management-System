@@ -134,7 +134,7 @@ const StockPage = () => {
       }
     } catch (error) {
       console.error('Error saving stock:', error);
-      alert('An unexpected error occurred');
+      alert(error.message || 'An unexpected error occurred');
     } finally {
       setFormLoading(false);
     }

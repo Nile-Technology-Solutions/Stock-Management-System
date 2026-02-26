@@ -107,15 +107,25 @@ export const stockApi = {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `Failed to create stock: ${response.statusText}`);
+        let errorMessage = `Failed to create stock: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+          // Log detailed error for debugging
+          if (errorData.details) {
+            console.error('Validation errors:', errorData.details);
+          }
+        } catch (e) {
+          // Could not parse error response
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       return { success: true, data };
     } catch (error) {
       console.error('Create stock error:', error);
-      return { success: false, error: error.message };
+      throw error;
     }
   },
 
@@ -225,14 +235,14 @@ export const stockApiHelpers = {
       errors.push('Material name is required');
     }
 
-    if (stockData.quantity === undefined || stockData.quantity === null || stockData.quantity < 0) {
+    if (stockData.quantity === undefined || stockData.quantity === null || stockData.quantity === '' || parseInt(stockData.quantity) < 0) {
       errors.push('Quantity must be a non-negative number');
     }
 
     // Required by Swagger spec: origin must be 'Local' or 'Imported'
     const validOrigins = ['Local', 'Imported'];
     if (!stockData.origin || !validOrigins.includes(stockData.origin)) {
-      errors.push('Origin is required and must be \'Local\' or \'Imported\'');
+      errors.push('Origin is required and must be "Local" or "Imported"');
     }
 
     return { valid: errors.length === 0, errors };
@@ -242,19 +252,41 @@ export const stockApiHelpers = {
    * Format stock data for API
    */
   formatStockForApi(stockData) {
-    return {
+    const formatted = {
       name: stockData.name?.trim(),
       quantity: parseInt(stockData.quantity) || 0,
-      color: stockData.color?.trim() || null,
-      size: stockData.size?.trim() || null,
-      thickness: stockData.thickness?.trim() || null,
-      laminated: stockData.laminated === true || stockData.laminated === 'true',
-      // origin is required: 'Local' | 'Imported'
-      origin: stockData.origin || null,
-      // categoryId links to the Category schema
-      categoryId: stockData.categoryId ? parseInt(stockData.categoryId) : null,
-      typeNote: stockData.typeNote?.trim() || null
+      origin: stockData.origin || 'Local', // Required: 'Local' | 'Imported'
     };
+
+    // Add optional fields only if they have values
+    if (stockData.color && stockData.color.trim()) {
+      formatted.color = stockData.color.trim();
+    }
+    
+    if (stockData.size && stockData.size.trim()) {
+      formatted.size = stockData.size.trim();
+    }
+    
+    if (stockData.thickness && stockData.thickness.trim()) {
+      formatted.thickness = stockData.thickness.trim();
+    }
+    
+    if (stockData.typeNote && stockData.typeNote.trim()) {
+      formatted.typeNote = stockData.typeNote.trim();
+    }
+
+    // Boolean field
+    formatted.laminated = stockData.laminated === true || stockData.laminated === 'true';
+
+    // categoryId - only include if it's a valid number
+    if (stockData.categoryId) {
+      const categoryId = parseInt(stockData.categoryId);
+      if (!isNaN(categoryId) && categoryId > 0) {
+        formatted.categoryId = categoryId;
+      }
+    }
+
+    return formatted;
   },
 
   /**

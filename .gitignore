@@ -25,6 +25,8 @@ build/Release/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.development
+.env.production
 # Keep .env.development and .env.production as examples
 # but ignore any local overrides with a .local suffix
 

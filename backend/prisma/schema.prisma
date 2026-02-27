@@ -13,7 +13,8 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   fullName  String
-  username  String   @unique
+  email     String   @unique         // new: users now authenticate with email
+  username  String?  @unique         // kept for legacy/optional display
   password  String   // hashed
   role      UserRole @default(Customer)
   phone     String?  @unique

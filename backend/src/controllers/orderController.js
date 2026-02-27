@@ -2,7 +2,7 @@ const orderService = require('../services/orderService');
 
 const getAllOrders = async (req, res, next) => {
     try {
-        const query = { ...req.query };
+        const query = { ...req.query }
 
         // Customers can only see their own orders
         if (req.user.role === 'Customer') {

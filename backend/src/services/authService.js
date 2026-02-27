@@ -8,12 +8,12 @@ const { JWT_SECRET, JWT_EXPIRES_IN } = require('../config/jwt');
  * @returns {{ user: object, token: string }}
  */
 async function register(data) {
-  const { username, password, fullName } = data;
+  const { email, password, fullName } = data;
   const role = 'Customer';
 
-  const existing = await prisma.user.findUnique({ where: { username } });
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    const err = new Error('Username already registered');
+    const err = new Error('Email already registered');
     err.statusCode = 409;
     throw err;
   }
@@ -21,14 +21,14 @@ async function register(data) {
   const hashedPassword = await hashPassword(password);
   const user = await prisma.user.create({
     data: {
-      username,
-      password: hashedPassword,
+      email,
       fullName,
+      password: hashedPassword,
       role,
     },
     select: {
       id: true,
-      username: true,
+      email: true,
       fullName: true,
       role: true,
       createdAt: true,
@@ -36,7 +36,7 @@ async function register(data) {
   });
 
   const token = jwt.sign(
-    { userId: user.id, role: user.role, username: user.username },
+    { userId: user.id, role: user.role, email: user.email },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN }
   );
@@ -50,25 +50,25 @@ async function register(data) {
  * @returns {{ user: object, token: string }}
  */
 async function login(data) {
-  const { username, password } = data;
+  const { email, password } = data;
 
-  const user = await prisma.user.findUnique({ where: { username } });
+  const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    const err = new Error('Invalid username or password');
+    const err = new Error('Invalid email or password');
     err.statusCode = 401;
     throw err;
   }
 
   const valid = await comparePassword(password, user.password);
   if (!valid) {
-    const err = new Error('Invalid username or password');
+    const err = new Error('Invalid email or password');
     err.statusCode = 401;
     throw err;
   }
 
   const { password: _, ...safeUser } = user;
   const token = jwt.sign(
-    { userId: user.id, role: user.role, username: user.username },
+    { userId: user.id, role: user.role, email: user.email },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN }
   );
@@ -105,7 +105,7 @@ async function changePassword(data) {
 async function getUserById(id) {
   return prisma.user.findUnique({
     where: { id },
-    select: { id: true, username: true, fullName: true, role: true, createdAt: true },
+    select: { id: true, email: true, username: true, fullName: true, role: true, createdAt: true },
   });
 }
 

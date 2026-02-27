@@ -2,9 +2,9 @@ const authService = require('../services/authService');
 
 async function register(req, res, next) {
   try {
-    const { username, password, fullName } = req.body;
+    const { email, password, fullName } = req.body;
 
-    const result = await authService.register({ username, password, fullName });
+    const result = await authService.register({ email, password, fullName });
 
     res.status(201).json({
       success: true,
@@ -21,9 +21,9 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const result = await authService.login({ username, password });
+    const result = await authService.login({ email, password });
 
     res.status(200).json({
       success: true,

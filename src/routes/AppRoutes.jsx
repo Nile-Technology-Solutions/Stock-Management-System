@@ -27,9 +27,8 @@ const PaymentPending = lazy(() => import('../pages/payment/PaymentPending'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 
-// Role-Specific Dashboards
+// Unified Admin Dashboard (role-based content)
 const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboardPage'));
-const SuperAdminDashboard = lazy(() => import('../pages/superAdmin/dashboard/SuperAdminDashboardPage'));
 
 // Modularized Core/Admin Pages
 const Analytics = lazy(() => import('../pages/core/analytics/AnalyticsPage'));
@@ -80,7 +79,7 @@ const AppRoutes = () => {
           </PublicOnlyRoute>
         } />
 
-        {/* Protected Admin Routes */}
+        {/* Protected Admin Routes - Accessible by both Admin and Super Admin */}
         <Route
           path="/admin"
           element={
@@ -95,27 +94,27 @@ const AppRoutes = () => {
           <Route path="stock" element={<Stock />} />
           <Route path="production" element={<Production />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="payments" element={<Payments />} />
           <Route path="todo" element={<Todo />} />
           <Route path="news" element={<NewsAdmin />} />
-        </Route>
-
-        {/* Protected Super Admin Routes */}
-        <Route
-          path="/super-admin"
-          element={
-            <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
-              <SuperAdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="/super-admin/dashboard" replace />} />
-          <Route path="dashboard" element={<SuperAdminDashboard />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="users" element={<UserManagement />} />
-          <Route path="payments" element={<Payments />} />
-          <Route path="stock" element={<Stock />} />
-          <Route path="settings" element={<Settings />} />
-          {/* Add more super-admin routes here */}
+          
+          {/* Super Admin Exclusive Routes */}
+          <Route 
+            path="users" 
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+                <UserManagement />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="settings" 
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+                <Settings />
+              </ProtectedRoute>
+            } 
+          />
         </Route>
 
         {/* Error Pages */}

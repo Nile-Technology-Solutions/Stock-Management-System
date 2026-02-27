@@ -31,10 +31,9 @@ const NewsAdminPage = () => {
   
   const [formData, setFormData] = useState({
     title: '',
-    category: 'General',
     content: '',
     status: 'Draft',
-    image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
   });
 
   const fetchNews = useCallback(async (isRefresh = false) => {
@@ -60,10 +59,9 @@ const NewsAdminPage = () => {
     setEditingArticle(null);
     setFormData({
       title: '',
-      category: 'General',
       content: '',
       status: 'Draft',
-      image: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+      imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
     });
     setIsModalOpen(true);
   };
@@ -72,10 +70,9 @@ const NewsAdminPage = () => {
     setEditingArticle(article);
     setFormData({
       title: article.title,
-      category: article.category || 'General',
       content: article.content,
       status: article.status || 'Draft',
-      image: article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+      imageUrl: article.imageUrl || article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
     });
     setIsModalOpen(true);
   };
@@ -88,20 +85,29 @@ const NewsAdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Prepare data according to API spec (title, content, status)
+      const newsData = {
+        title: formData.title,
+        content: formData.content,
+        status: formData.status,
+        // Store image URL in content or as metadata (backend dependent)
+        imageUrl: formData.imageUrl
+      };
+
       if (editingArticle) {
-        const updated = await newsApi.updateNews(editingArticle.id, formData);
-        setArticles(prev => prev.map(a => a.id === editingArticle.id ? updated : a));
+        const updated = await newsApi.updateNews(editingArticle.id, newsData);
+        setArticles(prev => prev.map(a => a.id === editingArticle.id ? { ...updated, imageUrl: formData.imageUrl } : a));
       } else {
         const created = await newsApi.createNews({
-          ...formData,
+          ...newsData,
           publishDate: new Date().toISOString()
         });
-        setArticles(prev => [created, ...prev]);
+        setArticles(prev => [{ ...created, imageUrl: formData.imageUrl }, ...prev]);
       }
       setIsModalOpen(false);
     } catch (error) {
       console.error('Failed to save article:', error);
-      alert('Failed to save article. Please check the console for details.');
+      alert(`Failed to save article: ${error.message || 'Unknown error'}`);
     }
   };
 
@@ -132,14 +138,18 @@ const NewsAdminPage = () => {
       render: (title, article) => (
         <div className="flex items-center gap-4 py-2">
           <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 dark:border-slate-700">
-            <img src={article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200'} className="w-full h-full object-cover" alt="" />
+            <img 
+              src={article.imageUrl || article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200'} 
+              className="w-full h-full object-cover" 
+              alt={title}
+              onError={(e) => {
+                e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
+              }}
+            />
           </div>
           <div>
             <div className="font-bold text-slate-900 dark:text-slate-100 line-clamp-1">{title}</div>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] uppercase font-black tracking-widest text-cyan-500 bg-cyan-50 dark:bg-cyan-950/30 px-1.5 py-0.5 rounded">
-                {article.category || 'General'}
-              </span>
               <span className="text-[10px] text-slate-400 font-medium">
                 {article.publishDate ? new Date(article.publishDate).toLocaleDateString() : 'N/A'}
               </span>
@@ -278,43 +288,44 @@ const NewsAdminPage = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
           <div className="space-y-4">
-             {/* Image Preview / Field */}
-             <div className="relative group">
-                <div className="h-40 w-full rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-2 border-dashed border-slate-200 dark:border-slate-700">
-                   <img src={formData.image} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" alt="" />
-                   <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 group-hover:text-cyan-500 transition-colors pointer-events-none">
-                      <Plus className="w-8 h-8 mb-2" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Update Banner</span>
-                   </div>
+             {/* Image Preview & URL Input */}
+             <div className="space-y-3">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Banner Image</label>
+                <div className="relative group">
+                  <div className="h-40 w-full rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-2 border-slate-200 dark:border-slate-700">
+                     <img 
+                       src={formData.imageUrl} 
+                       className="w-full h-full object-cover" 
+                       alt="Article banner preview"
+                       onError={(e) => {
+                         e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800';
+                       }}
+                     />
+                  </div>
                 </div>
+                <input
+                  name="imageUrl"
+                  type="url"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 text-sm"
+                  placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                  value={formData.imageUrl}
+                  onChange={handleInputChange}
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Paste a direct image URL. Recommended size: 1200x630px
+                </p>
              </div>
 
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Title</label>
-                  <input
-                    required
-                    name="title"
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50"
-                    placeholder="Enter headline..."
-                    value={formData.title}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-slate-500">Category & Type</label>
-                  <select
-                    name="category"
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 appearance-none"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Sustainability">Sustainability</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Events">Events</option>
-                    <option value="General">General News</option>
-                  </select>
-                </div>
+             <div className="space-y-1.5">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Title</label>
+                <input
+                  required
+                  name="title"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50"
+                  placeholder="Enter headline..."
+                  value={formData.title}
+                  onChange={handleInputChange}
+                />
              </div>
 
              <div className="space-y-1.5">
@@ -343,16 +354,19 @@ const NewsAdminPage = () => {
              </div>
 
              <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Detailed Content</label>
+                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Content</label>
                 <textarea
                   required
                   name="content"
                   rows={8}
                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 resize-none"
-                  placeholder="Start writing the article narrative..."
+                  placeholder="Write your article content here..."
                   value={formData.content}
                   onChange={handleInputChange}
                 />
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {formData.content.length} characters
+                </p>
              </div>
           </div>
 
@@ -363,14 +377,14 @@ const NewsAdminPage = () => {
               className="flex-1 font-black uppercase text-xs"
               onClick={() => setIsModalOpen(false)}
             >
-              Discard Changes
+              Cancel
             </Button>
             <Button
               type="submit"
               variant="primary"
               className="flex-1 bg-cyan-500 border-none font-black uppercase text-xs tracking-widest"
             >
-              {editingArticle ? 'Update Publication' : 'Release Article'}
+              {editingArticle ? 'Update Article' : 'Publish Article'}
             </Button>
           </div>
         </form>

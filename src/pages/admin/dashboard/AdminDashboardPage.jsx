@@ -1,19 +1,59 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
+import ExecutiveDashboard from './ExecutiveDashboard';
 import DashboardCards from '../../core/dashboard/DashboardCards';
 import DashboardCharts from '../../core/dashboard/DashboardCharts';
 import { getDashboardDataFromAPI } from '../../core/dashboard/dashboardService';
 import GlassCard from '../../../components/common/GlassCard';
 import Button from '../../../components/common/Button';
-import { RefreshCw, Shield } from '../../../components/icons';
+import { RefreshCw, Shield, LayoutGrid, BarChart3 } from '../../../components/icons';
 
 /**
  * Admin Dashboard Page
  * Displays dashboard for Admin role users
  * Access: Admin only
- * API Integration: Dashboard data from core services
+ * Features: Executive Dashboard (System Overview) and Operational Dashboard
  */
 const AdminDashboardPage = () => {
+  const [viewMode, setViewMode] = useState('executive'); // 'executive' or 'operational'
+  // Render Executive Dashboard by default
+  if (viewMode === 'executive') {
+    return (
+      <div className="space-y-6">
+        {/* View Toggle */}
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            onClick={() => setViewMode('executive')}
+            variant={viewMode === 'executive' ? 'primary' : 'secondary'}
+            className="flex items-center gap-2"
+          >
+            <LayoutGrid className="w-4 h-4" />
+            Executive
+          </Button>
+          <Button
+            onClick={() => setViewMode('operational')}
+            variant={viewMode === 'operational' ? 'primary' : 'secondary'}
+            className="flex items-center gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Operational
+          </Button>
+        </div>
+
+        <ExecutiveDashboard />
+      </div>
+    );
+  }
+
+  // Operational Dashboard (legacy view)
+  return <OperationalDashboard onSwitchView={() => setViewMode('executive')} />;
+};
+
+/**
+ * Operational Dashboard Component (Legacy View)
+ * Shows detailed operational metrics with time-based filtering
+ */
+const OperationalDashboard = ({ onSwitchView }) => {
   const { user } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loading, setLoading] = useState(true);
@@ -88,6 +128,25 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="space-y-8 relative animate-in fade-in duration-500">
+      {/* View Toggle */}
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          onClick={onSwitchView}
+          variant="secondary"
+          className="flex items-center gap-2"
+        >
+          <LayoutGrid className="w-4 h-4" />
+          Executive
+        </Button>
+        <Button
+          variant="primary"
+          className="flex items-center gap-2"
+        >
+          <BarChart3 className="w-4 h-4" />
+          Operational
+        </Button>
+      </div>
+
       {/* Welcome Section */}
       <GlassCard variant="standard" className="relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
@@ -110,7 +169,7 @@ const AdminDashboardPage = () => {
                 </div>
               </div>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                Manage your stock, production, and orders efficiently. Here's your admin dashboard overview.
+                Manage your stock, production, and orders efficiently. Here's your operational dashboard overview.
               </p>
             </div>
             

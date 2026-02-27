@@ -87,6 +87,7 @@ export {
   Ruler,
   Wrench,
   Grid,
+  LayoutGrid,
   List,
   SlidersHorizontal,
   BookOpen,

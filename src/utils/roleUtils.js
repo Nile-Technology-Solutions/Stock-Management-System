@@ -19,7 +19,7 @@ export const ROLE_HIERARCHY = {
 
 // Default dashboard routes for each role
 export const ROLE_DASHBOARDS = {
-  'superadmin': '/super-admin/dashboard',
+  'superadmin': '/admin/dashboard',  // Super Admin now uses /admin routes
   'admin': '/admin/dashboard',
   'customer': '/',
   'client': '/'

@@ -18,7 +18,8 @@ dist/
 build/
 out/
 build/Release/
-
+EXECUTIVE_DASHBOARD_PREVIEW.md
+EXECUTIVE_DASHBOARD_PREVIEW.md
 # ─── Environment variables (NEVER commit secrets) ───────────
 .env
 .env.local

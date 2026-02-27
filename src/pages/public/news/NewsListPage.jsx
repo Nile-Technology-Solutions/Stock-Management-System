@@ -14,10 +14,34 @@ const NewsListPage = () => {
     const fetchNews = async () => {
       setLoading(true);
       try {
+        console.log('📰 Fetching news from API...');
+        console.log('📰 API URL:', `${window.location.origin}/api/news`);
+        
         const data = await newsApi.getNews();
-        setNews(Array.isArray(data) ? data : []);
+        
+        console.log('📰 Raw API response:', data);
+        console.log('📰 Response type:', typeof data);
+        console.log('📰 Is array?', Array.isArray(data));
+        console.log('📰 Data length:', Array.isArray(data) ? data.length : 'N/A');
+        
+        const newsArray = Array.isArray(data) ? data : [];
+        console.log('📰 News array:', newsArray);
+        
+        if (newsArray.length > 0) {
+          console.log('📰 First news item:', newsArray[0]);
+          console.log('📰 Published news:', newsArray.filter(n => n.status === 'Published'));
+        } else {
+          console.warn('⚠️ API returned empty array - Backend might not be returning data');
+        }
+        
+        setNews(newsArray);
       } catch (error) {
-        console.error('Failed to fetch news:', error);
+        console.error('❌ Failed to fetch news:', error);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
+        
+        // Show user-friendly error
+        alert(`Failed to load news: ${error.message}\n\nPlease check:\n1. Backend server is running\n2. Database has news records\n3. Browser console for details`);
       } finally {
         setLoading(false);
       }
@@ -27,7 +51,8 @@ const NewsListPage = () => {
 
   const categories = useMemo(() => {
     const publishedNews = news.filter(n => n.status === 'Published');
-    return ['All', ...new Set(publishedNews.map(n => n.category).filter(Boolean))];
+    // Since we removed categories, just show "All"
+    return ['All'];
   }, [news]);
 
   const sortedAndFilteredNews = useMemo(() => {
@@ -36,11 +61,11 @@ const NewsListPage = () => {
       .filter(n => {
         const matchesSearch = (n.title || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
                              (n.content || '').toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = activeCategory === 'All' || n.category === activeCategory;
-        return matchesSearch && matchesCategory;
+        // Removed category filter since we don't use categories anymore
+        return matchesSearch;
       })
       .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
-  }, [news, searchTerm, activeCategory]);
+  }, [news, searchTerm]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20">
@@ -90,7 +115,7 @@ const NewsListPage = () => {
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
                   }`}
                 >
-                  {cat}
+                  All Articles
                 </button>
               ))}
             </div>
@@ -103,21 +128,70 @@ const NewsListPage = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <>
+            {/* Debug Info - Remove after fixing */}
+            <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
+              <p className="text-sm font-mono text-yellow-900 dark:text-yellow-100 mb-4">
+                <strong>Debug Info:</strong><br/>
+                Total news fetched: {news.length}<br/>
+                Published news: {news.filter(n => n.status === 'Published').length}<br/>
+                After filters: {sortedAndFilteredNews.length}<br/>
+                Search term: "{searchTerm}"<br/>
+                <br/>
+                <strong>All news items:</strong><br/>
+                {news.length === 0 ? '(No news fetched from API)' : news.map(n => `ID: ${n.id}, Title: ${n.title}, Status: ${n.status}`).join('\n')}
+              </p>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch('/api/news');
+                      const data = await response.json();
+                      console.log('🔍 Direct API test:', data);
+                      alert(`API Response:\nStatus: ${response.status}\nData: ${JSON.stringify(data, null, 2)}`);
+                    } catch (err) {
+                      console.error('🔍 Direct API test failed:', err);
+                      alert(`API Test Failed:\n${err.message}`);
+                    }
+                  }}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold hover:bg-blue-600"
+                >
+                  Test API Directly
+                </button>
+                
+                <button
+                  onClick={() => {
+                    console.log('📋 Current state:', { news, sortedAndFilteredNews });
+                    alert('Check browser console for detailed state');
+                  }}
+                  className="px-4 py-2 bg-purple-500 text-white rounded-lg text-xs font-bold hover:bg-purple-600"
+                >
+                  Log State
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedAndFilteredNews.map(newsItem => (
               <Link key={newsItem.id} to={`/news/${newsItem.id}`} className="group">
                 <GlassCard className="h-full flex flex-col overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 group-hover:border-cyan-500/50">
                   <div className="relative h-56 overflow-hidden">
                     <img 
-                      src={newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'} 
+                      src={newsItem.imageUrl || newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'} 
                       alt={newsItem.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800';
+                      }}
                     />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-cyan-500/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-lg">
-                        {newsItem.category}
-                      </span>
-                    </div>
+                    {newsItem.category && (
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-cyan-500/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-lg">
+                          {newsItem.category}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="p-6 flex-1 flex flex-col">
@@ -149,6 +223,7 @@ const NewsListPage = () => {
               </Link>
             ))}
           </div>
+          </>
         )}
 
         {!loading && sortedAndFilteredNews.length === 0 && (

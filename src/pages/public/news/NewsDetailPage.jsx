@@ -64,9 +64,12 @@ const NewsDetailPage = () => {
       {/* Article Header with Parallax-style background */}
       <div className="relative h-[50vh] min-h-[400px] overflow-hidden">
         <img 
-          src={newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1200'} 
+          src={newsItem.imageUrl || newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1200'} 
           className="w-full h-full object-cover"
           alt={newsItem.title}
+          onError={(e) => {
+            e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1200';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
         
@@ -77,9 +80,11 @@ const NewsDetailPage = () => {
               Article Directory
             </Link>
             <div className="flex items-center gap-4 mb-4">
-              <span className="px-3 py-1 bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest rounded">
-                {newsItem.category}
-              </span>
+              {newsItem.category && (
+                <span className="px-3 py-1 bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest rounded">
+                  {newsItem.category}
+                </span>
+              )}
               <div className="flex items-center gap-2 text-slate-300 text-xs font-semibold">
                 <Calendar className="w-4 h-4" />
                 {newsItem.publishDate ? new Date(newsItem.publishDate).toLocaleDateString('en-US', { 
@@ -152,12 +157,21 @@ const NewsDetailPage = () => {
                 <Link key={item.id} to={`/news/${item.id}`} className="group block">
                   <div className="flex gap-4">
                     <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                      <img src={item.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400'} className="w-full h-full object-cover transition-transform group-hover:scale-110" alt={item.title} />
+                      <img 
+                        src={item.imageUrl || item.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400'} 
+                        className="w-full h-full object-cover transition-transform group-hover:scale-110" 
+                        alt={item.title}
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400';
+                        }}
+                      />
                     </div>
                     <div>
-                      <span className="text-[10px] font-black uppercase text-cyan-600 dark:text-cyan-400 mb-1 block">
-                        {(item.category || 'News').toUpperCase()}
-                      </span>
+                      {item.category && (
+                        <span className="text-[10px] font-black uppercase text-cyan-600 dark:text-cyan-400 mb-1 block">
+                          {item.category.toUpperCase()}
+                        </span>
+                      )}
                       <h4 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-cyan-500 transition-colors line-clamp-2 leading-snug">
                         {item.title}
                       </h4>

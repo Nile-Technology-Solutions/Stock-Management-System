@@ -129,48 +129,7 @@ const NewsListPage = () => {
           </div>
         ) : (
           <>
-            {/* Debug Info - Remove after fixing */}
-            <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-              <p className="text-sm font-mono text-yellow-900 dark:text-yellow-100 mb-4">
-                <strong>Debug Info:</strong><br/>
-                Total news fetched: {news.length}<br/>
-                Published news: {news.filter(n => n.status === 'Published').length}<br/>
-                After filters: {sortedAndFilteredNews.length}<br/>
-                Search term: "{searchTerm}"<br/>
-                <br/>
-                <strong>All news items:</strong><br/>
-                {news.length === 0 ? '(No news fetched from API)' : news.map(n => `ID: ${n.id}, Title: ${n.title}, Status: ${n.status}`).join('\n')}
-              </p>
-              
-              <div className="flex gap-2">
-                <button
-                  onClick={async () => {
-                    try {
-                      const response = await fetch('/api/news');
-                      const data = await response.json();
-                      console.log('🔍 Direct API test:', data);
-                      alert(`API Response:\nStatus: ${response.status}\nData: ${JSON.stringify(data, null, 2)}`);
-                    } catch (err) {
-                      console.error('🔍 Direct API test failed:', err);
-                      alert(`API Test Failed:\n${err.message}`);
-                    }
-                  }}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg text-xs font-bold hover:bg-blue-600"
-                >
-                  Test API Directly
-                </button>
-                
-                <button
-                  onClick={() => {
-                    console.log('📋 Current state:', { news, sortedAndFilteredNews });
-                    alert('Check browser console for detailed state');
-                  }}
-                  className="px-4 py-2 bg-purple-500 text-white rounded-lg text-xs font-bold hover:bg-purple-600"
-                >
-                  Log State
-                </button>
-              </div>
-            </div>
+           
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedAndFilteredNews.map(newsItem => (

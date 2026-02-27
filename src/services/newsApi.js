@@ -12,7 +12,7 @@ export const newsApi = {
    * @returns {Promise<Array>} List of news posts
    */
   getNews: async () => {
-    return api.get('/api/news');
+    return api.get('/api/news/public');
   },
 
   /**
@@ -22,7 +22,7 @@ export const newsApi = {
    * @returns {Promise<Object>} News post details
    */
   getNewsById: async (id) => {
-    return api.get(`/api/news/${id}`);
+    return api.get(`/api/news/public/${id}`);
   },
 
   /**

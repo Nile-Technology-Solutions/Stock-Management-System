@@ -19,7 +19,7 @@ import {
 } from '../../components/icons';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ identifier: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +38,7 @@ const Login = () => {
       logout(false);
 
       // Call actual API endpoint
-      const response = await authApi.login(credentials.username, credentials.password);
+      const response = await authApi.login(credentials.identifier, credentials.password);
 
       // Robust role detection - check common nesting patterns
       const userObj = response.user || response.data?.user || response.data || response;
@@ -77,7 +77,7 @@ const Login = () => {
 
   const handleDemoLogin = (demoUser) => {
     setCredentials({
-      username: demoUser.username,
+      identifier: demoUser.identifier,
       password: demoUser.password
     });
   };
@@ -86,7 +86,7 @@ const Login = () => {
   const demoAccounts = [
     {
       id: 'customer-demo',
-      username: 'customer',
+      identifier: 'customer@example.com',
       password: 'password123',
       role: 'Customer',
       name: 'Demo Customer',
@@ -94,7 +94,7 @@ const Login = () => {
     },
     {
       id: 'admin-demo',
-      username: 'admin',
+      identifier: 'admin@example.com',
       password: 'password123',
       role: 'Admin',
       name: 'Admin User',
@@ -102,7 +102,7 @@ const Login = () => {
     },
     {
       id: 'super-admin-demo',
-      username: 'superadmin',
+      identifier: 'superadmin@example.com',
       password: 'password123',
       role: 'SuperAdmin',
       name: 'Super Admin',
@@ -128,19 +128,21 @@ const Login = () => {
         try {
           await authApi.register({
             fullName: account.name,
-            username: account.username,
+            email: account.identifier,
+            phone: `+251${Math.floor(Math.random() * 900000000 + 100000000)}`, // Generate random phone
             password: account.password,
+            confirmPassword: account.password,
             role: account.role
           });
-          results.push(`Registered ${account.username} (${account.password})`);
+          results.push(`Registered ${account.identifier} (${account.password})`);
           registeredUsernames.add(account.username);
         } catch (err) {
           if (err.message.toLowerCase().includes('exist') || err.message.toLowerCase().includes('taken')) {
-            results.push(`${account.username} already exists`);
+            results.push(`${account.identifier} already exists`);
             registeredUsernames.add(account.username);
           } else {
-            console.warn(`Failed to register ${account.username}:`, err);
-            results.push(`Error registering ${account.username}`);
+            console.warn(`Failed to register ${account.identifier}:`, err);
+            results.push(`Error registering ${account.identifier}`);
           }
         }
       }
@@ -231,7 +233,7 @@ const Login = () => {
                           {demo.name}
                         </div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                          {demo.username}
+                          {demo.identifier}
                         </div>
                         <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
                           {demo.description}
@@ -255,35 +257,43 @@ const Login = () => {
               )}
 
               <div className="space-y-2">
-                <label htmlFor="username" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label htmlFor="identifier" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    Username
+                    Email or Phone Number
                   </div>
                 </label>
                 <div className="relative">
                   <input
-                    id="username"
-                    name="username"
+                    id="identifier"
+                    name="identifier"
                     type="text"
                     autoComplete="username"
                     required
-                    value={credentials.username}
+                    value={credentials.identifier}
                     onChange={handleChange}
                     className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                    placeholder="Enter your username"
+                    placeholder="Enter your email or phone number"
                   />
                   <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    Password
-                  </div>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center gap-2">
+                      <Lock className="w-4 h-4" />
+                      Password
+                    </div>
+                  </label>
+                  <Link 
+                    to="/forgot-password"
+                    className="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-200"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
                 <div className="relative">
                   <input
                     id="password"

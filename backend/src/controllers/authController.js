@@ -2,9 +2,9 @@ const authService = require('../services/authService');
 
 async function register(req, res, next) {
   try {
-    const { username, password, fullName } = req.body;
+    const { fullName, email, phone, password } = req.body;
 
-    const result = await authService.register({ username, password, fullName });
+    const result = await authService.register({ fullName, email, phone, password });
 
     res.status(201).json({
       success: true,
@@ -21,9 +21,9 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
   try {
-    const { username, password } = req.body;
+    const { identifier, password } = req.body;
 
-    const result = await authService.login({ username, password });
+    const result = await authService.login({ identifier, password });
 
     res.status(200).json({
       success: true,
@@ -32,6 +32,37 @@ async function login(req, res, next) {
         user: result.user,
         token: result.token,
       },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function forgotPassword(req, res, next) {
+  try {
+    const { identifier } = req.body;
+
+    const result = await authService.forgotPassword({ identifier });
+
+    res.status(200).json({
+      success: true,
+      message: result.message,
+      data: result.resetToken ? { resetToken: result.resetToken, identifier: result.identifier } : null,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function resetPassword(req, res, next) {
+  try {
+    const { token, newPassword } = req.body;
+
+    const result = await authService.resetPassword({ token, newPassword });
+
+    res.status(200).json({
+      success: true,
+      message: result.message,
     });
   } catch (err) {
     next(err);
@@ -63,6 +94,8 @@ async function changePassword(req, res, next) {
 module.exports = {
   register,
   login,
+  forgotPassword,
+  resetPassword,
   me,
   changePassword,
 };

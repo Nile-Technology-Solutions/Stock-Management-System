@@ -46,10 +46,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
       }, 100);
     } catch (err) {
       console.error('Failed to update order:', err);
-      setError(err.message || 'Failed to update order');
-      setUpdating(false);
-    }
-  };
+      setError(err.message || 'Fa
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">

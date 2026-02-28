@@ -14,7 +14,14 @@ module.exports = async function authMiddleware(req, res, next) {
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      select: { id: true, username: true, fullName: true, role: true, createdAt: true },
+      select: { 
+        id: true, 
+        fullName: true, 
+        email: true, 
+        phone: true, 
+        role: true, 
+        createdAt: true 
+      },
     });
 
     if (!user) return res.status(401).json({ message: 'Invalid token: user not found' });

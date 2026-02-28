@@ -26,6 +26,8 @@ const PaymentPending = lazy(() => import('../pages/payment/PaymentPending'));
 // Auth Pages
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
+const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 
 // Profile Page
 const Profile = lazy(() => import('../pages/profile/ProfilePage'));
@@ -79,6 +81,16 @@ const AppRoutes = () => {
         <Route path="/register" element={
           <PublicOnlyRoute>
             <Register />
+          </PublicOnlyRoute>
+        } />
+        <Route path="/forgot-password" element={
+          <PublicOnlyRoute>
+            <ForgotPassword />
+          </PublicOnlyRoute>
+        } />
+        <Route path="/reset-password" element={
+          <PublicOnlyRoute>
+            <ResetPassword />
           </PublicOnlyRoute>
         } />
 

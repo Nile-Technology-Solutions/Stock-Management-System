@@ -27,6 +27,9 @@ const PaymentPending = lazy(() => import('../pages/payment/PaymentPending'));
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
 
+// Profile Page
+const Profile = lazy(() => import('../pages/profile/ProfilePage'));
+
 // Unified Admin Dashboard (role-based content)
 const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboardPage'));
 
@@ -77,6 +80,13 @@ const AppRoutes = () => {
           <PublicOnlyRoute>
             <Register />
           </PublicOnlyRoute>
+        } />
+
+        {/* Profile Route - Protected, accessible by all authenticated users */}
+        <Route path="/profile" element={
+          <ProtectedRoute allowedRoles={[ROLES.CUSTOMER, ROLES.ADMIN, ROLES.SUPER_ADMIN]}>
+            <Profile />
+          </ProtectedRoute>
         } />
 
         {/* Protected Admin Routes - Accessible by both Admin and Super Admin */}

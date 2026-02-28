@@ -13,6 +13,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const todoRoutes = require('./routes/todoRoutes');
 const newsRoutes = require('./routes/newsRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.use(logger);
 app.use(errorHandler);

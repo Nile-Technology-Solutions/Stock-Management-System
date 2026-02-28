@@ -171,6 +171,15 @@ const PublicNavigation = () => {
                       </div>
                     </div>
                     
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
+                      onClick={() => setIsUserMenuOpen(false)}
+                    >
+                      <User className="w-4 h-4" />
+                      My Profile
+                    </Link>
+                    
                     {!isPublicUser() && (
                       <Link
                         to="/admin/dashboard"
@@ -285,6 +294,13 @@ const PublicNavigation = () => {
                       <p className="text-xs text-slate-600 dark:text-slate-400">{user.email}</p>
                     </div>
                   </div>
+                  
+                  <Link to="/profile">
+                    <Button variant="glass-secondary" className="w-full flex items-center justify-center gap-2">
+                      <User className="w-4 h-4" />
+                      My Profile
+                    </Button>
+                  </Link>
                   
                   {!isPublicUser() && (
                     <Link to="/admin/dashboard">

@@ -29,7 +29,18 @@ export const authApi = {
       throw new Error(error.message || 'Invalid username or password');
     }
 
-    return await response.json();
+    const result = await response.json();
+    
+    // Backend returns { success, message, data: { user, token } }
+    if (result.success && result.data) {
+      return {
+        user: result.data.user,
+        token: result.data.token
+      };
+    }
+    
+    // Fallback for different response structure
+    return result;
   },
 
   /**
@@ -62,7 +73,15 @@ export const authApi = {
       throw new Error(error.message || 'Unable to create account');
     }
 
-    return await response.json();
+    const result = await response.json();
+    
+    // Backend returns { success, message, data: { user, token } }
+    if (result.success && result.data) {
+      return result.data.user;
+    }
+    
+    // Fallback for different response structure
+    return result;
   },
 
   /**

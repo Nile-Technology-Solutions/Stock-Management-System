@@ -177,47 +177,88 @@ export const stockApi = {
     }
   },
 
-  /** Aliases for public-facing components */
+  /** Aliases for public-facing components - Use public products API */
   async getProducts(params = {}) {
-    // Use real API
-    const data = await this.getAllStock();
-    if (data.success) {
-      const stockItems = Array.isArray(data.data) ? data.data : [];
-      let products = stockItems.map(normalizeProductForPublic);
+    try {
+      // Use public products API endpoint (no auth required)
+      const response = await fetch(`${API_BASE_URL}/api/products`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
+      if (!response.ok) {
+        throw new Error(`Failed to fetch products: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      let products = Array.isArray(data) ? data : [];
+      products = products.map(normalizeProductForPublic);
+
+      // Apply filters
       if (params.category && params.category !== 'all') {
         products = products.filter(p => p.category === params.category);
       }
       if (params.search) {
         const query = params.search.toLowerCase();
         products = products.filter(p =>
-          p.name.toLowerCase().includes(query) ||
-          p.typeNote?.toLowerCase().includes(query)
+          p.name?.toLowerCase().includes(query) ||
+          p.typeNote?.toLowerCase().includes(query) ||
+          p.description?.toLowerCase().includes(query)
         );
       }
       return products;
+    } catch (error) {
+      console.error('Get products error:', error);
+      throw error;
     }
-    throw new Error(data.error);
   },
 
   async getCategories() {
-    // Use real API
-    const data = await this.getAllStock();
-    if (data.success) {
-      const stockItems = Array.isArray(data.data) ? data.data : [];
-      const categories = [...new Set(stockItems.map(p => getCategoryLabel(p.category)).filter(Boolean))];
+    try {
+      // Use public products API endpoint (no auth required)
+      const response = await fetch(`${API_BASE_URL}/api/products`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        return [];
+      }
+
+      const data = await response.json();
+      const products = Array.isArray(data) ? data : [];
+      const categories = [...new Set(products.map(p => getCategoryLabel(p.category)).filter(Boolean))];
       return categories;
+    } catch (error) {
+      console.error('Get categories error:', error);
+      return [];
     }
-    return [];
   },
 
   async getProductById(id) {
-    // Use real API
-    const data = await this.getStockById(id);
-    if (data.success) {
-      return normalizeProductForPublic(data.data);
+    try {
+      // Use public products API endpoint (no auth required)
+      const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch product: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return normalizeProductForPublic(data);
+    } catch (error) {
+      console.error('Get product by ID error:', error);
+      throw error;
     }
-    throw new Error(data.error);
   }
 };
 

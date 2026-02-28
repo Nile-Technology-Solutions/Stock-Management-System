@@ -85,6 +85,15 @@ html:not(.no-transition) * {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
@@ -103,4 +112,8 @@ html:not(.no-transition) * {
 
 .animate-progress {
   animation: progress 2s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s linear infinite;
 }

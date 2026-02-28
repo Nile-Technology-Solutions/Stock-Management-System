@@ -82,36 +82,28 @@ const Login = () => {
     });
   };
 
-  // Demo accounts for testing (matches user request)
+  // Demo accounts for testing (matches seeded data)
   const demoAccounts = [
     {
       id: 'customer-demo',
       username: 'customer',
-      password: 'customer123',
+      password: 'password123',
       role: 'Customer',
       name: 'Demo Customer',
       description: 'Standard customer account'
     },
     {
-      id: 'admin-demo-1',
+      id: 'admin-demo',
       username: 'admin',
-      password: 'admin',
+      password: 'password123',
       role: 'Admin',
       name: 'Admin User',
-      description: 'Admin account (password: admin)'
-    },
-    {
-      id: 'admin-demo-2',
-      username: 'admin',
-      password: 'admin123',
-      role: 'Admin',
-      name: 'Admin User',
-      description: 'Admin account (password: admin123)'
+      description: 'Admin account'
     },
     {
       id: 'super-admin-demo',
       username: 'superadmin',
-      password: 'superadmin',
+      password: 'password123',
       role: 'SuperAdmin',
       name: 'Super Admin',
       description: 'Super Admin account'

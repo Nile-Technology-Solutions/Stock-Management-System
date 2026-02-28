@@ -1,0 +1,14 @@
+# SMS Nile Tech - Stock Management System
+# Robots.txt for Enterprise Application
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /super-admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://sms-niletech.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 10

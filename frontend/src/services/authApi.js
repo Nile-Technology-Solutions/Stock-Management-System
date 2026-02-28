@@ -25,8 +25,10 @@ export const authApi = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Login failed' }));
-      throw new Error(error.message || 'Invalid username or password');
+      const errorData = await response.json().catch(() => ({ error: { message: 'Login failed' } }));
+      // Extract the actual error message from the nested structure
+      const errorMessage = errorData.error?.message || errorData.message || 'Invalid username or password';
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();
@@ -69,8 +71,10 @@ export const authApi = {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Registration failed' }));
-      throw new Error(error.message || 'Unable to create account');
+      const errorData = await response.json().catch(() => ({ error: { message: 'Registration failed' } }));
+      // Extract the actual error message from the nested structure
+      const errorMessage = errorData.error?.message || errorData.message || 'Unable to create account';
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();

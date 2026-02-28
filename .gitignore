@@ -9,7 +9,9 @@ coverage/
 .cache/
 .vite/
 *.tsbuildinfo
-
+PROFILE_PAGE_IMPLEMENTATION.md
+PROFILE_FIX_SUMMARY.md
+TEST_PROFILE_API.md
 # Runtime logs
 logs/
 *.log

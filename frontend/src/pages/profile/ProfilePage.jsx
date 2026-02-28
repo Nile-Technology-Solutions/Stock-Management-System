@@ -30,10 +30,19 @@ const ProfilePage = () => {
       setLoading(true);
       setError(null);
       const response = await profileApi.getProfile();
-      setProfileData(response.data?.user || response.user || user);
+      
+      // Handle different response structures
+      const userData = response.data?.user || response.user || null;
+      
+      if (userData) {
+        setProfileData(userData);
+      } else {
+        // Fallback to auth context user if API fails
+        setProfileData(user);
+      }
     } catch (err) {
       console.error('Failed to load profile:', err);
-      setError(err.message);
+      setError(err.message || 'Failed to load profile data');
       // Fallback to auth context user
       setProfileData(user);
     } finally {

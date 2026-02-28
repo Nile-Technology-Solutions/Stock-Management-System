@@ -25,7 +25,7 @@ const PreferencesTab = () => {
     try {
       const response = await profileApi.getPreferences();
       if (response.data?.preferences) {
-        setPreferences(prev => ({ ...prev, ...response.data.preferences }));
+        setPreferences(response.data.preferences);
       }
     } catch (err) {
       console.error('Failed to load preferences:', err);

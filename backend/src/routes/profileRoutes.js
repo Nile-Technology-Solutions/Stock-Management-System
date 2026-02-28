@@ -1,7 +1,43 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const profileController = require('../controllers/profileController');
-const { upload } = require('../config/multer');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Configure multer for profile pictures
+const profileUploadDir = path.join(__dirname, '..', '..', 'uploads', 'profiles');
+if (!fs.existsSync(profileUploadDir)) {
+    fs.mkdirSync(profileUploadDir, { recursive: true });
+}
+
+const profileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, profileUploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        const ext = path.extname(file.originalname);
+        cb(null, `profile-${uniqueSuffix}${ext}`);
+    },
+});
+
+const profileFileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Only image files (jpeg, png, webp, gif) are allowed'), false);
+    }
+};
+
+const uploadProfile = multer({
+    storage: profileStorage,
+    fileFilter: profileFileFilter,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5 MB
+    },
+});
 
 // All profile routes require authentication
 router.use(authMiddleware);
@@ -13,7 +49,7 @@ router.get('/', profileController.getProfile);
 router.put('/', profileController.updateProfile);
 
 // POST /api/profile/picture - Upload profile picture
-router.post('/picture', upload.single('profilePicture'), profileController.uploadProfilePicture);
+router.post('/picture', uploadProfile.single('profilePicture'), profileController.uploadProfilePicture);
 
 // GET /api/profile/preferences - Get user preferences
 router.get('/preferences', profileController.getPreferences);

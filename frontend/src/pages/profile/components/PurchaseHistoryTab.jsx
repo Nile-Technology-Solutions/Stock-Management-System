@@ -17,9 +17,13 @@ const PurchaseHistoryTab = () => {
     try {
       setLoading(true);
       const response = await profileApi.getPurchaseHistory();
-      setOrders(response.data?.orders || response.orders || []);
+      
+      // Handle different response structures
+      const ordersData = response.data?.orders || response.orders || [];
+      setOrders(ordersData);
     } catch (err) {
       console.error('Failed to load purchase history:', err);
+      setOrders([]);
     } finally {
       setLoading(false);
     }

@@ -11,11 +11,27 @@ exports.getProfile = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       include: {
-        addresses: true,
+        addresses: {
+          orderBy: { createdAt: 'desc' }
+        },
         orders: {
           include: {
-            product: true,
-            payments: true
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true
+              }
+            },
+            payments: {
+              select: {
+                id: true,
+                amount: true,
+                method: true,
+                status: true
+              }
+            },
+            deliveryAddress: true
           },
           orderBy: { createdAt: 'desc' }
         }
@@ -46,6 +62,7 @@ exports.getProfile = async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('Profile fetch error:', error);
     next(error);
   }
 };
@@ -146,24 +163,33 @@ exports.uploadProfilePicture = async (req, res, next) => {
  */
 exports.getPreferences = async (req, res, next) => {
   try {
-    // For now, return default preferences
-    // In production, you'd store these in a separate table
-    const preferences = {
-      emailNotifications: true,
-      smsNotifications: false,
-      orderUpdates: true,
-      promotionalEmails: false,
-      newsletter: false,
-      language: 'en',
-      currency: 'ETB',
-      paymentMethod: 'Chapa'
-    };
+    let preferences = await prisma.userPreferences.findUnique({
+      where: { userId: req.user.id }
+    });
+
+    // If no preferences exist, create default ones
+    if (!preferences) {
+      preferences = await prisma.userPreferences.create({
+        data: {
+          userId: req.user.id,
+          emailNotifications: true,
+          smsNotifications: false,
+          orderUpdates: true,
+          promotionalEmails: false,
+          newsletter: false,
+          language: 'en',
+          currency: 'ETB',
+          paymentMethod: 'Chapa'
+        }
+      });
+    }
 
     res.status(200).json({
       success: true,
       data: { preferences }
     });
   } catch (error) {
+    console.error('Get preferences error:', error);
     next(error);
   }
 };
@@ -175,10 +201,53 @@ exports.getPreferences = async (req, res, next) => {
  */
 exports.updatePreferences = async (req, res, next) => {
   try {
-    const preferences = req.body;
+    const {
+      emailNotifications,
+      smsNotifications,
+      orderUpdates,
+      promotionalEmails,
+      newsletter,
+      language,
+      currency,
+      paymentMethod
+    } = req.body;
 
-    // In production, save to database
-    // For now, just return success
+    // Check if preferences exist
+    let preferences = await prisma.userPreferences.findUnique({
+      where: { userId: req.user.id }
+    });
+
+    if (!preferences) {
+      // Create new preferences
+      preferences = await prisma.userPreferences.create({
+        data: {
+          userId: req.user.id,
+          emailNotifications: emailNotifications ?? true,
+          smsNotifications: smsNotifications ?? false,
+          orderUpdates: orderUpdates ?? true,
+          promotionalEmails: promotionalEmails ?? false,
+          newsletter: newsletter ?? false,
+          language: language || 'en',
+          currency: currency || 'ETB',
+          paymentMethod: paymentMethod || 'Chapa'
+        }
+      });
+    } else {
+      // Update existing preferences
+      preferences = await prisma.userPreferences.update({
+        where: { userId: req.user.id },
+        data: {
+          ...(emailNotifications !== undefined && { emailNotifications }),
+          ...(smsNotifications !== undefined && { smsNotifications }),
+          ...(orderUpdates !== undefined && { orderUpdates }),
+          ...(promotionalEmails !== undefined && { promotionalEmails }),
+          ...(newsletter !== undefined && { newsletter }),
+          ...(language && { language }),
+          ...(currency && { currency }),
+          ...(paymentMethod && { paymentMethod })
+        }
+      });
+    }
 
     res.status(200).json({
       success: true,
@@ -186,6 +255,7 @@ exports.updatePreferences = async (req, res, next) => {
       data: { preferences }
     });
   } catch (error) {
+    console.error('Update preferences error:', error);
     next(error);
   }
 };

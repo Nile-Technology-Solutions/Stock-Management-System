@@ -132,25 +132,25 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
             <div className="text-2xl font-bold text-cyan-500">
-              {profileData?.totalOrders || 0}
+              {profileData?.totalOrders ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Total Orders</div>
           </div>
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
             <div className="text-2xl font-bold text-blue-500">
-              {profileData?.activeOrders || 0}
+              {profileData?.activeOrders ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Active Orders</div>
           </div>
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
             <div className="text-2xl font-bold text-purple-500">
-              {profileData?.addresses?.length || 0}
+              {profileData?.addresses?.length ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Addresses</div>
           </div>
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
             <div className="text-2xl font-bold text-green-500">
-              {profileData?.memberSince ? new Date(profileData.memberSince).getFullYear() : new Date(profileData?.createdAt).getFullYear() || 'N/A'}
+              {profileData?.createdAt ? new Date(profileData.createdAt).getFullYear() : 'N/A'}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Member Since</div>
           </div>

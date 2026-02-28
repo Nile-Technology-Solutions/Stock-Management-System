@@ -25,9 +25,13 @@ const AddressesTab = () => {
     try {
       setLoading(true);
       const response = await profileApi.getAddresses();
-      setAddresses(response.data?.addresses || response.addresses || []);
+      
+      // Handle different response structures
+      const addressesData = response.data?.addresses || response.addresses || [];
+      setAddresses(addressesData);
     } catch (err) {
       console.error('Failed to load addresses:', err);
+      setAddresses([]);
     } finally {
       setLoading(false);
     }

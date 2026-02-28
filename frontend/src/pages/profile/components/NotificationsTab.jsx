@@ -15,7 +15,10 @@ const NotificationsTab = () => {
     try {
       setLoading(true);
       const response = await profileApi.getNotifications();
-      setNotifications(response.data?.notifications || response.notifications || mockNotifications);
+      
+      // Handle different response structures
+      const notificationsData = response.data?.notifications || response.notifications || [];
+      setNotifications(notificationsData.length > 0 ? notificationsData : mockNotifications);
     } catch (err) {
       console.error('Failed to load notifications:', err);
       // Fallback to mock data

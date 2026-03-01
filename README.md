@@ -207,20 +207,6 @@ npm run dev
 
 ---
 
-## 🧪 Demo Accounts
-
-After seeding, use these credentials to explore different roles:
-
-| Role              | Username     | Password      | Access Level                                    |
-| ----------------- | ------------ | ------------- | ----------------------------------------------- |
-| 🔴 **SuperAdmin** | `superadmin` | `password123` | Full system access, user management, financials |
-| 🟡 **Admin**      | `admin`      | `password123` | Stock, production, orders, content management   |
-| 🟢 **Customer**   | `customer`   | `password123` | Browse products, place orders, track deliveries |
-
-> ⚠️ **Security Warning**: Change these credentials immediately in production!
-
----
-
 ## 🛠️ Tech Stack
 
 ### Backend Architecture
@@ -427,16 +413,6 @@ DELETE /api/audit-logs/cleanup     # Cleanup old logs (SuperAdmin)
 
 ---
 
-## 📚 Documentation
-
-| Document                                           | Description                     |
-| -------------------------------------------------- | ------------------------------- |
-| [DATABASE_SETUP.md](./backend/DATABASE_SETUP.md)   | Database configuration guide    |
-| [MIGRATION_GUIDE.md](./backend/MIGRATION_GUIDE.md) | Database migration instructions |
-| [CREDENTIALS.md](./backend/CREDENTIALS.md)         | Credentials management          |
-
----
-
 ## 🧩 Available Scripts
 
 ### Backend Commands
@@ -553,7 +529,5 @@ This is a proprietary project for Nile Technology Solutions. For internal contri
 <div align="center">
 
 ### 🌟 Built with ❤️ for Nile Technology Solutions
-
-**Questions?** Contact the development team
 
 </div>

@@ -19,9 +19,12 @@ const OrdersPage = () => {
   const fetchOrders = useCallback(async (isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     try {
-      const data = await orderApi.getOrders();
-      console.log('Orders data:', data);
-      setOrders(Array.isArray(data) ? data : []);
+      const response = await orderApi.getOrders();
+      console.log('Orders response:', response);
+      
+      // Handle nested response structure: { success: true, data: { orders: [...] } }
+      const ordersData = response?.data?.orders || response?.orders || response;
+      setOrders(Array.isArray(ordersData) ? ordersData : []);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
       setOrders([]);

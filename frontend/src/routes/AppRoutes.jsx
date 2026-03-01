@@ -41,6 +41,7 @@ const Stock = lazy(() => import('../pages/core/stock/StockPage'));
 const Production = lazy(() => import('../pages/core/production/ProductionPage'));
 const Orders = lazy(() => import('../pages/core/orders/OrdersPage'));
 const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
+const Reports = lazy(() => import('../pages/core/reports'));
 const UserManagement = lazy(() => import('../pages/superAdmin/userManagement/UserManagementPage'));
 const Settings = lazy(() => import('../pages/superAdmin/settings'));
 const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));
@@ -117,6 +118,7 @@ const AppRoutes = () => {
           <Route path="production" element={<Production />} />
           <Route path="orders" element={<Orders />} />
           <Route path="payments" element={<Payments />} />
+          <Route path="reports" element={<Reports />} />
           <Route path="todo" element={<Todo />} />
           <Route path="news" element={<NewsAdmin />} />
           

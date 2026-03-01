@@ -22,7 +22,8 @@ import {
   Zap,
   ShoppingCart,
   ListTodo,
-  FileText
+  FileText,
+  PieChart
 } from '../icons/index';
 
 import { ROLES, getRoleDisplayName } from '../../utils/roleUtils';
@@ -95,6 +96,12 @@ const AdminLayout = () => {
       href: '/admin/payments',
       icon: <DollarSign className="w-5 h-5" />,
       description: 'Payment Tracking'
+    },
+    {
+      name: 'Reports',
+      href: '/admin/reports',
+      icon: <PieChart className="w-5 h-5" />,
+      description: 'Business Reports'
     },
     {
       name: 'Daily Tasks',

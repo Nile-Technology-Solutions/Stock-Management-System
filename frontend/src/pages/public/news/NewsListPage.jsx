@@ -137,7 +137,7 @@ const NewsListPage = () => {
                 <GlassCard className="h-full flex flex-col overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 group-hover:border-cyan-500/50">
                   <div className="relative h-56 overflow-hidden">
                     <img 
-                      src={newsItem.imageUrl || newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'} 
+                      src={newsItem.imageUrl || newsItem.image } 
                       alt={newsItem.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {

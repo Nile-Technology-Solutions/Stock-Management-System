@@ -133,6 +133,13 @@ const AdminLayout = () => {
       exclusive: true
     },
     {
+      name: 'Audit Logs',
+      href: '/admin/audit-logs',
+      icon: <Shield className="w-5 h-5" />,
+      description: 'Security Tracking',
+      exclusive: true
+    },
+    {
       name: 'System Settings',
       href: '/admin/settings',
       icon: <Settings className="w-5 h-5" />,

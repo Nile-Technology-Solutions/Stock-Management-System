@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // ────────────────────────────────────────────────
@@ -294,4 +295,65 @@ model UserPreferences {
   updatedAt          DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ────────────────────────────────────────────────
+// Audit Logs
+// ────────────────────────────────────────────────
+model AuditLog {
+  id          Int          @id @default(autoincrement())
+  userId      Int?
+  userEmail   String?
+  userRole    String?
+  action      AuditAction
+  entity      String       // e.g., "User", "Order", "Product", "Stock"
+  entityId    Int?
+  description String
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?        // Additional context data
+  status      AuditStatus  @default(Success)
+  createdAt   DateTime     @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  LOGIN_FAILED
+  PASSWORD_RESET
+  PASSWORD_CHANGE
+  ROLE_CHANGE
+  STATUS_CHANGE
+  PAYMENT_INITIATED
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+  ORDER_PLACED
+  ORDER_UPDATED
+  ORDER_CANCELLED
+  STOCK_ADDED
+  STOCK_UPDATED
+  STOCK_DELETED
+  PRODUCTION_STARTED
+  PRODUCTION_COMPLETED
+  EXPORT_DATA
+  IMPORT_DATA
+  SETTINGS_CHANGED
+  USER_CREATED
+  USER_UPDATED
+  USER_DELETED
+}
+
+enum AuditStatus {
+  Success
+  Failed
+  Warning
 }

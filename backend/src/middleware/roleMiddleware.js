@@ -1,4 +1,4 @@
-const roleMiddleware = (roles = []) => (req, res, next) => {
+const requireRoles = (roles = []) => (req, res, next) => {
   if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
   if (roles.length === 0) return next();
 
@@ -9,4 +9,4 @@ const roleMiddleware = (roles = []) => (req, res, next) => {
   return next();
 };
 
-module.exports = roleMiddleware;
+module.exports = { requireRoles };

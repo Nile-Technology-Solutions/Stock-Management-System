@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
+const { requireRoles } = require('../middleware/roleMiddleware');
 const { ADMIN_ROLES } = require('../constans/roles');
 const upload = require('../config/multer');
 const productionController = require('../controllers/productionController');
 const { validateProduction, validateProductionUpdate, validateIdParam } = require('../middleware/validation');
 
 // All production routes require Admin or Super Admin
-router.use(authMiddleware, roleMiddleware(ADMIN_ROLES));
+router.use(authMiddleware, requireRoles(ADMIN_ROLES));
 
 // GET /api/production - Get all production records (supports ?status=&category= filters)
 router.get('/', productionController.getAllProduction);

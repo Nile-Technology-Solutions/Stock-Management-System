@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
+const { requireRoles } = require('../middleware/roleMiddleware');
 const { SUPER_ADMIN_ROLES } = require('../constans/roles');
 const userController = require('../controllers/userController');
 const { validateUser, validateUserUpdate, validateIdParam } = require('../middleware/validation');
 
 // All user management routes require Super Admin role
-router.use(authMiddleware, roleMiddleware(SUPER_ADMIN_ROLES));
+router.use(authMiddleware, requireRoles(SUPER_ADMIN_ROLES));
 
 // GET /api/users - Get all users
 router.get('/', userController.getAllUsers);

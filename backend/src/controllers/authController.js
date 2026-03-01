@@ -1,10 +1,21 @@
 const authService = require('../services/authService');
+const { logAction } = require('../middleware/auditLogger');
 
 async function register(req, res, next) {
   try {
     const { fullName, email, phone, password } = req.body;
 
     const result = await authService.register({ fullName, email, phone, password });
+
+    // Log user registration
+    await logAction(
+      { user: result.user, ip: req.ip, connection: req.connection, get: req.get.bind(req) },
+      'USER_CREATED',
+      'User',
+      result.user.id,
+      `New user registered: ${email}`,
+      { fullName, email, phone }
+    );
 
     res.status(201).json({
       success: true,
@@ -25,6 +36,16 @@ async function login(req, res, next) {
 
     const result = await authService.login({ identifier, password });
 
+    // Log successful login
+    await logAction(
+      { user: result.user, ip: req.ip, connection: req.connection, get: req.get.bind(req) },
+      'LOGIN',
+      'User',
+      result.user.id,
+      `User logged in: ${result.user.email}`,
+      { identifier }
+    );
+
     res.status(200).json({
       success: true,
       message: 'Login successful',
@@ -34,6 +55,16 @@ async function login(req, res, next) {
       },
     });
   } catch (err) {
+    // Log failed login attempt
+    await logAction(
+      { ip: req.ip, connection: req.connection, get: req.get.bind(req) },
+      'LOGIN_FAILED',
+      'User',
+      null,
+      `Failed login attempt for: ${identifier}`,
+      { identifier, error: err.message }
+    ).catch(console.error);
+    
     next(err);
   }
 }
@@ -84,6 +115,15 @@ async function changePassword(req, res, next) {
     const { oldPassword, newPassword } = req.body;
 
     await authService.changePassword({ userId, oldPassword, newPassword });
+
+    // Log password change
+    await logAction(
+      req,
+      'PASSWORD_CHANGE',
+      'User',
+      userId,
+      `User changed password: ${req.user.email}`
+    );
 
     return res.status(200).json({ success: true, message: 'Password changed successfully' });
   } catch (err) {

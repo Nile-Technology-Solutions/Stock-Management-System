@@ -15,6 +15,7 @@ const newsRoutes = require('./routes/newsRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const addressRoutes = require('./routes/addressRoutes');
+const auditLogRoutes = require('./routes/auditLogRoutes');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/audit-logs', auditLogRoutes);
 
 app.use(logger);
 app.use(errorHandler);

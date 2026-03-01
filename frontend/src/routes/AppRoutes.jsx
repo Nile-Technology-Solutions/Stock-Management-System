@@ -45,6 +45,7 @@ const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
 const Reports = lazy(() => import('../pages/core/reports'));
 const UserManagement = lazy(() => import('../pages/superAdmin/userManagement/UserManagementPage'));
 const Settings = lazy(() => import('../pages/superAdmin/settings'));
+const AuditLogs = lazy(() => import('../pages/superAdmin/auditLogs/AuditLogsPage'));
 const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));
 const NewsAdmin = lazy(() => import('../pages/admin/news/NewsAdminPage'));
 
@@ -130,6 +131,14 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
                 <UserManagement />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="audit-logs" 
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+                <AuditLogs />
               </ProtectedRoute>
             } 
           />

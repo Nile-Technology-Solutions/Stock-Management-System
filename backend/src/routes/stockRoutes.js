@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
+const { requireRoles } = require('../middleware/roleMiddleware');
 const { ADMIN_ROLES } = require('../constans/roles');
 const stockController = require('../controllers/stockController');
 const { validateStock, validateStockUpdate, validateIdParam } = require('../middleware/validation');
@@ -12,12 +12,12 @@ router.get('/', authMiddleware, stockController.getAllStock);
 router.get('/:id', authMiddleware, validateIdParam, stockController.getStockById);
 
 // POST /api/stock - Create a new stock item (Super Admin / Admin)
-router.post('/', authMiddleware, roleMiddleware(ADMIN_ROLES), validateStock, stockController.createStock);
+router.post('/', authMiddleware, requireRoles(ADMIN_ROLES), validateStock, stockController.createStock);
 
 // PUT /api/stock/:id - Update a stock item (Super Admin / Admin)
-router.put('/:id', authMiddleware, roleMiddleware(ADMIN_ROLES), validateIdParam, validateStockUpdate, stockController.updateStock);
+router.put('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, validateStockUpdate, stockController.updateStock);
 
 // DELETE /api/stock/:id - Delete a stock item (Super Admin / Admin)
-router.delete('/:id', authMiddleware, roleMiddleware(ADMIN_ROLES), validateIdParam, stockController.deleteStock);
+router.delete('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, stockController.deleteStock);
 
 module.exports = router;

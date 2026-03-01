@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
+const { requireRoles } = require('../middleware/roleMiddleware');
 const { ADMIN_ROLES } = require('../constans/roles');
 const orderController = require('../controllers/orderController');
 const { validateOrder, validateOrderUpdate, validateIdParam } = require('../middleware/validation');
@@ -18,9 +18,9 @@ router.get('/:id', validateIdParam, orderController.getOrderById);
 router.post('/', validateOrder, orderController.createOrder);
 
 // PUT /api/orders/:id - Update order status (admin/superadmin only)
-router.put('/:id', validateIdParam, roleMiddleware(ADMIN_ROLES), validateOrderUpdate, orderController.updateOrderStatus);
+router.put('/:id', validateIdParam, requireRoles(ADMIN_ROLES), validateOrderUpdate, orderController.updateOrderStatus);
 
 // DELETE /api/orders/:id - Delete order (admin/superadmin only)
-router.delete('/:id', validateIdParam, roleMiddleware(ADMIN_ROLES), orderController.deleteOrder);
+router.delete('/:id', validateIdParam, requireRoles(ADMIN_ROLES), orderController.deleteOrder);
 
 module.exports = router;

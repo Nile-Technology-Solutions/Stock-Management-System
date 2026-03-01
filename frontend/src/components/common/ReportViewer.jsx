@@ -3,7 +3,7 @@
  * Modal component for displaying report data with visualizations
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import GlassModal from './GlassModal';
 import StockReportView from '../reports/StockReportView';
 import ProductionReportView from '../reports/ProductionReportView';
@@ -26,7 +26,7 @@ const ReportViewer = ({ data, reportType, onClose }) => {
   // Determine which report view to render based on data structure
   const renderReportView = () => {
     if (!data) {
-      return <div className="text-center py-8 text-slate-600 dark:text-slate-400">No data available</div>;
+      return <div className="text-center py-8 text-slate-300">No data available</div>;
     }
 
     // Detect report type from data structure or use reportType prop
@@ -46,11 +46,11 @@ const ReportViewer = ({ data, reportType, onClose }) => {
     const formattedData = JSON.stringify(data, null, 2);
     return (
       <div 
-        className="max-h-[60vh] overflow-auto rounded-lg bg-gray-900 p-4"
+        className="max-h-[60vh] overflow-auto rounded-lg bg-slate-900 p-4"
         role="region"
         aria-label="Report data content"
       >
-        <pre className="text-sm text-gray-100 font-mono whitespace-pre-wrap break-words">
+        <pre className="text-sm text-slate-100 font-mono whitespace-pre-wrap break-words">
           <code>{formattedData}</code>
         </pre>
       </div>
@@ -72,11 +72,11 @@ const ReportViewer = ({ data, reportType, onClose }) => {
         {renderReportView()}
       </div>
 
-      <div className="mt-6 flex justify-end border-t border-slate-200 dark:border-slate-700 pt-4">
+      <div className="mt-6 flex justify-end border-t border-white/20 pt-4">
         <button
           onClick={onClose}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
-                     transition-colors duration-200 font-medium shadow-lg"
+          className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 
+                     text-white rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
           aria-label="Close report viewer"
         >
           Close

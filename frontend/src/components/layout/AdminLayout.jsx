@@ -80,6 +80,12 @@ const AdminLayout = () => {
       description: 'Inventory Control'
     },
     {
+      name: 'Products',
+      href: '/admin/showcase',
+      icon: <Sparkles className="w-5 h-5" />,
+      description: 'Product Catalog'
+    },
+    {
       name: 'Production',
       href: '/admin/production',
       icon: <Settings className="w-5 h-5" />,

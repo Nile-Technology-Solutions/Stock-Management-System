@@ -38,6 +38,7 @@ const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboar
 // Modularized Core/Admin Pages
 const Analytics = lazy(() => import('../pages/core/analytics/AnalyticsPage'));
 const Stock = lazy(() => import('../pages/core/stock/StockPage'));
+const Showcase = lazy(() => import('../pages/admin/showcase'));
 const Production = lazy(() => import('../pages/core/production/ProductionPage'));
 const Orders = lazy(() => import('../pages/core/orders/OrdersPage'));
 const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
@@ -115,6 +116,7 @@ const AppRoutes = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="stock" element={<Stock />} />
+          <Route path="showcase" element={<Showcase />} />
           <Route path="production" element={<Production />} />
           <Route path="orders" element={<Orders />} />
           <Route path="payments" element={<Payments />} />

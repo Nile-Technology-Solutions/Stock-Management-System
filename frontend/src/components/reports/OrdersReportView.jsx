@@ -64,7 +64,7 @@ const OrdersReportView = ({ data }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100 text-sm font-medium">Total Revenue</p>
-              <p className="text-3xl font-bold mt-2">${totalRevenue.toLocaleString()}</p>
+              <p className="text-3xl font-bold mt-2">ETB {totalRevenue.toLocaleString()}</p>
             </div>
             <DollarSign className="w-12 h-12 text-green-200" />
           </div>
@@ -74,7 +74,7 @@ const OrdersReportView = ({ data }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-purple-100 text-sm font-medium">Avg Order Value</p>
-              <p className="text-3xl font-bold mt-2">${avgOrderValue}</p>
+              <p className="text-3xl font-bold mt-2">ETB {avgOrderValue}</p>
             </div>
             <TrendingUp className="w-12 h-12 text-purple-200" />
           </div>
@@ -123,10 +123,10 @@ const OrdersReportView = ({ data }) => {
               <YAxis tick={{ fill: '#64748b' }} />
               <Tooltip 
                 contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
-                formatter={(value) => `$${value.toLocaleString()}`}
+                formatter={(value) => `ETB ${value.toLocaleString()}`}
               />
               <Legend />
-              <Bar dataKey="revenue" fill="#10b981" name="Revenue ($)" />
+              <Bar dataKey="revenue" fill="#10b981" name="Revenue (ETB)" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -158,7 +158,7 @@ const OrdersReportView = ({ data }) => {
                   <td className="py-3 px-4 text-sm text-slate-900 dark:text-slate-100">{order.productName || 'N/A'}</td>
                   <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">{order.quantity || 0}</td>
                   <td className="py-3 px-4 text-sm text-slate-900 dark:text-slate-100 font-medium">
-                    ${(order.totalAmount || 0).toLocaleString()}
+                    ETB {(order.totalAmount || 0).toLocaleString()}
                   </td>
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium

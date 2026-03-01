@@ -53,7 +53,7 @@ const PaymentsReportView = ({ data }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100 text-sm font-medium">Total Amount</p>
-              <p className="text-3xl font-bold mt-2">${totalAmount.toLocaleString()}</p>
+              <p className="text-3xl font-bold mt-2">ETB {totalAmount.toLocaleString()}</p>
             </div>
             <DollarSign className="w-12 h-12 text-green-200" />
           </div>
@@ -73,7 +73,7 @@ const PaymentsReportView = ({ data }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-purple-100 text-sm font-medium">Avg Payment</p>
-              <p className="text-3xl font-bold mt-2">${avgPayment}</p>
+              <p className="text-3xl font-bold mt-2">ETB {avgPayment}</p>
             </div>
             <CheckCircle className="w-12 h-12 text-purple-200" />
           </div>
@@ -163,7 +163,7 @@ const PaymentsReportView = ({ data }) => {
                   <td className="py-3 px-4 text-sm text-slate-900 dark:text-slate-100">#{payment.id || 'N/A'}</td>
                   <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">#{payment.orderId || 'N/A'}</td>
                   <td className="py-3 px-4 text-sm text-slate-900 dark:text-slate-100 font-medium">
-                    ${(payment.amount || 0).toLocaleString()}
+                    ETB {(payment.amount || 0).toLocaleString()}
                   </td>
                   <td className="py-3 px-4 text-sm text-slate-600 dark:text-slate-400">
                     {payment.paymentMethod || 'N/A'}

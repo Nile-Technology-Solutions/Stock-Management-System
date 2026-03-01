@@ -3,6 +3,7 @@ import GlassCard from '../../../components/common/GlassCard';
 import Button from '../../../components/common/Button';
 import Table from '../../../components/common/Table';
 import Modal from '../../../components/common/Modal';
+import ImageUpload from '../../../components/common/ImageUpload';
 import { Database, Package, RefreshCw, Plus, Search, Filter, Edit3, Trash2, AlertTriangle, Layers } from '../../../components/icons';
 import { useAuth } from '../../../context/AuthContext';
 import { stockApi, stockApiHelpers } from '../../../services/stockApi';
@@ -29,6 +30,7 @@ const emptyForm = {
   color: '',
   laminated: false,      // added: boolean field in schema
   typeNote: '',          // added: optional notes
+  images: [],            // temporary image storage
 };
 
 const StockPage = () => {
@@ -81,6 +83,7 @@ const StockPage = () => {
       color: item.color || '',
       laminated: item.laminated === true,
       typeNote: item.typeNote || '',
+      images: item.images || [],
     });
     setIsModalOpen(true);
   };
@@ -95,6 +98,13 @@ const StockPage = () => {
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleImagesChange = (images) => {
+    setFormData(prev => ({
+      ...prev,
+      images: images
     }));
   };
 
@@ -118,6 +128,12 @@ const StockPage = () => {
     try {
       // formatStockForApi maps all fields including categoryId and origin
       const itemData = stockApiHelpers.formatStockForApi(formData);
+
+      // TODO: When backend is ready, send images to server
+      // For now, images are stored temporarily in formData.images
+      // Backend integration: Send formData.images as multipart/form-data
+      // Example: const formDataToSend = new FormData();
+      //          formData.images.forEach(img => formDataToSend.append('images', img.file));
 
       let response;
       if (currentItem) {
@@ -181,10 +197,17 @@ const StockPage = () => {
         const name = typeof value === 'object' ? (value?.name || JSON.stringify(value)) : value;
         const origin = item.origin || '—';
         const catLabel = getCategoryLabel(item);
+        const hasImages = item.images && item.images.length > 0;
+        const imageUrl = hasImages ? item.images[0].url : null;
+        
         return (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
-              <Layers className="w-5 h-5 text-cyan-500" />
+            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden">
+              {imageUrl ? (
+                <img src={imageUrl} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                <Layers className="w-5 h-5 text-cyan-500" />
+              )}
             </div>
             <div>
               <div className="font-semibold text-slate-900 dark:text-slate-100">{name}</div>
@@ -473,6 +496,14 @@ const StockPage = () => {
               Laminated surface
             </label>
           </div>
+
+          {/* Image Upload */}
+          <ImageUpload
+            images={formData.images}
+            onChange={handleImagesChange}
+            maxImages={5}
+            label="Material Images"
+          />
 
           <div className="flex gap-3 pt-2">
             <Button type="button" variant="secondary" className="flex-1" onClick={() => setIsModalOpen(false)}>

@@ -1,0 +1,1 @@
+import{a as s}from"./api-BtDbGLyp.js";const a={getNews:async()=>s.get("/api/news"),getNewsById:async e=>s.get(`/api/news/${e}`),createNews:async e=>s.post("/api/news",e),updateNews:async(e,n)=>s.put(`/api/news/${e}`,n),deleteNews:async e=>s.delete(`/api/news/${e}`)};export{a as n};

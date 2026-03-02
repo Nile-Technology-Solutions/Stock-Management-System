@@ -1,7 +1,7 @@
 const express = require('express');
 const protect = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
-const { SUPER_ADMIN_ROLES } = require('../constans/roles');
+const { requireRoles } = require('../middleware/roleMiddleware');
+const { ADMIN_ROLES, SUPER_ADMIN_ROLES } = require('../constans/roles');
 
 const reportController = require('../controllers/reportController');
 
@@ -10,14 +10,13 @@ const router = express.Router();
 // Apply auth middleware to all routes below
 router.use(protect);
 
-// Apply role restriction to SuperAdmin for all report routes
-router.use(roleMiddleware(SUPER_ADMIN_ROLES));
+// Reports accessible by both Admin and SuperAdmin
+router.get('/stock', requireRoles(ADMIN_ROLES), reportController.getStockReport);
+router.get('/production', requireRoles(ADMIN_ROLES), reportController.getProductionReport);
+router.get('/orders', requireRoles(ADMIN_ROLES), reportController.getOrdersReport);
+router.get('/sales', requireRoles(ADMIN_ROLES), reportController.getSalesReport);
 
-// Dynamic reporting routes
-router.get('/stock', reportController.getStockReport);
-router.get('/production', reportController.getProductionReport);
-router.get('/orders', reportController.getOrdersReport);
-router.get('/payments', reportController.getPaymentsReport);
-router.get('/sales', reportController.getSalesReport);
+// Payments report - SuperAdmin only
+router.get('/payments', requireRoles(SUPER_ADMIN_ROLES), reportController.getPaymentsReport);
 
 module.exports = router;

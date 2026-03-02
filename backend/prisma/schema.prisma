@@ -3,28 +3,33 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // ────────────────────────────────────────────────
 // User & Role
 // ────────────────────────────────────────────────
 model User {
-  id        Int      @id @default(autoincrement())
-  fullName  String
-  email     String   @unique         // new: users now authenticate with email
-  username  String?  @unique         // kept for legacy/optional display
-  password  String   // hashed
-  role      UserRole @default(Customer)
-  phone     String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  username       String?  @unique // Optional for backward compatibility
+  password       String // hashed
+  role           UserRole @default(Customer)
+  phone          String   @unique
+  profilePicture String?
+  email          String   @unique
+  resetToken     String?  // For password reset
+  resetTokenExpiry DateTime? // Token expiration
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  addresses Address[]
-  orders    Order[]
-  todoItems TodoItem[]
-  newsPosts NewsPost[]
+  addresses   Address[]
+  orders      Order[]
+  todoItems   TodoItem[]
+  newsPosts   NewsPost[]
+  preferences UserPreferences?
 }
 
 enum UserRole {
@@ -56,8 +61,8 @@ model Address {
 // Category (dynamic, with optional sub-categories)
 // ────────────────────────────────────────────────
 model Category {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
   description String?
   parentId    Int?
 
@@ -85,7 +90,7 @@ model StockMaterial {
   lastUpdated DateTime       @updatedAt
   createdAt   DateTime       @default(now())
 
-  category Category?                @relation(fields: [categoryId], references: [id])
+  category Category?                 @relation(fields: [categoryId], references: [id])
   usages   ProductionMaterialUsage[]
 }
 
@@ -262,7 +267,7 @@ model NewsPost {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  author User? @relation(fields: [authorId], references: [id])
+  author User?   @relation(fields: [authorId], references: [id])
   photos Photo[]
 }
 
@@ -270,4 +275,85 @@ enum NewsStatus {
   Draft
   Published
   Archived
+}
+
+// ────────────────────────────────────────────────
+// User Preferences
+// ────────────────────────────────────────────────
+model UserPreferences {
+  id                 Int      @id @default(autoincrement())
+  userId             Int      @unique
+  emailNotifications Boolean  @default(true)
+  smsNotifications   Boolean  @default(false)
+  orderUpdates       Boolean  @default(true)
+  promotionalEmails  Boolean  @default(false)
+  newsletter         Boolean  @default(false)
+  language           String   @default("en")
+  currency           String   @default("ETB")
+  paymentMethod      String   @default("Chapa")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ────────────────────────────────────────────────
+// Audit Logs
+// ────────────────────────────────────────────────
+model AuditLog {
+  id          Int          @id @default(autoincrement())
+  userId      Int?
+  userEmail   String?
+  userRole    String?
+  action      AuditAction
+  entity      String       // e.g., "User", "Order", "Product", "Stock"
+  entityId    Int?
+  description String
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?        // Additional context data
+  status      AuditStatus  @default(Success)
+  createdAt   DateTime     @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  LOGIN_FAILED
+  PASSWORD_RESET
+  PASSWORD_CHANGE
+  ROLE_CHANGE
+  STATUS_CHANGE
+  PAYMENT_INITIATED
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+  ORDER_PLACED
+  ORDER_UPDATED
+  ORDER_CANCELLED
+  STOCK_ADDED
+  STOCK_UPDATED
+  STOCK_DELETED
+  PRODUCTION_STARTED
+  PRODUCTION_COMPLETED
+  EXPORT_DATA
+  IMPORT_DATA
+  SETTINGS_CHANGED
+  USER_CREATED
+  USER_UPDATED
+  USER_DELETED
+}
+
+enum AuditStatus {
+  Success
+  Failed
+  Warning
 }

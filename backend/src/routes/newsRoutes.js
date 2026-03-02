@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
+const { requireRoles } = require('../middleware/roleMiddleware');
 const { ADMIN_ROLES } = require('../constans/roles');
 const uploadNews = require('../config/multerNews');
 const newsController = require('../controllers/newsController');
@@ -15,7 +15,7 @@ router.get('/public', newsController.getPublishedNews);
 router.get('/public/:id', validateIdParam, newsController.getPublicNewsById);
 
 // ── Admin routes (auth required) ──
-router.use(authMiddleware, roleMiddleware(ADMIN_ROLES));
+router.use(authMiddleware, requireRoles(ADMIN_ROLES));
 
 // GET /api/news - List all news (role-scoped)
 router.get('/', newsController.getAllNews);

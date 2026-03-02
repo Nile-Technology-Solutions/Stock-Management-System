@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Management System </title>
+    <script>
+      // Apply theme immediately to prevent flash - default to light mode
+      (function() {
+        const theme = localStorage.getItem('sms_theme') || 'light';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+        // Add no-transition class to prevent transitions on page load
+        document.documentElement.classList.add('no-transition');
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-DCj9lJI-.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CuiT1lon.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

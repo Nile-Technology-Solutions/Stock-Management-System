@@ -4,19 +4,35 @@ const Joi = require('joi');
 const registerSchema = Joi.object({
   fullName: Joi.string().required(),
   email: Joi.string().email().required(),
+  phone: Joi.string().pattern(/^[0-9+\-\s()]+$/).min(10).required(),
   password: Joi.string().min(6).required(),
+  confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
+    'any.only': 'Passwords must match'
+  }),
   // role is assigned server-side for normal registration; optional for admin-created users
   role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').optional(),
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
+  identifier: Joi.string().required(), // Can be email or phone
   password: Joi.string().required(),
 });
 
 const changePasswordSchema = Joi.object({
   oldPassword: Joi.string().required(),
   newPassword: Joi.string().min(6).required(),
+});
+
+const forgotPasswordSchema = Joi.object({
+  identifier: Joi.string().required(), // Can be email or phone
+});
+
+const resetPasswordSchema = Joi.object({
+  token: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
+  confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required().messages({
+    'any.only': 'Passwords must match'
+  }),
 });
 
 // ===================== USERS =====================
@@ -228,6 +244,8 @@ module.exports = {
   validateRegister: validate(registerSchema),
   validateLogin: validate(loginSchema),
   validateChangePassword: validate(changePasswordSchema),
+  validateForgotPassword: validate(forgotPasswordSchema),
+  validateResetPassword: validate(resetPasswordSchema),
   validateUser: validate(userSchema),
   validateUserUpdate: validate(userUpdateSchema),
   validateStock: validate(stockSchema),

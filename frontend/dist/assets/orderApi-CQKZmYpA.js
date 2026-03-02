@@ -1,0 +1,1 @@
+import{a as e}from"./api-BtDbGLyp.js";const d={getOrders:async()=>e.get("/api/orders"),getOrderById:async r=>e.get(`/api/orders/${r}`),createOrder:async r=>e.post("/api/orders",r),updateOrder:async(r,t)=>e.put(`/api/orders/${r}`,t),deleteOrder:async r=>e.delete(`/api/orders/${r}`),trackOrder:async r=>e.get(`/api/orders/${r}`)};export{d as o};

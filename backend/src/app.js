@@ -33,6 +33,7 @@ app.use('/api/auth', authRoutes);
 // Admin routes (protected - mount additional routes here)
 app.use('/api/stock', stockRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/addresses', addressRoutes);
 app.use('/api/production', productionRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);

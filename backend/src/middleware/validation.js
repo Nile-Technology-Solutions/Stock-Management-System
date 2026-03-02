@@ -38,7 +38,8 @@ const resetPasswordSchema = Joi.object({
 // ===================== USERS =====================
 const userSchema = Joi.object({
   fullName: Joi.string().required(),
-  username: Joi.string().required(),
+  email: Joi.string().email().required(),
+  username: Joi.string().optional().allow(''),
   password: Joi.string().min(6).required(),
   role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').required(),
 });
@@ -46,7 +47,8 @@ const userSchema = Joi.object({
 // Update schema: all fields optional but require at least one
 const userUpdateSchema = Joi.object({
   fullName: Joi.string().optional(),
-  username: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  username: Joi.string().optional().allow(''),
   password: Joi.string().min(6).optional(),
   role: Joi.string().valid('SuperAdmin', 'Admin', 'Customer').optional(),
 }).min(1);
@@ -171,6 +173,26 @@ const newsSchema = Joi.object({
   authorId: Joi.number().integer().optional(),
 });
 
+// ===================== ADDRESSES =====================
+const addressSchema = Joi.object({
+  street: Joi.string().required(),
+  city: Joi.string().required(),
+  state: Joi.string().optional().allow(''),
+  country: Joi.string().optional().allow(''),
+  zipCode: Joi.string().optional().allow(''),
+  isDefault: Joi.boolean().optional(),
+});
+
+const addressUpdateSchema = Joi.object({
+  street: Joi.string().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional().allow(''),
+  country: Joi.string().optional().allow(''),
+  zipCode: Joi.string().optional().allow(''),
+  isDefault: Joi.boolean().optional(),
+}).min(1);
+
+
 const newsUpdateSchema = Joi.object({
   title: Joi.string().optional(),
   content: Joi.string().optional(),
@@ -239,6 +261,8 @@ module.exports = {
   validateTodoUpdate: validate(todoUpdateSchema),
   validateNews: validateMultipart(newsSchema),
   validateNewsUpdate: validateMultipart(newsUpdateSchema),
+  validateAddress: validate(addressSchema),
+  validateAddressUpdate: validate(addressUpdateSchema),
 };
 
 // ID param validator (exports separated because it validates params not body)

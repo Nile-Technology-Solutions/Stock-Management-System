@@ -1,20 +1,24 @@
 const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
+const { validateAddress, validateAddressUpdate, validateIdParam } = require('../middleware/validation');
 const addressController = require('../controllers/addressController');
 
-// All address routes require authentication
+// all address endpoints require logged in user
 router.use(authMiddleware);
 
-// GET /api/addresses - Get all addresses for current user
-router.get('/', addressController.getAddresses);
+// GET /api/addresses - list current user's addresses
+router.get('/', addressController.getAllAddresses);
 
-// POST /api/addresses - Create a new address
-router.post('/', addressController.createAddress);
+// GET /api/addresses/:id - get single address
+router.get('/:id', validateIdParam, addressController.getAddressById);
 
-// PUT /api/addresses/:id - Update an address
-router.put('/:id', addressController.updateAddress);
+// POST /api/addresses - create new address
+router.post('/', validateAddress, addressController.createAddress);
 
-// DELETE /api/addresses/:id - Delete an address
-router.delete('/:id', addressController.deleteAddress);
+// PUT /api/addresses/:id - update address
+router.put('/:id', validateIdParam, validateAddressUpdate, addressController.updateAddress);
+
+// DELETE /api/addresses/:id - delete address
+router.delete('/:id', validateIdParam, addressController.deleteAddress);
 
 module.exports = router;

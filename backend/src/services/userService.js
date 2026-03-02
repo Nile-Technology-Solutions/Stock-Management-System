@@ -5,6 +5,7 @@ const { hashPassword } = require('../utils/hash');
 const USER_SELECT = {
     id: true,
     fullName: true,
+    email: true,
     username: true,
     role: true,
     phone: true,
@@ -46,14 +47,24 @@ async function getUserById(id) {
  * Expects: { fullName, username, password, role }
  */
 async function createUser(data) {
-    const { fullName, username, password, role } = data;
+    const { fullName, username = null, email, password, role } = data;
 
-    // Check for duplicate username
-    const existing = await prisma.user.findUnique({ where: { username } });
-    if (existing) {
-        const err = new Error('Username already exists');
+    // Email must be unique
+    const existingEmail = await prisma.user.findUnique({ where: { email } });
+    if (existingEmail) {
+        const err = new Error('Email already exists');
         err.statusCode = 409;
         throw err;
+    }
+
+    // If username provided ensure uniqueness as well
+    if (username) {
+        const existingUsername = await prisma.user.findUnique({ where: { username } });
+        if (existingUsername) {
+            const err = new Error('Username already exists');
+            err.statusCode = 409;
+            throw err;
+        }
     }
 
     const hashedPassword = await hashPassword(password);
@@ -61,6 +72,7 @@ async function createUser(data) {
     const user = await prisma.user.create({
         data: {
             fullName,
+            email,
             username,
             password: hashedPassword,
             role,
@@ -81,6 +93,16 @@ async function updateUser(id, updateData) {
         const err = new Error('User not found');
         err.statusCode = 404;
         throw err;
+    }
+
+    // If a new email is being set, ensure it isn't taken by another user
+    if (updateData.email && updateData.email !== existing.email) {
+        const dupEmail = await prisma.user.findUnique({ where: { email: updateData.email } });
+        if (dupEmail) {
+            const err = new Error('Email already exists');
+            err.statusCode = 409;
+            throw err;
+        }
     }
 
     // If a new username is provided, check it isn't taken by another user

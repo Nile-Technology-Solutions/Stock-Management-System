@@ -1,9 +1,5 @@
 const prisma = require('../config/db');
 
-/**
- * Get all finished products with optional filtering.
- * Supports: categoryId, featured, color, search (name/description), minPrice, maxPrice
- */
 async function getAllProducts(query = {}) {
     const where = {};
 

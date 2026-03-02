@@ -9,10 +9,17 @@ async function main() {
   const hashedPassword = await bcrypt.hash('password123', 10);
 
   const superAdmin = await prisma.user.upsert({
-    where: { username: 'superadmin' },
-    update: {},
+    where: { email: 'superadmin@example.com' },
+    update: {
+      fullName: 'Super Admin User',
+      username: 'superadmin',
+      password: hashedPassword,
+      role: 'SuperAdmin',
+      phone: '0911000001',
+    },
     create: {
       fullName: 'Super Admin User',
+      email: 'superadmin@example.com',
       username: 'superadmin',
       password: hashedPassword,
       role: 'SuperAdmin',
@@ -21,10 +28,17 @@ async function main() {
   });
 
   const admin = await prisma.user.upsert({
-    where: { username: 'admin' },
-    update: {},
+    where: { email: 'admin@example.com' },
+    update: {
+      fullName: 'Admin User',
+      username: 'admin',
+      password: hashedPassword,
+      role: 'Admin',
+      phone: '0911000002',
+    },
     create: {
       fullName: 'Admin User',
+      email: 'admin@example.com',
       username: 'admin',
       password: hashedPassword,
       role: 'Admin',
@@ -33,10 +47,18 @@ async function main() {
   });
 
   const customer = await prisma.user.upsert({
-    where: { username: 'customer' },
-    update: {},
+    where: { email: 'customer@example.com' },
+    update: {
+      fullName: 'John Doe',
+      username: 'customer',
+      password: hashedPassword,
+      role: 'Customer',
+      phone: '0911000003',
+      // do not recreate address on update, assume existing
+    },
     create: {
       fullName: 'John Doe',
+      email: 'customer@example.com',
       username: 'customer',
       password: hashedPassword,
       role: 'Customer',
@@ -54,24 +76,37 @@ async function main() {
   console.log('✅ Users seeded');
 
   // 2. Seed Categories
-  const bedCategory = await prisma.category.create({
-    data: { name: 'Bed', description: 'Bedroom furniture' },
+  // use upsert or createMany with skipDuplicates to avoid conflicts
+  const bedCategory = await prisma.category.upsert({
+    where: { name: 'Bed' },
+    update: { description: 'Bedroom furniture' },
+    create: { name: 'Bed', description: 'Bedroom furniture' },
   });
-  const doorCategory = await prisma.category.create({
-    data: { name: 'Door', description: 'Interior and exterior doors' },
+  const doorCategory = await prisma.category.upsert({
+    where: { name: 'Door' },
+    update: { description: 'Interior and exterior doors' },
+    create: { name: 'Door', description: 'Interior and exterior doors' },
   });
-  const tableCategory = await prisma.category.create({
-    data: { name: 'Table', description: 'Tables and desks' },
+  const tableCategory = await prisma.category.upsert({
+    where: { name: 'Table' },
+    update: { description: 'Tables and desks' },
+    create: { name: 'Table', description: 'Tables and desks' },
   });
-  const cabinetCategory = await prisma.category.create({
-    data: { name: 'Cabinet', description: 'Cabinets and storage' },
+  const cabinetCategory = await prisma.category.upsert({
+    where: { name: 'Cabinet' },
+    update: { description: 'Cabinets and storage' },
+    create: { name: 'Cabinet', description: 'Cabinets and storage' },
   });
-  const otherCategory = await prisma.category.create({
-    data: { name: 'Other', description: 'Miscellaneous items' },
+  const otherCategory = await prisma.category.upsert({
+    where: { name: 'Other' },
+    update: { description: 'Miscellaneous items' },
+    create: { name: 'Other', description: 'Miscellaneous items' },
   });
   // Sub-category example
-  const woodCategory = await prisma.category.create({
-    data: { name: 'Wood', description: 'Wood materials', parentId: otherCategory.id },
+  const woodCategory = await prisma.category.upsert({
+    where: { name: 'Wood' },
+    update: { description: 'Wood materials', parentId: otherCategory.id },
+    create: { name: 'Wood', description: 'Wood materials', parentId: otherCategory.id },
   });
 
   console.log('✅ Categories seeded');

@@ -10,26 +10,39 @@ export const authApi = {
   /**
    * User Login
    * POST /api/auth/login
-   * @param {string} username - User's username
+   * @param {string} identifier - User's email or phone number
    * @param {string} password - User's password
    * @returns {Promise<{token: string, user: Object}>}
    */
-  login: async (username, password) => {
+  login: async (identifier, password) => {
     // Use real API
     const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ identifier, password }),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Login failed' }));
-      throw new Error(error.message || 'Invalid username or password');
+      const errorData = await response.json().catch(() => ({ error: { message: 'Login failed' } }));
+      // Extract the actual error message from the nested structure
+      const errorMessage = errorData.error?.message || errorData.message || 'Invalid email/phone or password';
+      throw new Error(errorMessage);
     }
 
-    return await response.json();
+    const result = await response.json();
+    
+    // Backend returns { success, message, data: { user, token } }
+    if (result.success && result.data) {
+      return {
+        user: result.data.user,
+        token: result.data.token
+      };
+    }
+    
+    // Fallback for different response structure
+    return result;
   },
 
   /**
@@ -37,8 +50,10 @@ export const authApi = {
    * POST /api/auth/register
    * @param {Object} userData - User registration data
    * @param {string} userData.fullName - User's full name
-   * @param {string} userData.username - Desired username
+   * @param {string} userData.email - User's email address
+   * @param {string} userData.phone - User's phone number
    * @param {string} userData.password - User's password
+   * @param {string} userData.confirmPassword - Password confirmation
    * @param {string} userData.role - User role (default: "Customer")
    * @returns {Promise<Object>} Created user object
    */
@@ -51,18 +66,30 @@ export const authApi = {
       },
       body: JSON.stringify({
         fullName: userData.fullName,
-        username: userData.username,
+        email: userData.email,
+        phone: userData.phone,
         password: userData.password,
+        confirmPassword: userData.confirmPassword,
         role: userData.role || 'Customer',
       }),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Registration failed' }));
-      throw new Error(error.message || 'Unable to create account');
+      const errorData = await response.json().catch(() => ({ error: { message: 'Registration failed' } }));
+      // Extract the actual error message from the nested structure
+      const errorMessage = errorData.error?.message || errorData.message || 'Unable to create account';
+      throw new Error(errorMessage);
     }
 
-    return await response.json();
+    const result = await response.json();
+    
+    // Backend returns { success, message, data: { user, token } }
+    if (result.success && result.data) {
+      return result.data.user;
+    }
+    
+    // Fallback for different response structure
+    return result;
   },
 
   /**
@@ -109,6 +136,54 @@ export const authApi = {
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: 'Password change failed' }));
       throw new Error(error.message || 'Unable to change password');
+    }
+
+    return await response.json();
+  },
+
+  /**
+   * Request password reset
+   * POST /api/auth/forgot-password
+   * @param {string} identifier - User's email or phone number
+   * @returns {Promise<{success: boolean, message: string}>}
+   */
+  forgotPassword: async (identifier) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ identifier }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Password reset request failed' }));
+      throw new Error(error.message || 'Unable to process password reset request');
+    }
+
+    return await response.json();
+  },
+
+  /**
+   * Reset password with token
+   * POST /api/auth/reset-password
+   * @param {string} token - Reset token
+   * @param {string} newPassword - New password
+   * @param {string} confirmPassword - Password confirmation
+   * @returns {Promise<{success: boolean, message: string}>}
+   */
+  resetPassword: async (token, newPassword, confirmPassword) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token, newPassword, confirmPassword }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Password reset failed' }));
+      throw new Error(error.message || 'Unable to reset password');
     }
 
     return await response.json();

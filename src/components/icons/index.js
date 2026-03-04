@@ -96,7 +96,8 @@ export {
   Database,
   Edit3,
   Copy,
-  ExternalLink
+  ExternalLink,
+  Hash
 } from 'lucide-react';
 
 // Communication Icons

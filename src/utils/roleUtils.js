@@ -5,6 +5,7 @@
 
 // Role constants match mockData.js strings
 export const ROLES = {
+  CUSTOMER: 'Customer',
   CLIENT: 'Customer',
   ADMIN: 'Admin',
   SUPER_ADMIN: 'SuperAdmin'

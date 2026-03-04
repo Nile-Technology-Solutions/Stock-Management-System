@@ -85,7 +85,10 @@ export const apiRequest = async (endpoint, options = {}) => {
     // Parse response
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Request failed: ${response.statusText}`);
+      console.error('API Error Response:', errorData);
+      const errorMessage = errorData.message || `Request failed: ${response.statusText}`;
+      const errorDetails = errorData.details ? `\n${errorData.details.join('\n')}` : '';
+      throw new Error(errorMessage + errorDetails);
     }
 
     // Return parsed JSON or empty object for 204 No Content

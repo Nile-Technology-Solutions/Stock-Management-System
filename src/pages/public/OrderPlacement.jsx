@@ -6,6 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
 import ErrorState from '../../components/common/ErrorState';
+import GlassCard from '../../components/common/GlassCard';
+import OrderSuccessModal from '../../components/order/OrderSuccessModal';
 
 // Swagger Order schema:
 // id, userId (required), productName (required), quantity (required),
@@ -20,6 +22,8 @@ const OrderPlacement = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [orderResponse, setOrderResponse] = useState(null);
 
   const [formData, setFormData] = useState({
     quantity: 1,
@@ -81,24 +85,35 @@ const OrderPlacement = () => {
       setError(null);
 
       // Map to Swagger Order schema
+      // Note: userId is automatically set by backend from authenticated user
       const orderData = {
-        userId: user.id || user.userId, // Required by spec
-        productName: product.name,      // Required by spec
+        productId: parseInt(productId),  // Link to the finished product
+        productName: product.name,       // Required by spec
         quantity: parseInt(formData.quantity),
-        deliveryAddressId: formData.deliveryAddressId ? parseInt(formData.deliveryAddressId) : null,
-        paymentMethod: formData.paymentMethod,
-        customNotes: formData.customNotes,
+        customNotes: formData.customNotes || '',
+        totalPrice: product.price ? parseFloat(product.price) * parseInt(formData.quantity) : null,
       };
 
-      const response = await orderApi.createOrder(orderData);
-
-      if (response && response.paymentUrl) {
-        window.location.href = response.paymentUrl;
-      } else if (response && (response.orderId || response.id)) {
-        navigate(`/payment/success?orderId=${response.orderId || response.id}`);
-      } else {
-        throw new Error('Invalid response from order service');
+      // Only include deliveryAddressId if it has a value
+      if (formData.deliveryAddressId && formData.deliveryAddressId !== '') {
+        orderData.deliveryAddressId = parseInt(formData.deliveryAddressId);
       }
+
+      console.log('Sending order data:', orderData);
+      const response = await orderApi.createOrder(orderData);
+      console.log('Order response:', response);
+
+      // Backend returns { data: order, message: '...' }
+      const order = response.data || response;
+      const orderId = order.id;
+
+      if (!orderId) {
+        throw new Error('Invalid response from order service - no order ID received');
+      }
+
+      // Store the response and show success modal
+      setOrderResponse(response);
+      setShowSuccessModal(true);
     } catch (err) {
       setError(err.message || 'Failed to place order');
     } finally {
@@ -210,6 +225,13 @@ const OrderPlacement = () => {
           </div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      <OrderSuccessModal 
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        orderData={orderResponse}
+      />
     </div>
   );
 };

@@ -36,15 +36,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
-    // Map fullName → name (mock API uses fullName, real API may use name)
-    const resolvedName = userData.name || userData.fullName || (userData.email ? userData.email.split('@')[0] : 'User');
+    // Backend returns fullName, map it to name for consistency
+    // Also check for username as fallback
+    const resolvedName = userData.fullName || userData.name || userData.username || (userData.email ? userData.email.split('@')[0] : 'User');
     const resolvedRole = userData.role || 'Customer';
 
     const userWithDefaults = {
       ...userData,
       id: userData.id || Date.now(),
       email: userData.email || '',
+      username: userData.username || '',
       name: resolvedName,
+      fullName: userData.fullName || resolvedName, // Keep fullName for compatibility
       role: resolvedRole,
       token: userData.token || `mock_token_${Date.now()}`,
       loginTime: new Date().toISOString(),
@@ -55,7 +58,9 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('sms_user', JSON.stringify({
       id: userWithDefaults.id,
       email: userWithDefaults.email,
+      username: userWithDefaults.username,
       name: userWithDefaults.name,
+      fullName: userWithDefaults.fullName,
       role: userWithDefaults.role,
       loginTime: userWithDefaults.loginTime
     }));

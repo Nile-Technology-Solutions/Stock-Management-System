@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
+import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/30 to-sky-50/20 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
       {/* Hero Section */}
@@ -341,35 +343,245 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 dark:from-cyan-600 dark:via-sky-600 dark:to-blue-600 rounded-2xl shadow-2xl p-12 md:p-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-cyan-50 mb-8 max-w-2xl mx-auto">
-              Explore our products and place your first order today
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/products">
-                <Button
-                  variant="secondary"
-                  size="large"
-                  className="bg-white hover:bg-slate-50 text-cyan-600 min-w-[200px]"
-                >
-                  View Products
-                </Button>
-              </Link>
-              <Link to="/news">
-                <Button
-                  variant="ghost-secondary"
-                  size="large"
-                  className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 min-w-[200px]"
-                >
-                  Latest News
-                </Button>
-              </Link>
+      {/* CTA Section - Futuristic Design */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-cyan-900 to-blue-900 dark:from-slate-950 dark:via-cyan-950 dark:to-blue-950" />
+        
+        {/* Animated Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)]" />
+        
+        {/* Glowing Orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main CTA Card */}
+          <div className="relative group">
+            {/* Glow Effect */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse" />
+            
+            {/* Card Content */}
+            <div className="relative bg-gradient-to-br from-slate-900/90 via-cyan-900/90 to-blue-900/90 dark:from-slate-950/90 dark:via-cyan-950/90 dark:to-blue-950/90 backdrop-blur-xl rounded-3xl border border-cyan-500/20 shadow-2xl overflow-hidden">
+              {/* Animated Border */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+              </div>
+              
+              <div className="relative p-12 md:p-16 lg:p-20">
+                {/* Badge */}
+                <div className="flex justify-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500/10 border border-cyan-500/30 rounded-full backdrop-blur-sm">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                    <span className="text-sm font-bold text-cyan-300 uppercase tracking-wider">
+                      Limited Time Offer
+                    </span>
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                  </div>
+                </div>
+
+                {/* Heading */}
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6">
+                  <span className="bg-gradient-to-r from-white via-cyan-100 to-sky-100 bg-clip-text text-transparent">
+                    Ready to Get Started?
+                  </span>
+                </h2>
+                
+                {/* Subheading */}
+                <p className="text-xl md:text-2xl text-center text-cyan-100/80 mb-4 max-w-3xl mx-auto leading-relaxed">
+                  {isAuthenticated 
+                    ? "Explore our premium products and place your order with exclusive member benefits"
+                    : "Join thousands of satisfied customers and experience the future of inventory management"
+                  }
+                </p>
+                
+                {/* Features List */}
+                {!isAuthenticated && (
+                  <div className="flex flex-wrap justify-center gap-6 mb-12 mt-8">
+                    <div className="flex items-center gap-2 text-cyan-200">
+                      <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-medium">Free Account</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-200">
+                      <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-medium">Instant Setup</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-200">
+                      <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-medium">24/7 Support</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-200">
+                      <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-medium">Secure Payments</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12">
+                  {!isAuthenticated ? (
+                    <>
+                      {/* Primary CTA - Sign Up */}
+                      <Link to="/register" className="group/btn relative">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 rounded-xl blur opacity-75 group-hover/btn:opacity-100 transition duration-300" />
+                        <button className="relative flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 hover:from-cyan-400 hover:via-sky-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl shadow-2xl shadow-cyan-500/50 transition-all duration-300 group-hover/btn:scale-105 group-hover/btn:shadow-cyan-500/70">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                          <span>START FREE TODAY</span>
+                          <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </button>
+                      </Link>
+
+                      {/* Secondary CTA - Login */}
+                      <Link to="/login" className="group/btn relative">
+                        <button className="relative flex items-center gap-3 px-10 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-lg rounded-xl border-2 border-cyan-400/50 hover:border-cyan-400 shadow-lg transition-all duration-300 group-hover/btn:scale-105">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                          </svg>
+                          <span>SIGN IN</span>
+                        </button>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {/* Authenticated User CTAs */}
+                      <Link to="/products" className="group/btn relative">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 rounded-xl blur opacity-75 group-hover/btn:opacity-100 transition duration-300" />
+                        <button className="relative flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-500 hover:from-cyan-400 hover:via-sky-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl shadow-2xl shadow-cyan-500/50 transition-all duration-300 group-hover/btn:scale-105">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                          </svg>
+                          <span>BROWSE PRODUCTS</span>
+                          <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </button>
+                      </Link>
+
+                      <Link to="/dashboard" className="group/btn relative">
+                        <button className="relative flex items-center gap-3 px-10 py-5 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-lg rounded-xl border-2 border-cyan-400/50 hover:border-cyan-400 shadow-lg transition-all duration-300 group-hover/btn:scale-105">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                          </svg>
+                          <span>MY DASHBOARD</span>
+                        </button>
+                      </Link>
+                    </>
+                  )}
+                </div>
+
+                {/* Secondary Actions Row */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-6">
+                  {/* Track Order - Always Visible */}
+                  <Link to="/order-tracking" className="group/btn relative">
+                    <button className="relative flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 hover:from-orange-500/30 hover:to-red-500/30 backdrop-blur-sm text-orange-200 hover:text-orange-100 font-semibold rounded-lg border border-orange-400/50 hover:border-orange-400 shadow-lg transition-all duration-300 group-hover/btn:scale-105">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span>Track Order</span>
+                    </button>
+                  </Link>
+
+                  {/* Latest News */}
+                  <Link to="/news" className="group/btn relative">
+                    <button className="relative flex items-center gap-2 px-8 py-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-cyan-200 hover:text-cyan-100 font-semibold rounded-lg border border-cyan-400/30 hover:border-cyan-400/50 transition-all duration-300 group-hover/btn:scale-105">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                      <span>Latest News</span>
+                    </button>
+                  </Link>
+                </div>
+
+                {/* Trust Indicators */}
+                {!isAuthenticated && (
+                  <div className="mt-12 pt-8 border-t border-cyan-500/20">
+                    <p className="text-center text-cyan-200/60 text-sm mb-6">
+                      Trusted by 50,000+ businesses worldwide
+                    </p>
+                    <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
+                      {/* Trust Badges */}
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-cyan-200 text-sm font-medium">SSL Secured</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-cyan-200 text-sm font-medium">Money Back Guarantee</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="text-cyan-200 text-sm font-medium">Verified Platform</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+            {/* Card 1 */}
+            <div className="relative group/card">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-sky-500 rounded-2xl blur opacity-30 group-hover/card:opacity-60 transition duration-300" />
+              <div className="relative bg-slate-900/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-2xl border border-cyan-500/20 p-6 text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-sky-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">Quick Setup</h3>
+                <p className="text-cyan-200/70 text-sm">Get started in under 5 minutes with our intuitive onboarding</p>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="relative group/card">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-sky-500 to-blue-500 rounded-2xl blur opacity-30 group-hover/card:opacity-60 transition duration-300" />
+              <div className="relative bg-slate-900/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-2xl border border-sky-500/20 p-6 text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-sky-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">Bank-Level Security</h3>
+                <p className="text-cyan-200/70 text-sm">Your data is protected with enterprise-grade encryption</p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="relative group/card">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-30 group-hover/card:opacity-60 transition duration-300" />
+              <div className="relative bg-slate-900/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-2xl border border-blue-500/20 p-6 text-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">24/7 Support</h3>
+                <p className="text-cyan-200/70 text-sm">Expert assistance whenever you need it, day or night</p>
+              </div>
             </div>
           </div>
         </div>

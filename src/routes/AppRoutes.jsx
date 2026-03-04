@@ -26,6 +26,11 @@ const PaymentPending = lazy(() => import('../pages/payment/PaymentPending'));
 // Auth Pages
 const Login = lazy(() => import('../pages/auth/Login'));
 const Register = lazy(() => import('../pages/auth/Register'));
+const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
+const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
+
+// Profile Page
+const Profile = lazy(() => import('../pages/profile/ProfilePage'));
 
 // Unified Admin Dashboard (role-based content)
 const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboardPage'));
@@ -33,11 +38,14 @@ const AdminDashboard = lazy(() => import('../pages/admin/dashboard/AdminDashboar
 // Modularized Core/Admin Pages
 const Analytics = lazy(() => import('../pages/core/analytics/AnalyticsPage'));
 const Stock = lazy(() => import('../pages/core/stock/StockPage'));
+const Showcase = lazy(() => import('../pages/admin/showcase'));
 const Production = lazy(() => import('../pages/core/production/ProductionPage'));
 const Orders = lazy(() => import('../pages/core/orders/OrdersPage'));
 const Payments = lazy(() => import('../pages/core/payments/PaymentsPage'));
+const Reports = lazy(() => import('../pages/core/reports'));
 const UserManagement = lazy(() => import('../pages/superAdmin/userManagement/UserManagementPage'));
 const Settings = lazy(() => import('../pages/superAdmin/settings'));
+const AuditLogs = lazy(() => import('../pages/superAdmin/auditLogs/AuditLogsPage'));
 const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));
 const NewsAdmin = lazy(() => import('../pages/admin/news/NewsAdminPage'));
 
@@ -78,6 +86,23 @@ const AppRoutes = () => {
             <Register />
           </PublicOnlyRoute>
         } />
+        <Route path="/forgot-password" element={
+          <PublicOnlyRoute>
+            <ForgotPassword />
+          </PublicOnlyRoute>
+        } />
+        <Route path="/reset-password" element={
+          <PublicOnlyRoute>
+            <ResetPassword />
+          </PublicOnlyRoute>
+        } />
+
+        {/* Profile Route - Protected, accessible by all authenticated users */}
+        <Route path="/profile" element={
+          <ProtectedRoute allowedRoles={[ROLES.CUSTOMER, ROLES.ADMIN, ROLES.SUPER_ADMIN]}>
+            <Profile />
+          </ProtectedRoute>
+        } />
 
         {/* Protected Admin Routes - Accessible by both Admin and Super Admin */}
         <Route
@@ -92,9 +117,11 @@ const AppRoutes = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="stock" element={<Stock />} />
+          <Route path="showcase" element={<Showcase />} />
           <Route path="production" element={<Production />} />
           <Route path="orders" element={<Orders />} />
           <Route path="payments" element={<Payments />} />
+          <Route path="reports" element={<Reports />} />
           <Route path="todo" element={<Todo />} />
           <Route path="news" element={<NewsAdmin />} />
           
@@ -104,6 +131,14 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
                 <UserManagement />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="audit-logs" 
+            element={
+              <ProtectedRoute allowedRoles={[ROLES.SUPER_ADMIN]}>
+                <AuditLogs />
               </ProtectedRoute>
             } 
           />

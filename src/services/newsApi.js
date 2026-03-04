@@ -3,7 +3,7 @@
  * Strictly connects to the real backend for all news operations
  */
 
-import { api } from './api';
+import { api, API_BASE_URL, getAuthToken } from './api';
 
 export const newsApi = {
   /**
@@ -26,24 +26,78 @@ export const newsApi = {
   },
 
   /**
-   * Create new news post
+   * Create new news post with file upload support
    * POST /api/news
    * @param {Object} newsData - News post data
+   * @param {File[]} photos - Array of photo files
    * @returns {Promise<Object>} Created news post
    */
-  createNews: async (newsData) => {
-    return api.post('/api/news', newsData);
+  createNews: async (newsData, photos = []) => {
+    const formData = new FormData();
+    formData.append('title', newsData.title);
+    formData.append('content', newsData.content);
+    formData.append('status', newsData.status || 'Published');
+    if (newsData.publishDate) {
+      formData.append('publishDate', newsData.publishDate);
+    }
+    
+    // Append photo files
+    photos.forEach(photo => {
+      formData.append('photos', photo);
+    });
+
+    const response = await fetch(`${API_BASE_URL}/api/news`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to create news post');
+    }
+
+    return response.json();
   },
 
   /**
-   * Update news post
+   * Update news post with file upload support
    * PUT /api/news/{id}
    * @param {number} id - News post ID
    * @param {Object} newsData - Updated news post data
+   * @param {File[]} photos - Array of photo files (optional)
    * @returns {Promise<Object>} Updated news post
    */
-  updateNews: async (id, newsData) => {
-    return api.put(`/api/news/${id}`, newsData);
+  updateNews: async (id, newsData, photos = []) => {
+    const formData = new FormData();
+    formData.append('title', newsData.title);
+    formData.append('content', newsData.content);
+    formData.append('status', newsData.status || 'Published');
+    if (newsData.publishDate) {
+      formData.append('publishDate', newsData.publishDate);
+    }
+    
+    // Append photo files if provided
+    photos.forEach(photo => {
+      formData.append('photos', photo);
+    });
+
+    const response = await fetch(`${API_BASE_URL}/api/news/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to update news post');
+    }
+
+    return response.json();
   },
 
   /**

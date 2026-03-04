@@ -33,7 +33,7 @@ const NewsAdminPage = () => {
     title: '',
     content: '',
     status: 'Draft',
-    imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+    photos: []
   });
 
   const fetchNews = useCallback(async (isRefresh = false) => {
@@ -61,7 +61,7 @@ const NewsAdminPage = () => {
       title: '',
       content: '',
       status: 'Draft',
-      imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+      photos: []
     });
     setIsModalOpen(true);
   };
@@ -72,7 +72,7 @@ const NewsAdminPage = () => {
       title: article.title,
       content: article.content,
       status: article.status || 'Draft',
-      imageUrl: article.imageUrl || article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800'
+      photos: []
     });
     setIsModalOpen(true);
   };
@@ -82,29 +82,32 @@ const NewsAdminPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData(prev => ({ ...prev, photos: files }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Prepare data according to API spec (title, content, status)
       const newsData = {
         title: formData.title,
         content: formData.content,
         status: formData.status,
-        // Store image URL in content or as metadata (backend dependent)
-        imageUrl: formData.imageUrl
+        publishDate: new Date().toISOString()
       };
 
       if (editingArticle) {
-        const updated = await newsApi.updateNews(editingArticle.id, newsData);
-        setArticles(prev => prev.map(a => a.id === editingArticle.id ? { ...updated, imageUrl: formData.imageUrl } : a));
+        const response = await newsApi.updateNews(editingArticle.id, newsData, formData.photos);
+        const updated = response.data || response;
+        setArticles(prev => prev.map(a => a.id === editingArticle.id ? updated : a));
       } else {
-        const created = await newsApi.createNews({
-          ...newsData,
-          publishDate: new Date().toISOString()
-        });
-        setArticles(prev => [{ ...created, imageUrl: formData.imageUrl }, ...prev]);
+        const response = await newsApi.createNews(newsData, formData.photos);
+        const created = response.data || response;
+        setArticles(prev => [created, ...prev]);
       }
       setIsModalOpen(false);
+      fetchNews(true); // Refresh to get latest data
     } catch (error) {
       console.error('Failed to save article:', error);
       alert(`Failed to save article: ${error.message || 'Unknown error'}`);
@@ -135,28 +138,40 @@ const NewsAdminPage = () => {
     {
       header: 'Article Info',
       accessor: 'title',
-      render: (title, article) => (
-        <div className="flex items-center gap-4 py-2">
-          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 dark:border-slate-700">
-            <img 
-              src={article.imageUrl || article.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200'} 
-              className="w-full h-full object-cover" 
-              alt={title}
-              onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
-              }}
-            />
-          </div>
-          <div>
-            <div className="font-bold text-slate-900 dark:text-slate-100 line-clamp-1">{title}</div>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[10px] text-slate-400 font-medium">
-                {article.publishDate ? new Date(article.publishDate).toLocaleDateString() : 'N/A'}
-              </span>
+      render: (title, article) => {
+        const firstPhoto = article.photos && article.photos.length > 0 ? article.photos[0] : null;
+        const photoUrl = firstPhoto 
+          ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${firstPhoto.url}`
+          : 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
+        
+        return (
+          <div className="flex items-center gap-4 py-2">
+            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 dark:border-slate-700">
+              <img 
+                src={photoUrl} 
+                className="w-full h-full object-cover" 
+                alt={title}
+                onError={(e) => {
+                  e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
+                }}
+              />
+            </div>
+            <div>
+              <div className="font-bold text-slate-900 dark:text-slate-100 line-clamp-1">{title}</div>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] text-slate-400 font-medium">
+                  {article.publishDate ? new Date(article.publishDate).toLocaleDateString() : 'N/A'}
+                </span>
+                {article.photos && article.photos.length > 0 && (
+                  <span className="text-[10px] text-cyan-500 font-medium">
+                    • {article.photos.length} photo{article.photos.length > 1 ? 's' : ''}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )
+        );
+      }
     },
     {
       header: 'Status',
@@ -288,31 +303,38 @@ const NewsAdminPage = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
           <div className="space-y-4">
-             {/* Image Preview & URL Input */}
+             {/* Photo Upload */}
              <div className="space-y-3">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Banner Image</label>
-                <div className="relative group">
-                  <div className="h-40 w-full rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden border-2 border-slate-200 dark:border-slate-700">
-                     <img 
-                       src={formData.imageUrl} 
-                       className="w-full h-full object-cover" 
-                       alt="Article banner preview"
-                       onError={(e) => {
-                         e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=800';
-                       }}
-                     />
-                  </div>
+                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Photos</label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    name="photos"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100"
+                  />
+                  {formData.photos && formData.photos.length > 0 && (
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                      {formData.photos.length} photo(s) selected
+                    </p>
+                  )}
+                  {editingArticle && editingArticle.photos && editingArticle.photos.length > 0 && (
+                    <div className="mt-3 flex gap-2 flex-wrap">
+                      {editingArticle.photos.map((photo, idx) => (
+                        <img 
+                          key={idx}
+                          src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${photo.url}`}
+                          alt={`Photo ${idx + 1}`}
+                          className="w-20 h-20 object-cover rounded-lg border border-slate-200 dark:border-slate-700"
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <input
-                  name="imageUrl"
-                  type="url"
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 text-sm"
-                  placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
-                  value={formData.imageUrl}
-                  onChange={handleInputChange}
-                />
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Paste a direct image URL. Recommended size: 1200x630px
+                  Upload one or more images for the article. Recommended size: 1200x630px
                 </p>
              </div>
 

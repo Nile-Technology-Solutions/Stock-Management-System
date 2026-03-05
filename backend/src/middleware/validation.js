@@ -1,5 +1,36 @@
 const Joi = require('joi');
 
+const materialUsageSchema = Joi.object({
+  stockMaterialId: Joi.number().integer().positive().required(),
+  quantityUsed: Joi.number().integer().positive().required(),
+});
+
+const materialUsagesField = Joi.alternatives().try(
+  Joi.array().items(materialUsageSchema),
+  Joi.string().custom((value, helpers) => {
+    if (value.trim() === '') {
+      return [];
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(value);
+    } catch (error) {
+      return helpers.message('materialUsages must be a valid JSON array');
+    }
+
+    const { error: parseError, value: normalized } = Joi.array()
+      .items(materialUsageSchema)
+      .validate(parsed, { abortEarly: false, convert: true });
+
+    if (parseError) {
+      return helpers.message('materialUsages must contain valid stockMaterialId and quantityUsed values');
+    }
+
+    return normalized;
+  }, 'material usages parser')
+);
+
 // ===================== AUTH =====================
 const registerSchema = Joi.object({
   fullName: Joi.string().required(),
@@ -82,6 +113,7 @@ const stockUpdateSchema = Joi.object({
 // ===================== PRODUCTION =====================
 const productionSchema = Joi.object({
   categoryId: Joi.number().integer().required(),
+  orderId: Joi.number().integer().positive().optional(),
   title: Joi.string().optional(),
   status: Joi.string().valid('UnderProcess', 'Completed', 'Rejected').optional(),
   progressPercentage: Joi.number().integer().min(0).max(100).required(),
@@ -89,6 +121,7 @@ const productionSchema = Joi.object({
   submittingDate: Joi.date().optional(),
   workInstructions: Joi.string().optional().allow(''),
   paymentNote: Joi.string().optional().allow(''),
+  materialUsages: materialUsagesField.optional(),
 });
 
 // Update schema: all fields optional but require at least one
@@ -250,6 +283,8 @@ module.exports = {
   validateUserUpdate: validate(userUpdateSchema),
   validateStock: validate(stockSchema),
   validateStockUpdate: validate(stockUpdateSchema),
+  validateStockMultipart: validateMultipart(stockSchema),
+  validateStockUpdateMultipart: validateMultipart(stockUpdateSchema),
   validateProduction: validateMultipart(productionSchema),
   validateProductionUpdate: validateMultipart(productionUpdateSchema),
   validateFinishedProduct: validate(finishedProductSchema),

@@ -1,0 +1,1582 @@
+{
+  "backendEndpoints": [
+    {
+      "file": "addressRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 10
+    },
+    {
+      "file": "addressRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 13
+    },
+    {
+      "file": "addressRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 16
+    },
+    {
+      "file": "addressRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 19
+    },
+    {
+      "file": "addressRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 22
+    },
+    {
+      "file": "auditLogRoutes.js",
+      "method": "GET",
+      "path": "/stats",
+      "line": 13
+    },
+    {
+      "file": "auditLogRoutes.js",
+      "method": "DELETE",
+      "path": "/cleanup",
+      "line": 16
+    },
+    {
+      "file": "auditLogRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 19
+    },
+    {
+      "file": "auditLogRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 22
+    },
+    {
+      "file": "auditLogRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 25
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "POST",
+      "path": "/register",
+      "line": 13
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "POST",
+      "path": "/login",
+      "line": 16
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "POST",
+      "path": "/forgot-password",
+      "line": 19
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "POST",
+      "path": "/reset-password",
+      "line": 22
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "GET",
+      "path": "/me",
+      "line": 25
+    },
+    {
+      "file": "authRoutes.js",
+      "method": "PUT",
+      "path": "/change-password",
+      "line": 28
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "GET",
+      "path": "/public",
+      "line": 12
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "GET",
+      "path": "/public/:id",
+      "line": 15
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 21
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 24
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 27
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 30
+    },
+    {
+      "file": "newsRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 33
+    },
+    {
+      "file": "orderRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 12
+    },
+    {
+      "file": "orderRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 15
+    },
+    {
+      "file": "orderRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 18
+    },
+    {
+      "file": "orderRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 21
+    },
+    {
+      "file": "orderRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 24
+    },
+    {
+      "file": "paymentRoutes.js",
+      "method": "POST",
+      "path": "/initiate",
+      "line": 11
+    },
+    {
+      "file": "paymentRoutes.js",
+      "method": "GET",
+      "path": "/callback",
+      "line": 14
+    },
+    {
+      "file": "paymentRoutes.js",
+      "method": "POST",
+      "path": "/verify",
+      "line": 17
+    },
+    {
+      "file": "paymentRoutes.js",
+      "method": "GET",
+      "path": "/:orderId",
+      "line": 20
+    },
+    {
+      "file": "productionRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 13
+    },
+    {
+      "file": "productionRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 16
+    },
+    {
+      "file": "productionRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 20
+    },
+    {
+      "file": "productionRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 23
+    },
+    {
+      "file": "productionRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 26
+    },
+    {
+      "file": "productRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 11
+    },
+    {
+      "file": "productRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 14
+    },
+    {
+      "file": "productRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 19
+    },
+    {
+      "file": "productRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 22
+    },
+    {
+      "file": "productRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 25
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 46
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "PUT",
+      "path": "/",
+      "line": 49
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "POST",
+      "path": "/picture",
+      "line": 52
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "GET",
+      "path": "/preferences",
+      "line": 55
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "PUT",
+      "path": "/preferences",
+      "line": 58
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "POST",
+      "path": "/feedback",
+      "line": 61
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "POST",
+      "path": "/support",
+      "line": 64
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "GET",
+      "path": "/notifications",
+      "line": 67
+    },
+    {
+      "file": "profileRoutes.js",
+      "method": "PUT",
+      "path": "/notifications/:id/read",
+      "line": 70
+    },
+    {
+      "file": "reportRoutes.js",
+      "method": "GET",
+      "path": "/stock",
+      "line": 14
+    },
+    {
+      "file": "reportRoutes.js",
+      "method": "GET",
+      "path": "/production",
+      "line": 15
+    },
+    {
+      "file": "reportRoutes.js",
+      "method": "GET",
+      "path": "/orders",
+      "line": 16
+    },
+    {
+      "file": "reportRoutes.js",
+      "method": "GET",
+      "path": "/sales",
+      "line": 17
+    },
+    {
+      "file": "reportRoutes.js",
+      "method": "GET",
+      "path": "/payments",
+      "line": 20
+    },
+    {
+      "file": "stockRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 9
+    },
+    {
+      "file": "stockRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 12
+    },
+    {
+      "file": "stockRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 15
+    },
+    {
+      "file": "stockRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 18
+    },
+    {
+      "file": "stockRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 21
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 12
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 15
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "PATCH",
+      "path": "/:id/toggle",
+      "line": 18
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 21
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 24
+    },
+    {
+      "file": "todoRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 27
+    },
+    {
+      "file": "userRoutes.js",
+      "method": "GET",
+      "path": "/",
+      "line": 12
+    },
+    {
+      "file": "userRoutes.js",
+      "method": "GET",
+      "path": "/:id",
+      "line": 15
+    },
+    {
+      "file": "userRoutes.js",
+      "method": "POST",
+      "path": "/",
+      "line": 18
+    },
+    {
+      "file": "userRoutes.js",
+      "method": "PUT",
+      "path": "/:id",
+      "line": 21
+    },
+    {
+      "file": "userRoutes.js",
+      "method": "DELETE",
+      "path": "/:id",
+      "line": 24
+    }
+  ],
+  "frontendEndpoints": [
+    {
+      "file": "addressApi.js",
+      "method": "GET",
+      "url": "/api/addresses",
+      "line": 26
+    },
+    {
+      "file": "addressApi.js",
+      "method": "POST",
+      "url": "/api/addresses",
+      "line": 42
+    },
+    {
+      "file": "addressApi.js",
+      "method": "PUT",
+      "url": "/api/addresses/:id",
+      "line": 53
+    },
+    {
+      "file": "addressApi.js",
+      "method": "DELETE",
+      "url": "/api/addresses/:id",
+      "line": 62
+    },
+    {
+      "file": "auditLogService.js",
+      "method": "GET",
+      "url": "/audit-logs",
+      "line": 8
+    },
+    {
+      "file": "auditLogService.js",
+      "method": "GET",
+      "url": "/audit-logs/:id",
+      "line": 16
+    },
+    {
+      "file": "auditLogService.js",
+      "method": "GET",
+      "url": "/audit-logs/stats",
+      "line": 28
+    },
+    {
+      "file": "auditLogService.js",
+      "method": "DELETE",
+      "url": "/audit-logs/cleanup",
+      "line": 36
+    },
+    {
+      "file": "newsApi.js",
+      "method": "GET",
+      "url": "/api/news/public",
+      "line": 15
+    },
+    {
+      "file": "newsApi.js",
+      "method": "GET",
+      "url": "/api/news/public/:id",
+      "line": 25
+    },
+    {
+      "file": "newsApi.js",
+      "method": "DELETE",
+      "url": "/api/news/:id",
+      "line": 110
+    },
+    {
+      "file": "orderApi.js",
+      "method": "GET",
+      "url": "/api/orders",
+      "line": 15
+    },
+    {
+      "file": "orderApi.js",
+      "method": "GET",
+      "url": "/api/orders/:id",
+      "line": 25
+    },
+    {
+      "file": "orderApi.js",
+      "method": "POST",
+      "url": "/api/orders",
+      "line": 35
+    },
+    {
+      "file": "orderApi.js",
+      "method": "PUT",
+      "url": "/api/orders/:id",
+      "line": 46
+    },
+    {
+      "file": "orderApi.js",
+      "method": "DELETE",
+      "url": "/api/orders/:id",
+      "line": 56
+    },
+    {
+      "file": "orderApi.js",
+      "method": "GET",
+      "url": "/api/orders/:id",
+      "line": 65
+    },
+    {
+      "file": "paymentApi.js",
+      "method": "POST",
+      "url": "/api/payments/initiate",
+      "line": 17
+    },
+    {
+      "file": "paymentApi.js",
+      "method": "POST",
+      "url": "/api/payments/verify",
+      "line": 27
+    },
+    {
+      "file": "paymentApi.js",
+      "method": "GET",
+      "url": "/api/payments/:id",
+      "line": 37
+    },
+    {
+      "file": "productApi.js",
+      "method": "GET",
+      "url": "/api/products",
+      "line": 27
+    },
+    {
+      "file": "productApi.js",
+      "method": "GET",
+      "url": "/api/products/:id",
+      "line": 37
+    },
+    {
+      "file": "productApi.js",
+      "method": "POST",
+      "url": "/api/products",
+      "line": 54
+    },
+    {
+      "file": "productApi.js",
+      "method": "PUT",
+      "url": "/api/products/:id",
+      "line": 65
+    },
+    {
+      "file": "productApi.js",
+      "method": "DELETE",
+      "url": "/api/products/:id",
+      "line": 74
+    },
+    {
+      "file": "productionApi.js",
+      "method": "GET",
+      "url": "/api/production",
+      "line": 57
+    },
+    {
+      "file": "productionApi.js",
+      "method": "GET",
+      "url": "/api/production/:id",
+      "line": 67
+    },
+    {
+      "file": "productionApi.js",
+      "method": "DELETE",
+      "url": "/api/production/:id",
+      "line": 98
+    },
+    {
+      "file": "profileApi.js",
+      "method": "GET",
+      "url": "/api/profile",
+      "line": 14
+    },
+    {
+      "file": "profileApi.js",
+      "method": "PUT",
+      "url": "/api/profile",
+      "line": 22
+    },
+    {
+      "file": "profileApi.js",
+      "method": "PUT",
+      "url": "/api/auth/change-password",
+      "line": 55
+    },
+    {
+      "file": "profileApi.js",
+      "method": "GET",
+      "url": "/api/orders",
+      "line": 63
+    },
+    {
+      "file": "profileApi.js",
+      "method": "GET",
+      "url": "/api/addresses",
+      "line": 71
+    },
+    {
+      "file": "profileApi.js",
+      "method": "POST",
+      "url": "/api/addresses",
+      "line": 79
+    },
+    {
+      "file": "profileApi.js",
+      "method": "PUT",
+      "url": "/api/addresses/:id",
+      "line": 87
+    },
+    {
+      "file": "profileApi.js",
+      "method": "DELETE",
+      "url": "/api/addresses/:id",
+      "line": 95
+    },
+    {
+      "file": "profileApi.js",
+      "method": "POST",
+      "url": "/api/profile/feedback",
+      "line": 103
+    },
+    {
+      "file": "profileApi.js",
+      "method": "POST",
+      "url": "/api/profile/support",
+      "line": 111
+    },
+    {
+      "file": "profileApi.js",
+      "method": "GET",
+      "url": "/api/profile/notifications",
+      "line": 119
+    },
+    {
+      "file": "profileApi.js",
+      "method": "PUT",
+      "url": "/api/profile/notifications/:id/read",
+      "line": 127
+    },
+    {
+      "file": "profileApi.js",
+      "method": "GET",
+      "url": "/api/profile/preferences",
+      "line": 135
+    },
+    {
+      "file": "profileApi.js",
+      "method": "PUT",
+      "url": "/api/profile/preferences",
+      "line": 143
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/users",
+      "line": 24
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/users/:id",
+      "line": 34
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "POST",
+      "url": "/api/users",
+      "line": 44
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "PUT",
+      "url": "/api/users/:id",
+      "line": 55
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "DELETE",
+      "url": "/api/users/:id",
+      "line": 64
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/reports/stock",
+      "line": 80
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/reports/production",
+      "line": 89
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/reports/orders",
+      "line": 98
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/reports/payments",
+      "line": 107
+    },
+    {
+      "file": "superAdminApi.js",
+      "method": "GET",
+      "url": "/api/reports/sales",
+      "line": 116
+    },
+    {
+      "file": "todoApi.js",
+      "method": "GET",
+      "url": "/api/todo",
+      "line": 16
+    },
+    {
+      "file": "todoApi.js",
+      "method": "GET",
+      "url": "/api/todo/:id",
+      "line": 26
+    },
+    {
+      "file": "todoApi.js",
+      "method": "POST",
+      "url": "/api/todo",
+      "line": 36
+    },
+    {
+      "file": "todoApi.js",
+      "method": "PUT",
+      "url": "/api/todo/:id",
+      "line": 47
+    },
+    {
+      "file": "todoApi.js",
+      "method": "DELETE",
+      "url": "/api/todo/:id",
+      "line": 57
+    }
+  ],
+  "todos": [
+    {
+      "file": "backend\\src\\app.js",
+      "line": 13,
+      "text": "const todoRoutes = require('./routes/todoRoutes');"
+    },
+    {
+      "file": "backend\\src\\app.js",
+      "line": 41,
+      "text": "app.use('/api/todos', todoRoutes);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 1,
+      "text": "const todoService = require('../services/todoService');"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 3,
+      "text": "const getAllTodos = async (req, res, next) => {"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 5,
+      "text": "const todos = await todoService.getAllTodos(req.query);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 6,
+      "text": "return res.status(200).json(todos);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 12,
+      "text": "const getTodoById = async (req, res, next) => {"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 15,
+      "text": "const todo = await todoService.getTodoById(id);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 16,
+      "text": "return res.status(200).json(todo);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 22,
+      "text": "const createTodo = async (req, res, next) => {"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 24,
+      "text": "const todo = await todoService.createTodo(req.body);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 25,
+      "text": "return res.status(201).json({ data: todo, message: 'Todo item created successfully' });"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 31,
+      "text": "const updateTodo = async (req, res, next) => {"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 34,
+      "text": "const todo = await todoService.updateTodo(id, req.body);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 35,
+      "text": "return res.status(200).json({ data: todo, message: 'Todo item updated successfully' });"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 44,
+      "text": "const todo = await todoService.toggleComplete(id, req.user);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 45,
+      "text": "return res.status(200).json({ data: todo, message: `Todo item marked as ${todo.isCompleted ? 'completed' : 'incomplete'}` });"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 51,
+      "text": "const deleteTodo = async (req, res, next) => {"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 54,
+      "text": "const result = await todoService.deleteTodo(id);"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 62,
+      "text": "getAllTodos,"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 63,
+      "text": "getTodoById,"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 64,
+      "text": "createTodo,"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 65,
+      "text": "updateTodo,"
+    },
+    {
+      "file": "backend\\src\\controllers\\todoController.js",
+      "line": 67,
+      "text": "deleteTodo,"
+    },
+    {
+      "file": "backend\\src\\middleware\\validation.js",
+      "line": 152,
+      "text": "// ===================== TODO ====================="
+    },
+    {
+      "file": "backend\\src\\middleware\\validation.js",
+      "line": 153,
+      "text": "const todoSchema = Joi.object({"
+    },
+    {
+      "file": "backend\\src\\middleware\\validation.js",
+      "line": 160,
+      "text": "const todoUpdateSchema = Joi.object({"
+    },
+    {
+      "file": "backend\\src\\middleware\\validation.js",
+      "line": 260,
+      "text": "validateTodo: validate(todoSchema),"
+    },
+    {
+      "file": "backend\\src\\middleware\\validation.js",
+      "line": 261,
+      "text": "validateTodoUpdate: validate(todoUpdateSchema),"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 5,
+      "text": "const todoController = require('../controllers/todoController');"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 6,
+      "text": "const { validateTodo, validateTodoUpdate, validateIdParam } = require('../middleware/validation');"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 8,
+      "text": "// All todo routes require Admin or SuperAdmin"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 11,
+      "text": "// GET /api/todos - List all todos (supports ?day=&userId=&isCompleted= filters)"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 12,
+      "text": "router.get('/', todoController.getAllTodos);"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 14,
+      "text": "// GET /api/todos/:id - Get single todo"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 15,
+      "text": "router.get('/:id', validateIdParam, todoController.getTodoById);"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 17,
+      "text": "// PATCH /api/todos/:id/toggle - Toggle completion (Admin own-only, SuperAdmin any)"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 18,
+      "text": "router.patch('/:id/toggle', validateIdParam, todoController.toggleComplete);"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 20,
+      "text": "// POST /api/todos - Create todo (SuperAdmin only)"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 21,
+      "text": "router.post('/', requireRoles(SUPER_ADMIN_ROLES), validateTodo, todoController.createTodo);"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 23,
+      "text": "// PUT /api/todos/:id - Full update (SuperAdmin only)"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 24,
+      "text": "router.put('/:id', validateIdParam, requireRoles(SUPER_ADMIN_ROLES), validateTodoUpdate, todoController.updateTodo);"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 26,
+      "text": "// DELETE /api/todos/:id - Delete todo (SuperAdmin only)"
+    },
+    {
+      "file": "backend\\src\\routes\\todoRoutes.js",
+      "line": 27,
+      "text": "router.delete('/:id', validateIdParam, requireRoles(SUPER_ADMIN_ROLES), todoController.deleteTodo);"
+    },
+    {
+      "file": "backend\\src\\services\\authService.js",
+      "line": 141,
+      "text": "// TODO: Send email or SMS with reset token"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 4,
+      "text": "* Get all todo items with optional filtering."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 7,
+      "text": "async function getAllTodos(query = {}) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 16,
+      "text": "return prisma.todoItem.findMany({"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 29,
+      "text": "* Get a single todo item by ID."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 31,
+      "text": "async function getTodoById(id) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 32,
+      "text": "const todo = await prisma.todoItem.findUnique({"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 38,
+      "text": "if (!todo) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 39,
+      "text": "const err = new Error('Todo item not found');"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 43,
+      "text": "return todo;"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 47,
+      "text": "* Create a new todo item (SuperAdmin only)."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 50,
+      "text": "async function createTodo(data) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 63,
+      "text": "return prisma.todoItem.create({"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 77,
+      "text": "* Update a todo item (SuperAdmin only — full update)."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 80,
+      "text": "async function updateTodo(id, updateData) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 81,
+      "text": "const existing = await prisma.todoItem.findUnique({ where: { id } });"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 83,
+      "text": "const err = new Error('Todo item not found');"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 99,
+      "text": "return prisma.todoItem.update({"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 109,
+      "text": "* Toggle completion of a todo item."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 114,
+      "text": "const todo = await prisma.todoItem.findUnique({ where: { id } });"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 115,
+      "text": "if (!todo) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 116,
+      "text": "const err = new Error('Todo item not found');"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 122,
+      "text": "if (requestingUser.role === 'Admin' && todo.userId !== requestingUser.id) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 128,
+      "text": "return prisma.todoItem.update({"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 130,
+      "text": "data: { isCompleted: !todo.isCompleted },"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 138,
+      "text": "* Delete a todo item (SuperAdmin only)."
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 140,
+      "text": "async function deleteTodo(id) {"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 141,
+      "text": "const existing = await prisma.todoItem.findUnique({ where: { id } });"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 143,
+      "text": "const err = new Error('Todo item not found');"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 148,
+      "text": "await prisma.todoItem.delete({ where: { id } });"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 149,
+      "text": "return { message: 'Todo item deleted' };"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 153,
+      "text": "getAllTodos,"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 154,
+      "text": "getTodoById,"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 155,
+      "text": "createTodo,"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 156,
+      "text": "updateTodo,"
+    },
+    {
+      "file": "backend\\src\\services\\todoService.js",
+      "line": 158,
+      "text": "deleteTodo,"
+    },
+    {
+      "file": "frontend\\src\\components\\common\\ErrorBoundary.jsx",
+      "line": 25,
+      "text": "// TODO: Send to error monitoring service (Sentry, LogRocket, etc.)"
+    },
+    {
+      "file": "frontend\\src\\components\\icons\\index.js",
+      "line": 51,
+      "text": "ListTodo"
+    },
+    {
+      "file": "frontend\\src\\components\\layout\\AdminLayout.jsx",
+      "line": 24,
+      "text": "ListTodo,"
+    },
+    {
+      "file": "frontend\\src\\components\\layout\\AdminLayout.jsx",
+      "line": 114,
+      "text": "href: '/admin/todo',"
+    },
+    {
+      "file": "frontend\\src\\components\\layout\\AdminLayout.jsx",
+      "line": 115,
+      "text": "icon: <ListTodo className=\"w-5 h-5\" />,"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\showcase\\ProductsManagementPage.jsx",
+      "line": 136,
+      "text": "// TODO: When backend supports image upload, send formData.images"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\index.js",
+      "line": 1,
+      "text": "export { default as TodoPage } from './TodoPage';"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 4,
+      "text": "import { CheckSquare, Square, Calendar, Plus, RefreshCw, Filter, ListTodo, Search, Clock, CheckCircle2 } from '../../../components/icons';"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 5,
+      "text": "import { todoApi } from '../../../services/todoApi';"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 7,
+      "text": "const TodoPage = () => {"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 8,
+      "text": "const [todos, setTodos] = useState([]);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 14,
+      "text": "const fetchTodos = useCallback(async (isRefresh = false) => {"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 19,
+      "text": "const data = await todoApi.getTodos();"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 23,
+      "text": "// For now, let's just fetch all as per getTodos() call."
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 24,
+      "text": "setTodos(Array.isArray(data) ? data : []);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 26,
+      "text": "console.error('Failed to fetch todos:', error);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 34,
+      "text": "fetchTodos();"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 35,
+      "text": "}, [fetchTodos]);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 40,
+      "text": "fetchTodos(true);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 43,
+      "text": "}, [fetchTodos]);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 46,
+      "text": "fetchTodos(true);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 49,
+      "text": "const toggleTodo = async (todo) => {"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 51,
+      "text": "const updated = { ...todo, isCompleted: !todo.isCompleted };"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 52,
+      "text": "await todoApi.updateTodo(todo.id, updated);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 53,
+      "text": "setTodos(prev => prev.map(t => t.id === todo.id ? updated : t));"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 55,
+      "text": "console.error('Failed to update todo:', error);"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 64,
+      "text": "const filteredTodos = todos.filter(t => {"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 73,
+      "text": "const completionRate = todos.length > 0 ? Math.round((todos.filter(t => t.isCompleted).length / todos.length) * 100) : 0;"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 90,
+      "text": "<ListTodo className=\"w-8 h-8 text-white\" />"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 171,
+      "text": "{filteredTodos.map(todo => ("
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 173,
+      "text": "key={todo.id}"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 175,
+      "text": "todo.isCompleted ? 'opacity-60 bg-slate-50/50 dark:bg-slate-900/50' : 'border-l-4 border-l-cyan-500'"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 177,
+      "text": "onClick={() => toggleTodo(todo)}"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 180,
+      "text": "{todo.isCompleted ? ("
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 189,
+      "text": "todo.isCompleted ? 'line-through text-slate-500' : ''"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 191,
+      "text": "{todo.task || todo.text}"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 196,
+      "text": "Due {todo.day || getRelativeDateLabel(todo.date)}"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 198,
+      "text": "{todo.isCompleted && ("
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 212,
+      "text": "{filteredTodos.length === 0 && ("
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 214,
+      "text": "<ListTodo className=\"w-16 h-16 text-slate-200 mx-auto mb-4\" />"
+    },
+    {
+      "file": "frontend\\src\\pages\\admin\\todo\\TodoPage.jsx",
+      "line": 232,
+      "text": "export default TodoPage;"
+    },
+    {
+      "file": "frontend\\src\\pages\\core\\stock\\StockPage.jsx",
+      "line": 132,
+      "text": "// TODO: When backend is ready, send images to server"
+    },
+    {
+      "file": "frontend\\src\\pages\\superAdmin\\auditLogs\\AuditLogsPage.jsx",
+      "line": 132,
+      "text": "const logsToDownload = logs.filter(log => selectedLogs.includes(log.id));"
+    },
+    {
+      "file": "frontend\\src\\pages\\superAdmin\\auditLogs\\AuditLogsPage.jsx",
+      "line": 133,
+      "text": "await generateBulkAuditLogPDF(logsToDownload);"
+    },
+    {
+      "file": "frontend\\src\\pages\\superAdmin\\auditLogs\\components\\AuditLogFilters.jsx",
+      "line": 20,
+      "text": "'News', 'Todo', 'Address', 'Category', 'Settings'"
+    },
+    {
+      "file": "frontend\\src\\routes\\AppRoutes.jsx",
+      "line": 49,
+      "text": "const Todo = lazy(() => import('../pages/admin/todo/TodoPage'));"
+    },
+    {
+      "file": "frontend\\src\\routes\\AppRoutes.jsx",
+      "line": 125,
+      "text": "<Route path=\"todo\" element={<Todo />} />"
+    },
+    {
+      "file": "frontend\\src\\services\\mockData.js",
+      "line": 206,
+      "text": "export const mockTodos = ["
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 2,
+      "text": "* Todo API Service"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 8,
+      "text": "export const todoApi = {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 10,
+      "text": "* Get todos with optional day filter"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 11,
+      "text": "* GET /api/todo"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 13,
+      "text": "* @returns {Promise<Array>} List of todo items"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 15,
+      "text": "getTodos: async (params = {}) => {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 16,
+      "text": "return api.get('/api/todo', params);"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 20,
+      "text": "* Get todo by ID"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 21,
+      "text": "* GET /api/todo/{id}"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 22,
+      "text": "* @param {number} id - Todo ID"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 23,
+      "text": "* @returns {Promise<Object>} Todo item details"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 25,
+      "text": "getTodoById: async (id) => {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 26,
+      "text": "return api.get(`/api/todo/${id}`);"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 30,
+      "text": "* Add new todo item"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 31,
+      "text": "* POST /api/todo"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 32,
+      "text": "* @param {Object} todoData - Todo item data"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 33,
+      "text": "* @returns {Promise<Object>} Created todo item"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 35,
+      "text": "addTodo: async (todoData) => {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 36,
+      "text": "return api.post('/api/todo', todoData);"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 40,
+      "text": "* Update todo item"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 41,
+      "text": "* PUT /api/todo/{id}"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 42,
+      "text": "* @param {number} id - Todo ID"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 43,
+      "text": "* @param {Object} todoData - Updated todo item data"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 44,
+      "text": "* @returns {Promise<Object>} Updated todo item"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 46,
+      "text": "updateTodo: async (id, todoData) => {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 47,
+      "text": "return api.put(`/api/todo/${id}`, todoData);"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 51,
+      "text": "* Delete todo item"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 52,
+      "text": "* DELETE /api/todo/{id}"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 53,
+      "text": "* @param {number} id - Todo ID"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 56,
+      "text": "deleteTodo: async (id) => {"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 57,
+      "text": "return api.delete(`/api/todo/${id}`);"
+    },
+    {
+      "file": "frontend\\src\\services\\todoApi.js",
+      "line": 61,
+      "text": "export default todoApi;"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 /**
  * Payment API Service
- * Handles payment operations according to Swagger API spec v1.4.0
+ * Handles payment operations via Chapa gateway
  * Endpoints: /api/payments/*
  */
 
@@ -10,23 +10,21 @@ export const paymentApi = {
   /**
    * Initiate payment for order
    * POST /api/payments/initiate
-   * @param {Object} paymentData - Payment initiation data
-   * @param {number} paymentData.orderId - Order ID
-   * @param {string} paymentData.gateway - Payment gateway (Chapa or Telebirr)
-   * @returns {Promise<Object>} Payment initiation response with checkoutUrl
+   * @param {Object} paymentData - { orderId: number }
+   * @returns {Promise<{ success, data: { checkoutUrl, paymentId, txRef } }>}
    */
   initiatePayment: async (paymentData) => {
     return api.post('/api/payments/initiate', paymentData);
   },
 
   /**
-   * Payment callback (from gateway)
-   * POST /api/payments/callback
-   * @param {Object} callbackData - Payment callback data from gateway
-   * @returns {Promise<Object>} Payment processing confirmation
+   * Verify payment after Chapa redirect
+   * POST /api/payments/verify
+   * @param {string} txRef - Transaction reference from Chapa
+   * @returns {Promise<{ success, data: { payment, order } }>}
    */
-  paymentCallback: async (callbackData) => {
-    return api.post('/api/payments/callback', callbackData);
+  verifyPayment: async (txRef) => {
+    return api.post('/api/payments/verify', { txRef });
   },
 
   /**

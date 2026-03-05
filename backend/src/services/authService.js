@@ -9,8 +9,9 @@ const { JWT_SECRET, JWT_EXPIRES_IN } = require('../config/jwt');
  * @returns {{ user: object, token: string }}
  */
 async function register(data) {
-  const { fullName, email, phone, password } = data;
-  const role = 'Customer';
+  const { fullName, email, phone, password, role: requestedRole } = data;
+  // Allow role to be passed (e.g. for admin-created users), default to Customer
+  const role = requestedRole || 'Customer';
 
   // Check if email already exists
   const existingEmail = await prisma.user.findUnique({ where: { email } });
@@ -64,9 +65,15 @@ async function register(data) {
 async function login(data) {
   const { identifier, password } = data;
 
+  if (!identifier || !password) {
+    const err = new Error('Email/phone and password are required');
+    err.statusCode = 400;
+    throw err;
+  }
+
   // Check if identifier is email or phone
   const isEmail = identifier.includes('@');
-  
+
   let user;
   if (isEmail) {
     user = await prisma.user.findUnique({ where: { email: identifier } });
@@ -106,7 +113,7 @@ async function forgotPassword(data) {
 
   // Check if identifier is email or phone
   const isEmail = identifier.includes('@');
-  
+
   let user;
   if (isEmail) {
     user = await prisma.user.findUnique({ where: { email: identifier } });
@@ -133,7 +140,7 @@ async function forgotPassword(data) {
 
   // TODO: Send email or SMS with reset token
   // For now, return the token (in production, this should be sent via email/SMS)
-  return { 
+  return {
     message: 'Password reset token generated',
     resetToken, // Remove this in production
     identifier: isEmail ? user.email : user.phone
@@ -204,13 +211,13 @@ async function changePassword(data) {
 async function getUserById(id) {
   return prisma.user.findUnique({
     where: { id },
-    select: { 
-      id: true, 
-      fullName: true, 
-      email: true, 
-      phone: true, 
-      role: true, 
-      createdAt: true 
+    select: {
+      id: true,
+      fullName: true,
+      email: true,
+      phone: true,
+      role: true,
+      createdAt: true
     },
   });
 }

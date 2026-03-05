@@ -216,6 +216,7 @@ model Payment {
   method         PaymentMethod
   status         PaymentStatus @default(Pending)
   transactionRef String?
+  checkoutUrl    String?       // Chapa checkout URL
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 

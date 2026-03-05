@@ -3,7 +3,9 @@ const authMiddleware = require('../middleware/authMiddleware');
 const { requireRoles } = require('../middleware/roleMiddleware');
 const { ADMIN_ROLES } = require('../constans/roles');
 const stockController = require('../controllers/stockController');
-const { validateStock, validateStockUpdate, validateIdParam } = require('../middleware/validation');
+const uploadStock = require('../config/multerStock');
+const { runMulter } = require('../middleware/multerHandler');
+const { validateStockMultipart, validateStockUpdateMultipart, validateIdParam } = require('../middleware/validation');
 
 // GET /api/stock - Get all stock items with optional filtering
 router.get('/', authMiddleware, stockController.getAllStock);
@@ -12,10 +14,10 @@ router.get('/', authMiddleware, stockController.getAllStock);
 router.get('/:id', authMiddleware, validateIdParam, stockController.getStockById);
 
 // POST /api/stock - Create a new stock item (Super Admin / Admin)
-router.post('/', authMiddleware, requireRoles(ADMIN_ROLES), validateStock, stockController.createStock);
+router.post('/', authMiddleware, requireRoles(ADMIN_ROLES), runMulter(uploadStock.none()), validateStockMultipart, stockController.createStock);
 
 // PUT /api/stock/:id - Update a stock item (Super Admin / Admin)
-router.put('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, validateStockUpdate, stockController.updateStock);
+router.put('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, runMulter(uploadStock.none()), validateStockUpdateMultipart, stockController.updateStock);
 
 // DELETE /api/stock/:id - Delete a stock item (Super Admin / Admin)
 router.delete('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, stockController.deleteStock);

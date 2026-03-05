@@ -3,9 +3,9 @@ const { logAction } = require('../middleware/auditLogger');
 
 async function register(req, res, next) {
   try {
-    const { fullName, email, phone, password } = req.body;
+    const { fullName, email, phone, password, role } = req.body;
 
-    const result = await authService.register({ fullName, email, phone, password });
+    const result = await authService.register({ fullName, email, phone, password, role });
 
     // Log user registration
     await logAction(
@@ -31,8 +31,8 @@ async function register(req, res, next) {
 }
 
 async function login(req, res, next) {
+  const { identifier, password } = req.body;
   try {
-    const { identifier, password } = req.body;
 
     const result = await authService.login({ identifier, password });
 
@@ -55,16 +55,20 @@ async function login(req, res, next) {
       },
     });
   } catch (err) {
-    // Log failed login attempt
-    await logAction(
-      { ip: req.ip, connection: req.connection, get: req.get.bind(req) },
-      'LOGIN_FAILED',
-      'User',
-      null,
-      `Failed login attempt for: ${identifier}`,
-      { identifier, error: err.message }
-    ).catch(console.error);
-    
+    // Log failed login attempt - use try/catch to avoid crashing on audit log failures
+    try {
+      await logAction(
+        { ip: req.ip, connection: req.connection, get: req.get.bind(req) },
+        'LOGIN_FAILED',
+        'User',
+        null,
+        `Failed login attempt for: ${identifier || 'unknown'}`,
+        { identifier: identifier || 'unknown', error: err.message }
+      );
+    } catch (logErr) {
+      console.error('Failed to log login attempt:', logErr);
+    }
+
     next(err);
   }
 }

@@ -13,7 +13,7 @@ const paymentService = require('../services/paymentService');
  */
 const initiatePayment = async (req, res, next) => {
     try {
-        const { orderId } = req.body;
+        const { orderId, paymentType = 'full' } = req.body;
 
         if (!orderId) {
             return res.status(400).json({
@@ -24,7 +24,8 @@ const initiatePayment = async (req, res, next) => {
 
         const result = await paymentService.initiatePayment(
             parseInt(orderId),
-            req.user.id
+            req.user.id,
+            paymentType
         );
 
         return res.status(200).json({

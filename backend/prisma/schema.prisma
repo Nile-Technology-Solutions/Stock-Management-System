@@ -188,9 +188,11 @@ model Order {
   productId         Int?
   productName       String
   quantity          Int
+  isCustom          Boolean     @default(false)
   customNotes       String?
   status            OrderStatus @default(OrderSubmitted)
   totalPrice        Decimal?    @db.Decimal(10, 2)
+  depositAmount     Decimal?    @db.Decimal(10, 2)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
@@ -206,6 +208,8 @@ enum OrderStatus {
   PaymentConfirmed
   UnderProcess
   Completed
+  ReadyForDelivery
+  Delivered
   Cancelled
 }
 
@@ -215,6 +219,7 @@ model Payment {
   amount         Decimal       @db.Decimal(10, 2)
   method         PaymentMethod
   status         PaymentStatus @default(Pending)
+  paymentType    String?       // "deposit" or "final"
   transactionRef String?
   checkoutUrl    String?       // Chapa checkout URL
   createdAt      DateTime      @default(now())

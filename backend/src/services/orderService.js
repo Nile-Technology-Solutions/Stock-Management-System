@@ -61,6 +61,7 @@ async function createOrder(data, userId) {
     } = data;
 
     const isReadyMade = productId !== null && productId !== undefined;
+    const parsedTotalPrice = totalPrice ? parseFloat(totalPrice) : null;
 
     if (isReadyMade) {
         // ── Ready-made order: deduct stock in a transaction ──
@@ -90,9 +91,11 @@ async function createOrder(data, userId) {
                     productId: parseInt(productId),
                     productName,
                     quantity,
+                    isCustom: false,
                     deliveryAddressId: deliveryAddressId ? parseInt(deliveryAddressId) : null,
                     customNotes,
-                    totalPrice: totalPrice ? parseFloat(totalPrice) : null,
+                    totalPrice: parsedTotalPrice,
+                    depositAmount: null, // full payment for ready-made
                     status: 'OrderSubmitted',
                 },
                 include: {
@@ -103,15 +106,19 @@ async function createOrder(data, userId) {
             });
         });
     } else {
-        // ── Custom order: no stock deduction ──
+        // ── Custom order: no stock deduction, calculate deposit ──
+        const depositAmount = parsedTotalPrice ? parsedTotalPrice * 0.5 : null;
+
         return prisma.order.create({
             data: {
                 userId,
                 productName,
                 quantity,
+                isCustom: true,
                 deliveryAddressId: deliveryAddressId ? parseInt(deliveryAddressId) : null,
                 customNotes,
-                totalPrice: totalPrice ? parseFloat(totalPrice) : null,
+                totalPrice: parsedTotalPrice,
+                depositAmount,
                 status: 'OrderSubmitted',
             },
             include: {
@@ -146,9 +153,11 @@ async function updateOrderStatus(id, newStatus) {
     // ── Validate status transitions ──
     const allowedTransitions = {
         OrderSubmitted: ['PaymentConfirmed', 'Cancelled'],
-        PaymentConfirmed: ['Cancelled'],
-        UnderProcess: [],   // Completed is set automatically by production
-        Completed: [],
+        PaymentConfirmed: ['UnderProcess', 'ReadyForDelivery', 'Cancelled'],
+        UnderProcess: ['Completed'],
+        Completed: ['ReadyForDelivery'],      // after final payment for custom orders
+        ReadyForDelivery: ['Delivered'],
+        Delivered: [],
         Cancelled: [],
     };
 
@@ -176,6 +185,20 @@ async function updateOrderStatus(id, newStatus) {
                     productionRecord: true,
                 },
             });
+        });
+    }
+
+    // ── Ready-made auto-delivery: PaymentConfirmed → ReadyForDelivery ──
+    if (newStatus === 'PaymentConfirmed' && !order.isCustom) {
+        return prisma.order.update({
+            where: { id },
+            data: { status: 'ReadyForDelivery' },
+            include: {
+                user: { select: { id: true, fullName: true, username: true, role: true } },
+                deliveryAddress: true,
+                product: true,
+                productionRecord: true,
+            },
         });
     }
 

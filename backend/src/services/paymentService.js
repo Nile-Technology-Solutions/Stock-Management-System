@@ -27,11 +27,12 @@ function generateTxRef(orderId) {
  * 4. Calls Chapa initialize API
  * 5. Stores transactionRef and checkoutUrl on the Payment record
  *
- * @param {number} orderId – The order to pay for
- * @param {number} userId  – The authenticated user's ID
+ * @param {number} orderId     – The order to pay for
+ * @param {number} userId      – The authenticated user's ID
+ * @param {string} paymentType – "deposit", "final", or "full" (default)
  * @returns {Promise<{ checkoutUrl: string, paymentId: number, txRef: string }>}
  */
-async function initiatePayment(orderId, userId) {
+async function initiatePayment(orderId, userId, paymentType = 'full') {
     // 1. Fetch the order with user details
     const order = await prisma.order.findUnique({
         where: { id: orderId },
@@ -50,28 +51,48 @@ async function initiatePayment(orderId, userId) {
         throw Object.assign(new Error('Access denied'), { statusCode: 403 });
     }
 
-    // Only allow payment for orders in OrderSubmitted status
-    if (order.status !== 'OrderSubmitted') {
+    // Only allow payment for orders in appropriate status
+    // Deposit/full: OrderSubmitted
+    // Final: Completed (production done, awaiting final payment)
+    const allowedStatuses = {
+        deposit: ['OrderSubmitted'],
+        full: ['OrderSubmitted'],
+        final: ['Completed'],
+    };
+
+    const validStatuses = allowedStatuses[paymentType] || ['OrderSubmitted'];
+    if (!validStatuses.includes(order.status)) {
         throw Object.assign(
-            new Error(`Cannot pay for order with status "${order.status}". Order must be in OrderSubmitted status.`),
+            new Error(`Cannot make ${paymentType} payment for order with status "${order.status}".`),
             { statusCode: 400 }
         );
     }
 
-    // Check if there's already a completed payment
-    const existingCompleted = order.payments.find(p => p.status === 'Completed');
-    if (existingCompleted) {
+    // Check if there's already a completed payment of the same type
+    const existingOfType = order.payments.find(p => p.status === 'Completed' && p.paymentType === paymentType);
+    if (existingOfType) {
         throw Object.assign(
-            new Error('This order has already been paid for'),
+            new Error(`A ${paymentType} payment has already been completed for this order`),
             { statusCode: 400 }
         );
     }
 
-    // Calculate amount (use order totalPrice or throw if not set)
-    const amount = order.totalPrice;
-    if (!amount || parseFloat(amount) <= 0) {
+    // Calculate amount based on payment type
+    let amount;
+    if (paymentType === 'deposit') {
+        amount = order.depositAmount ? parseFloat(order.depositAmount) : parseFloat(order.totalPrice) * 0.5;
+    } else if (paymentType === 'final') {
+        const depositPaid = order.payments
+            .filter(p => p.status === 'Completed' && p.paymentType === 'deposit')
+            .reduce((sum, p) => sum + parseFloat(p.amount), 0);
+        amount = parseFloat(order.totalPrice) - depositPaid;
+    } else {
+        amount = parseFloat(order.totalPrice);
+    }
+
+    if (!amount || amount <= 0) {
         throw Object.assign(
-            new Error('Order does not have a valid total price'),
+            new Error('Order does not have a valid payment amount'),
             { statusCode: 400 }
         );
     }
@@ -140,6 +161,7 @@ async function initiatePayment(orderId, userId) {
             amount: parseFloat(amount),
             method: 'Chapa',
             status: 'Pending',
+            paymentType,
             transactionRef: txRef,
             checkoutUrl: chapaResult.checkout_url,
         },
@@ -212,9 +234,21 @@ async function handleCallback(txRef) {
                 data: { status: 'Completed' },
             });
 
+            // Determine new order status based on payment type
+            let newOrderStatus;
+            if (payment.paymentType === 'final') {
+                newOrderStatus = 'ReadyForDelivery';
+            } else if (payment.paymentType === 'deposit') {
+                newOrderStatus = 'PaymentConfirmed';
+            } else {
+                // Full payment: check if ready-made (auto-deliver) or custom
+                const fullOrder = await tx.order.findUnique({ where: { id: payment.orderId } });
+                newOrderStatus = fullOrder.isCustom ? 'PaymentConfirmed' : 'ReadyForDelivery';
+            }
+
             const updatedOrder = await tx.order.update({
                 where: { id: payment.orderId },
-                data: { status: 'PaymentConfirmed' },
+                data: { status: newOrderStatus },
                 include: {
                     user: { select: { id: true, fullName: true, email: true } },
                     deliveryAddress: true,

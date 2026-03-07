@@ -34,6 +34,16 @@ const createProduction = async (req, res, next) => {
             data.progressPercentage = parseInt(data.progressPercentage, 10);
         }
 
+        // Parse materialUsages JSON string from form-data to array
+        if (typeof data.materialUsages === 'string') {
+            try {
+                data.materialUsages = JSON.parse(data.materialUsages);
+            } catch (e) {
+                data.materialUsages = [];
+                console.error("Failed to parse materialUsages:", e);
+            }
+        }
+
         const record = await productionService.createProduction(data);
         return res.status(201).json({ data: record, message: 'Production record created successfully' });
     } catch (error) {

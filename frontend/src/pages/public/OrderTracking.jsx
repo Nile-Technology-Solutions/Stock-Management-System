@@ -122,10 +122,10 @@ const OrderTracking = () => {
                   </p>
                 </div>
                 <div className={`px-4 py-2 rounded-full font-semibold text-sm ${orderData.status === 'Completed'
-                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                    : orderData.status === 'Rejected'
-                      ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                      : 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400'
+                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                  : orderData.status === 'Rejected'
+                    ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                    : 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400'
                   }`}>
                   {orderData.status}
                 </div>
@@ -236,7 +236,7 @@ const OrderTracking = () => {
                       variant="primary"
                       size="large"
                       className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                      onClick={() => navigate(`/payment?orderId=${orderData.id}&type=final`)}
+                      onClick={() => navigate(`/payment/initialize?orderId=${orderData.id}&type=final`)}
                     >
                       Pay Remaining ETB {orderData.totalPrice && orderData.depositAmount
                         ? (Number(orderData.totalPrice) - Number(orderData.depositAmount)).toLocaleString()
@@ -272,8 +272,8 @@ const OrderTracking = () => {
                         <div key={status.key} className="relative flex items-start gap-4">
                           {/* Icon */}
                           <div className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-4 transition-all duration-300 ${isCompleted
-                              ? 'bg-gradient-to-br from-cyan-400 to-sky-400 border-white dark:border-slate-900 shadow-lg'
-                              : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600'
+                            ? 'bg-gradient-to-br from-cyan-400 to-sky-400 border-white dark:border-slate-900 shadow-lg'
+                            : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600'
                             }`}>
                             <span className="text-xl">{status.icon}</span>
                           </div>
@@ -281,8 +281,8 @@ const OrderTracking = () => {
                           {/* Content */}
                           <div className="flex-1 pt-2">
                             <h4 className={`text-lg font-semibold ${isCompleted
-                                ? 'text-slate-900 dark:text-slate-100'
-                                : 'text-slate-500 dark:text-slate-400'
+                              ? 'text-slate-900 dark:text-slate-100'
+                              : 'text-slate-500 dark:text-slate-400'
                               }`}>
                               {status.label}
                             </h4>

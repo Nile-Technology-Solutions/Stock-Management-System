@@ -5,13 +5,15 @@ import { paymentApi } from '../../services/paymentApi';
 const PaymentInitialization = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
   const [redirecting, setRedirecting] = useState(false);
 
-  // Get orderId from location state or URL params
+  // Get order data from location state or URL params
   const orderData = location.state || {};
-  const orderId = orderData.orderId;
+  const orderId = orderData.orderId || searchParams.get('orderId');
+  const paymentType = orderData.type || searchParams.get('type') || 'full';
 
   const handlePay = async () => {
     if (!orderId) {
@@ -23,7 +25,10 @@ const PaymentInitialization = () => {
     setError('');
 
     try {
-      const response = await paymentApi.initiatePayment({ orderId: parseInt(orderId) });
+      const response = await paymentApi.initiatePayment({
+        orderId: parseInt(orderId),
+        paymentType
+      });
       const checkoutUrl = response.data?.checkoutUrl || response.checkoutUrl;
 
       if (!checkoutUrl) {

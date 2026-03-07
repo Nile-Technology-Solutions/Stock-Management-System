@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GlassCard from '../../../components/common/GlassCard';
 import Button from '../../../components/common/Button';
 import { ShoppingCart, RefreshCw, Plus, Search, Filter, Eye } from '../../../components/icons';
@@ -8,6 +9,7 @@ import OrderEditModal from './OrderEditModal';
 import Loader from '../../../components/common/Loader';
 
 const OrdersPage = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +23,7 @@ const OrdersPage = () => {
     try {
       const response = await orderApi.getOrders();
       console.log('Orders response:', response);
-      
+
       // Handle nested response structure: { success: true, data: { orders: [...] } }
       const ordersData = response?.data?.orders || response?.orders || response;
       setOrders(Array.isArray(ordersData) ? ordersData : []);
@@ -62,13 +64,13 @@ const OrdersPage = () => {
 
   const handleOrderUpdate = (updatedOrder) => {
     // Update the orders list with the new data
-    setOrders(prev => prev.map(o => 
+    setOrders(prev => prev.map(o =>
       o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o
     ));
-    
+
     // Close the edit modal
     setShowEditModal(false);
-    
+
     // Optionally refresh to get the latest data from server
     setTimeout(() => {
       fetchOrders(true);
@@ -89,8 +91,20 @@ const OrdersPage = () => {
     'OrderSubmitted': { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400', dot: 'bg-blue-500' },
     'PaymentConfirmed': { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400', dot: 'bg-green-500' },
     'UnderProcess': { bg: 'bg-yellow-100 dark:bg-yellow-900/30', text: 'text-yellow-700 dark:text-yellow-400', dot: 'bg-yellow-500' },
-    'Completed': { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-700 dark:text-emerald-400', dot: 'bg-emerald-500' },
+    'Completed': { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-700 dark:text-purple-400', dot: 'bg-purple-500' },
+    'ReadyForDelivery': { bg: 'bg-emerald-100 dark:bg-emerald-900/30', text: 'text-emerald-700 dark:text-emerald-400', dot: 'bg-emerald-500' },
+    'Delivered': { bg: 'bg-teal-100 dark:bg-teal-900/30', text: 'text-teal-700 dark:text-teal-400', dot: 'bg-teal-500' },
     'Cancelled': { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400', dot: 'bg-red-500' }
+  };
+
+  const handleMarkDelivered = async (order) => {
+    if (!confirm(`Mark order #${order.id} as Delivered?`)) return;
+    try {
+      await orderApi.updateOrderStatus(order.id, 'Delivered');
+      fetchOrders(true);
+    } catch (err) {
+      alert(err.message || 'Failed to update status');
+    }
   };
 
   return (
@@ -143,6 +157,8 @@ const OrdersPage = () => {
             <option value="PaymentConfirmed">Payment Confirmed</option>
             <option value="UnderProcess">Under Process</option>
             <option value="Completed">Completed</option>
+            <option value="ReadyForDelivery">Ready for Delivery</option>
+            <option value="Delivered">Delivered</option>
             <option value="Cancelled">Cancelled</option>
           </select>
         </div>
@@ -212,9 +228,16 @@ const OrdersPage = () => {
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                             {order.productName}
                           </span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
-                            Qty: {order.quantity}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                              Qty: {order.quantity}
+                            </span>
+                            {order.isCustom && (
+                              <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded font-semibold">
+                                Custom
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -240,6 +263,28 @@ const OrdersPage = () => {
                           >
                             <Eye className="w-4 h-4 text-slate-400 group-hover:text-cyan-500" />
                           </button>
+
+                          {/* Create Production for custom orders with confirmed payment */}
+                          {order.isCustom && order.status === 'PaymentConfirmed' && !order.productionRecord && (
+                            <button
+                              onClick={() => navigate(`/admin/production?orderId=${order.id}`)}
+                              className="px-2 py-1 text-xs font-semibold bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
+                              title="Create Production"
+                            >
+                              + Production
+                            </button>
+                          )}
+
+                          {/* Mark Delivered */}
+                          {order.status === 'ReadyForDelivery' && (
+                            <button
+                              onClick={() => handleMarkDelivered(order)}
+                              className="px-2 py-1 text-xs font-semibold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
+                              title="Mark as Delivered"
+                            >
+                              ✓ Deliver
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productApi } from '../../services/productApi';
 import { orderApi } from '../../services/orderApi';
+import { resolveImageUrl } from '../../utils/imageUrl';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
@@ -207,7 +208,7 @@ const OrderPlacement = () => {
               {product && (
                 <div className="space-y-4">
                   {product.photos?.[0] && (
-                    <img src={product.photos[0].url} alt={product.name} className="w-full h-32 object-cover rounded-lg" />
+                    <img src={resolveImageUrl(product.photos[0].url)} alt={product.name} className="w-full h-32 object-cover rounded-lg" />
                   )}
                   <div>
                     <h3 className="font-semibold">{product.name}</h3>
@@ -227,7 +228,7 @@ const OrderPlacement = () => {
       </div>
 
       {/* Success Modal */}
-      <OrderSuccessModal 
+      <OrderSuccessModal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
         orderData={orderResponse}

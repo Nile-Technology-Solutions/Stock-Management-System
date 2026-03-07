@@ -39,7 +39,8 @@ async function getProductionById(id) {
 
 /**
  * Create a new production record.
- * If linked to an order (orderId), auto-updates order status to UnderProcess.
+ * Deducts stock materials atomically and creates material usage rows.
+ * If linked to an order (orderId), auto-updates order status.
  * @param {object} data - Validated body + photo paths array
  */
 async function createProduction(data) {
@@ -53,81 +54,113 @@ async function createProduction(data) {
         workInstructions = null,
         paymentNote = null,
         photos = [],
-        orderId
+        orderId,
+        materialUsages = [],
     } = data;
 
-    const parsedOrderId = orderId ? parseInt(orderId) : null;
+    const parsedCategoryId = parseInt(categoryId, 10);
+    if (!Number.isInteger(parsedCategoryId) || parsedCategoryId <= 0) {
+        const err = new Error('categoryId must be a positive integer');
+        err.statusCode = 400;
+        throw err;
+    }
 
-    // If linked to an order, validate order exists and use a transaction
-    if (parsedOrderId) {
-        return prisma.$transaction(async (tx) => {
+    const parsedOrderId = orderId ? parseInt(orderId, 10) : null;
+    const normalizedMaterialUsages = Array.isArray(materialUsages) ? materialUsages : [];
+    const usageTotals = normalizedMaterialUsages.reduce((acc, usage) => {
+        const stockMaterialId = parseInt(usage.stockMaterialId, 10);
+        const quantityUsed = parseInt(usage.quantityUsed, 10);
+
+        if (!Number.isInteger(stockMaterialId) || stockMaterialId <= 0 || !Number.isInteger(quantityUsed) || quantityUsed <= 0) {
+            const err = new Error('materialUsages must contain valid stockMaterialId and quantityUsed values');
+            err.statusCode = 400;
+            throw err;
+        }
+
+        acc.set(stockMaterialId, (acc.get(stockMaterialId) || 0) + quantityUsed);
+        return acc;
+    }, new Map());
+
+    return prisma.$transaction(async (tx) => {
+        if (parsedOrderId) {
             const order = await tx.order.findUnique({ where: { id: parsedOrderId } });
             if (!order) {
                 const err = new Error('Linked order not found');
                 err.statusCode = 404;
                 throw err;
             }
+        }
 
-            const record = await tx.productionRecord.create({
-                data: {
-                    categoryId: parseInt(categoryId),
-                    title,
-                    status,
-                    progressPercentage,
-                    startedDate: startedDate ? new Date(startedDate) : new Date(),
-                    submittingDate: submittingDate ? new Date(submittingDate) : null,
-                    workInstructions,
-                    paymentNote,
-                    orderId: parsedOrderId,
-                    photos: {
-                        create: photos.map((url) => ({ url })),
-                    },
-                },
-                include: { category: true, photos: true },
+        // Deduct stock at production creation to keep inventory in sync.
+        for (const [stockMaterialId, quantityUsed] of usageTotals.entries()) {
+            const material = await tx.stockMaterial.findUnique({ where: { id: stockMaterialId } });
+            if (!material) {
+                const err = new Error(`Stock material (ID: ${stockMaterialId}) not found`);
+                err.statusCode = 404;
+                throw err;
+            }
+            if (material.quantity < quantityUsed) {
+                const err = new Error(
+                    `Insufficient stock for "${material.name}". Available: ${material.quantity}, required: ${quantityUsed}`
+                );
+                err.statusCode = 400;
+                throw err;
+            }
+            await tx.stockMaterial.update({
+                where: { id: stockMaterialId },
+                data: { quantity: { decrement: quantityUsed } },
             });
+        }
 
-            // Auto-update order status to UnderProcess
+        const record = await tx.productionRecord.create({
+            data: {
+                categoryId: parsedCategoryId,
+                title,
+                status,
+                progressPercentage,
+                startedDate: startedDate ? new Date(startedDate) : new Date(),
+                submittingDate: submittingDate ? new Date(submittingDate) : null,
+                workInstructions,
+                paymentNote,
+                ...(parsedOrderId ? { orderId: parsedOrderId } : {}),
+                photos: {
+                    create: photos.map((url) => ({ url })),
+                },
+                materialUsages: {
+                    create: normalizedMaterialUsages.map((usage) => ({
+                        stockMaterialId: parseInt(usage.stockMaterialId, 10),
+                        quantityUsed: parseInt(usage.quantityUsed, 10),
+                    })),
+                },
+            },
+            include: {
+                category: true,
+                photos: true,
+                order: true,
+                materialUsages: { include: { stockMaterial: true } },
+            },
+        });
+
+        if (parsedOrderId) {
             await tx.order.update({
                 where: { id: parsedOrderId },
-                data: { status: 'UnderProcess' },
+                data: { status: status === 'Completed' ? 'Completed' : 'UnderProcess' },
             });
+        }
 
-            return record;
-        });
-    }
-
-    // Standalone production (no linked order)
-    return prisma.productionRecord.create({
-        data: {
-            categoryId: parseInt(categoryId),
-            title,
-            status,
-            progressPercentage,
-            startedDate: startedDate ? new Date(startedDate) : new Date(),
-            submittingDate: submittingDate ? new Date(submittingDate) : null,
-            workInstructions,
-            paymentNote,
-            photos: {
-                create: photos.map((url) => ({ url })),
-            },
-        },
-        include: { category: true, photos: true },
+        return record;
     });
 }
 
 /**
  * Update an existing production record.
  * If new photos are provided, they are added to the existing set.
- *
- * When status changes to Completed:
- *   - Deduct StockMaterial.quantity for each ProductionMaterialUsage
- *   - If linked to an Order, update Order.status to Completed
- *   - All in a single Prisma $transaction for atomicity
+ * If status changes to Completed and record is linked to an order, the order is updated.
  */
 async function updateProduction(id, updateData) {
     const existing = await prisma.productionRecord.findUnique({
         where: { id },
-        include: { materialUsages: true },
+        include: { order: true },
     });
     if (!existing) {
         const err = new Error('Production record not found');
@@ -149,43 +182,16 @@ async function updateProduction(id, updateData) {
         fields.categoryId = parseInt(fields.categoryId);
     }
 
-    // ── Completion flow: deduct materials + update linked order ──
+    // Stock deduction is handled when production is created.
     const isCompleting = fields.status === 'Completed' && existing.status !== 'Completed';
 
-    if (isCompleting) {
+    if (isCompleting && existing.orderId) {
         return prisma.$transaction(async (tx) => {
-            // 1. Deduct stock materials for each usage
-            for (const usage of existing.materialUsages) {
-                const material = await tx.stockMaterial.findUnique({
-                    where: { id: usage.stockMaterialId },
-                });
-                if (!material) {
-                    const err = new Error(`Stock material (ID: ${usage.stockMaterialId}) not found`);
-                    err.statusCode = 404;
-                    throw err;
-                }
-                if (material.quantity < usage.quantityUsed) {
-                    const err = new Error(
-                        `Insufficient stock for "${material.name}". Available: ${material.quantity}, required: ${usage.quantityUsed}`
-                    );
-                    err.statusCode = 400;
-                    throw err;
-                }
-                await tx.stockMaterial.update({
-                    where: { id: usage.stockMaterialId },
-                    data: { quantity: { decrement: usage.quantityUsed } },
-                });
-            }
+            await tx.order.update({
+                where: { id: existing.orderId },
+                data: { status: 'Completed' },
+            });
 
-            // 2. If linked to an order, mark it Completed
-            if (existing.orderId) {
-                await tx.order.update({
-                    where: { id: existing.orderId },
-                    data: { status: 'Completed' },
-                });
-            }
-
-            // 3. Update the production record itself
             return tx.productionRecord.update({
                 where: { id },
                 data: {

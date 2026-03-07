@@ -6,13 +6,10 @@ import Modal from '../../../components/common/Modal';
 import ImageUpload from '../../../components/common/ImageUpload';
 import { Package, RefreshCw, Plus, Search, Filter, Edit3, Trash2, Star, Eye } from '../../../components/icons';
 import { productApi } from '../../../services/productApi';
+import { uploadApi } from '../../../services/uploadApi';
+import { categoryApi } from '../../../services/categoryApi';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
-const CATEGORIES = [
-  { label: 'Furniture', value: 1 },
-  { label: 'Cabinets', value: 2 },
-  { label: 'Tables', value: 3 },
-  { label: 'Chairs', value: 4 },
-];
 
 const emptyForm = {
   name: '',
@@ -27,6 +24,7 @@ const emptyForm = {
 
 const ProductsManagementPage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,10 +37,22 @@ const ProductsManagementPage = () => {
   const fetchProducts = useCallback(async (isRefresh = false) => {
     if (!isRefresh) setLoading(true);
     try {
-      const data = await productApi.getProducts();
-      setProducts(Array.isArray(data) ? data : []);
+      const [productsData, categoriesData] = await Promise.all([
+        productApi.getProducts(),
+        categoryApi.getCategories()
+      ]);
+      setProducts(Array.isArray(productsData) ? productsData : []);
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+
+      // If we don't have an initial category selected and we fetched some, pick the first
+      setFormData(prev => {
+        if (prev.categoryId === '1' && categoriesData.length > 0) {
+          return { ...prev, categoryId: String(categoriesData[0].id) };
+        }
+        return prev;
+      });
     } catch (error) {
-      console.error('Failed to fetch products:', error);
+      console.error('Failed to fetch data:', error);
     } finally {
       setLoading(false);
     }
@@ -96,7 +106,7 @@ const ProductsManagementPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormLoading(true);
-    
+
     try {
       // Validate required fields
       if (!formData.name || !formData.name.trim()) {
@@ -126,15 +136,34 @@ const ProductsManagementPage = () => {
           productData.price = priceValue;
         }
       }
-      
+
       if (formData.description && formData.description.trim() !== '') {
         productData.description = formData.description.trim();
       }
 
-      console.log('Sending product data:', productData);
+      // 1. Separate existing image URLs from new file uploads
+      // ImageUpload stores items as { id, url: base64, file: File, name } for new images
+      // and { id, url: "http://...", ... } for existing images (no .file property)
+      const existingImages = formData.images.filter(img => !img.file);
+      const existingUrls = existingImages.map(img => typeof img === 'string' ? img : img.url);
 
-      // TODO: When backend supports image upload, send formData.images
-      // For now, images are stored temporarily
+      const newImageItems = formData.images.filter(img => img.file instanceof File);
+      const newFiles = newImageItems.map(img => img.file);
+
+      // 2. Upload new files if any exist
+      let newUrls = [];
+      if (newFiles.length > 0) {
+        console.log('Uploading new images...', newFiles);
+        const uploadResponse = await uploadApi.uploadImages(newFiles);
+        if (uploadResponse.urls) {
+          newUrls = uploadResponse.urls;
+        }
+      }
+
+      // 3. Combine URLs (as plain strings) and assign to productData
+      productData.photos = [...existingUrls, ...newUrls];
+
+      console.log('Sending product data:', productData);
 
       let response;
       if (currentProduct) {
@@ -148,13 +177,13 @@ const ProductsManagementPage = () => {
       fetchProducts(true);
     } catch (error) {
       console.error('Error saving product:', error);
-      
+
       // Show detailed error message
       let errorMessage = 'Failed to save product.';
       if (error.message) {
         errorMessage = error.message;
       }
-      
+
       alert(errorMessage);
     } finally {
       setFormLoading(false);
@@ -177,8 +206,8 @@ const ProductsManagementPage = () => {
 
   const getCategoryLabel = (product) => {
     if (product.category?.name) return product.category.name;
-    const cat = CATEGORIES.find(c => c.value === product.categoryId);
-    return cat?.label || '—';
+    const cat = categories.find(c => c.id === product.categoryId);
+    return cat?.name || '—';
   };
 
   const filteredProducts = products.filter(product => {
@@ -196,8 +225,8 @@ const ProductsManagementPage = () => {
       accessor: 'name',
       render: (value, product) => {
         const hasImages = product.photos && product.photos.length > 0;
-        const imageUrl = hasImages ? product.photos[0].url : null;
-        
+        const imageUrl = hasImages ? resolveImageUrl(product.photos[0].url) : null;
+
         return (
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden">
@@ -355,7 +384,7 @@ const ProductsManagementPage = () => {
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
               <option value="All">All Categories</option>
-              {CATEGORIES.map(c => <option key={c.value} value={c.label}>{c.label}</option>)}
+              {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
             </select>
           </div>
         </div>
@@ -403,7 +432,7 @@ const ProductsManagementPage = () => {
                 value={formData.categoryId}
                 onChange={handleInputChange}
               >
-                {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
             <div className="space-y-1.5">

@@ -112,6 +112,15 @@ const finishedProductSchema = Joi.object({
   price: Joi.number().positive().optional(),
   description: Joi.string().optional(),
   featured: Joi.boolean().optional(),
+  photos: Joi.array().items(
+    Joi.alternatives().try(
+      Joi.string(),
+      Joi.object({
+        url: Joi.string().required(),
+        description: Joi.string().optional()
+      })
+    )
+  ).optional(),
 });
 
 // Update schema: all fields optional but require at least one
@@ -123,6 +132,15 @@ const finishedProductUpdateSchema = Joi.object({
   price: Joi.number().positive().optional(),
   description: Joi.string().optional(),
   featured: Joi.boolean().optional(),
+  photos: Joi.array().items(
+    Joi.alternatives().try(
+      Joi.string(),
+      Joi.object({
+        url: Joi.string().required(),
+        description: Joi.string().optional()
+      })
+    )
+  ).optional(),
 }).min(1);
 
 // ===================== ORDERS =====================

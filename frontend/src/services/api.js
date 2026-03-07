@@ -48,11 +48,11 @@ export const getAuthHeaders = () => {
  */
 export const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
-  
+
   const config = {
     ...options,
     headers: {
-      ...getAuthHeaders(),
+      ...(!options.body || !(options.body instanceof FormData) ? getAuthHeaders() : (getAuthToken() ? { 'Authorization': `Bearer ${getAuthToken()}` } : {})),
       ...options.headers
     }
   };
@@ -117,6 +117,18 @@ export const api = {
     return apiRequest(endpoint, {
       method: 'POST',
       body: JSON.stringify(data)
+    });
+  },
+
+  postMultipart: (endpoint, formData) => {
+    // For FormData, do not set Content-Type; the browser will set it with the correct boundary
+    const token = getAuthToken();
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+    return apiRequest(endpoint, {
+      method: 'POST',
+      body: formData,
+      headers
     });
   },
 

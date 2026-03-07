@@ -60,6 +60,9 @@ async function createProduct(data) {
         featured = false,
     } = data;
 
+    // Normalize photos: accept both plain strings and { url: "..." } objects
+    const normalizedPhotos = photos.map(p => typeof p === 'string' ? p : p.url).filter(Boolean);
+
     return prisma.finishedProduct.create({
         data: {
             name,
@@ -70,7 +73,7 @@ async function createProduct(data) {
             description,
             featured,
             photos: {
-                create: photos.map((url) => ({ url })),
+                create: normalizedPhotos.map((url) => ({ url })),
             },
         },
         include: { category: true, photos: true },
@@ -95,12 +98,17 @@ async function updateProduct(id, updateData) {
     if (fields.stockQuantity !== undefined) fields.stockQuantity = parseInt(fields.stockQuantity);
     if (fields.price !== undefined) fields.price = parseFloat(fields.price);
 
+    // Normalize photos: accept both plain strings and { url: "..." } objects
+    const normalizedPhotos = photos
+        ? photos.map(p => typeof p === 'string' ? p : p.url).filter(Boolean)
+        : [];
+
     return prisma.finishedProduct.update({
         where: { id },
         data: {
             ...fields,
-            ...(photos && photos.length > 0
-                ? { photos: { create: photos.map((url) => ({ url })) } }
+            ...(normalizedPhotos.length > 0
+                ? { photos: { create: normalizedPhotos.map((url) => ({ url })) } }
                 : {}),
         },
         include: { category: true, photos: true },

@@ -8,6 +8,8 @@ import {
   Upload, CheckCircle2, XCircle, Clock, Camera, FileText, DollarSign
 } from '../../../components/icons';
 import { productionApi } from '../../../services/productionApi';
+import { uploadApi } from '../../../services/uploadApi';
+import { resolveImageUrl } from '../../../utils/imageUrl';
 
 /**
  * ProductionPage - Refined for Swagger v1.4.0
@@ -80,7 +82,7 @@ const ProductionPage = () => {
 
   const handleOpenUpload = (batch) => {
     setSelectedBatch(batch);
-    const photoUrls = (batch.photos || []).map(p => typeof p === 'string' ? p : p.url);
+    const photoUrls = (batch.photos || []).map(p => typeof p === 'string' ? resolveImageUrl(p) : resolveImageUrl(p.url));
     setPreviews(photoUrls);
     setUploadProgress(0);
     setIsUploadModalOpen(true);
@@ -115,25 +117,41 @@ const ProductionPage = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setPreviews(prev => [...prev, ...newPreviews]);
+    // Store both preview URLs and File objects
+    const newItems = files.map(file => ({
+      previewUrl: URL.createObjectURL(file),
+      file: file
+    }));
+    setPreviews(prev => [...prev, ...newItems]);
   };
 
   const handleUploadPhotos = async () => {
     if (previews.length === 0) return;
     setIsUploading(true);
     try {
-      for (let i = 0; i <= 100; i += 25) {
-        setUploadProgress(i);
-        await new Promise(r => setTimeout(r, 100));
+      // Separate existing URLs from new files
+      const existingUrls = previews.filter(p => typeof p === 'string').map(url => url);
+      const newFiles = previews.filter(p => p.file instanceof File).map(p => p.file);
+
+      let uploadedUrls = [];
+      if (newFiles.length > 0) {
+        setUploadProgress(30);
+        const uploadResponse = await uploadApi.uploadImages(newFiles);
+        setUploadProgress(80);
+        if (uploadResponse.urls) {
+          uploadedUrls = uploadResponse.urls;
+        }
       }
-      const photoObjects = previews.map((url, idx) => ({
-        id: Date.now() + idx,
+
+      // Combine existing + newly uploaded URLs
+      const allUrls = [...existingUrls, ...uploadedUrls];
+      const photoObjects = allUrls.map((url, idx) => ({
         url: url,
         description: `Production photo ${idx + 1}`
       }));
-      const updatedBatch = { ...selectedBatch, photos: photoObjects };
-      await productionApi.updateProduction(selectedBatch.id, updatedBatch);
+
+      setUploadProgress(100);
+      await productionApi.updateProduction(selectedBatch.id, { photos: photoObjects });
       setIsUploadModalOpen(false);
       fetchProduction(true);
     } catch (error) {
@@ -301,9 +319,12 @@ const ProductionPage = () => {
       <Modal isOpen={isUploadModalOpen} onClose={() => !isUploading && setIsUploadModalOpen(false)} title="Upload Progress Photos">
         <div className="space-y-6 pt-4">
           <div className="grid grid-cols-3 gap-3">
-            {previews.map((src, idx) => (
-              <div key={idx} className="aspect-square rounded-xl overflow-hidden"><img src={src} className="w-full h-full object-cover" alt="" /></div>
-            ))}
+            {previews.map((src, idx) => {
+              const imgSrc = typeof src === 'string' ? src : src.previewUrl;
+              return (
+                <div key={idx} className="aspect-square rounded-xl overflow-hidden"><img src={imgSrc} className="w-full h-full object-cover" alt="" /></div>
+              );
+            })}
             <button onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-slate-400 hover:text-cyan-500 hover:border-cyan-500">
               <Upload className="w-6 h-6" /><span className="text-[10px] font-bold mt-2">Add</span>
             </button>

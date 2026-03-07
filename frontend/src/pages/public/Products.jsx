@@ -133,13 +133,11 @@ const Products = () => {
 
           {/* Category Filter */}
           {categories.length > 0 && (
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
-              <CategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onCategoryChange={handleCategoryChange}
-              />
-            </div>
+            <CategoryFilter
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onCategoryChange={handleCategoryChange}
+            />
           )}
 
           {/* Active Filters Display */}

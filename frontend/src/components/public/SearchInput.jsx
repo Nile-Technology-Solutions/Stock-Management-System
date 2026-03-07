@@ -1,25 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search } from '../../components/icons';
 
-const SearchInput = ({ 
-  onSearch, 
+const SearchInput = ({
+  value = '',
+  onChange,
   placeholder = "Search products...",
-  className = "" 
+  className = ""
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(value);
+
+  useEffect(() => {
+    setSearchTerm(value);
+  }, [value]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    if (onChange) onChange(searchTerm);
   };
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    // Debounced search - trigger search after user stops typing
+    const val = e.target.value;
+    setSearchTerm(val);
     clearTimeout(window.searchTimeout);
     window.searchTimeout = setTimeout(() => {
-      onSearch(value);
+      if (onChange) onChange(val);
     }, 300);
   };
 
@@ -34,7 +38,7 @@ const SearchInput = ({
           value={searchTerm}
           onChange={handleChange}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-colors duration-200 bg-white"
+          className="w-full pl-10 pr-4 py-3 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all duration-200 shadow-sm"
         />
       </div>
     </form>

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { newsApi } from '../../../services/newsApi';
 import GlassCard from '../../../components/common/GlassCard';
 import { ArrowLeft, Calendar, Share2, Twitter, Linkedin, Tag } from '../../../components/icons';
+import { getImageUrl } from '../../../utils/imageHelper';
 
 const NewsDetailPage = () => {
   const { id } = useParams();
@@ -63,8 +64,8 @@ const NewsDetailPage = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20">
       {/* Article Header with Parallax-style background */}
       <div className="relative h-[50vh] min-h-[400px] overflow-hidden">
-        <img 
-          src={newsItem.imageUrl || newsItem.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1200'} 
+        <img
+          src={newsItem.imageUrl || newsItem.image ? getImageUrl(newsItem.imageUrl || newsItem.image) : 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=1200'}
           className="w-full h-full object-cover"
           alt={newsItem.title}
           onError={(e) => {
@@ -72,7 +73,7 @@ const NewsDetailPage = () => {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
-        
+
         <div className="absolute bottom-0 left-0 w-full p-10">
           <div className="container mx-auto px-6">
             <Link to="/news" className="inline-flex items-center text-cyan-400 font-black text-xs uppercase tracking-widest mb-6 hover:text-white transition-colors group">
@@ -87,10 +88,10 @@ const NewsDetailPage = () => {
               )}
               <div className="flex items-center gap-2 text-slate-300 text-xs font-semibold">
                 <Calendar className="w-4 h-4" />
-                {newsItem.publishDate ? new Date(newsItem.publishDate).toLocaleDateString('en-US', { 
-                  month: 'long', 
-                  day: 'numeric', 
-                  year: 'numeric' 
+                {newsItem.publishDate ? new Date(newsItem.publishDate).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
                 }) : 'N/A'}
               </div>
             </div>
@@ -129,21 +130,21 @@ const NewsDetailPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                   <Tag className="w-4 h-4 text-cyan-500" />
-                   <span className="text-xs font-bold text-slate-400">#NileTechnology #Innovation #EthiopiaDesign</span>
+                  <Tag className="w-4 h-4 text-cyan-500" />
+                  <span className="text-xs font-bold text-slate-400">#NileTechnology #Innovation #EthiopiaDesign</span>
                 </div>
               </div>
             </GlassCard>
-            
+
             {/* Author Section */}
             <GlassCard className="p-6 mb-12 flex items-center gap-6 border-none bg-slate-900 text-white">
-               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center font-black text-2xl">
-                 NT
-               </div>
-               <div>
-                  <h4 className="font-bold text-lg mb-0.5">Nile Editorial Team</h4>
-                  <p className="text-slate-400 text-sm">Official publication for Nile Technology & Wood Solutions. Providing expert insights into manufacturing excellence.</p>
-               </div>
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center font-black text-2xl">
+                NT
+              </div>
+              <div>
+                <h4 className="font-bold text-lg mb-0.5">Nile Editorial Team</h4>
+                <p className="text-slate-400 text-sm">Official publication for Nile Technology & Wood Solutions. Providing expert insights into manufacturing excellence.</p>
+              </div>
             </GlassCard>
           </div>
 
@@ -157,9 +158,9 @@ const NewsDetailPage = () => {
                 <Link key={item.id} to={`/news/${item.id}`} className="group block">
                   <div className="flex gap-4">
                     <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                      <img 
-                        src={item.imageUrl || item.image || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400'} 
-                        className="w-full h-full object-cover transition-transform group-hover:scale-110" 
+                      <img
+                        src={item.imageUrl || item.image ? getImageUrl(item.imageUrl || item.image) : 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400'}
+                        className="w-full h-full object-cover transition-transform group-hover:scale-110"
                         alt={item.title}
                         onError={(e) => {
                           e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=400';
@@ -185,18 +186,18 @@ const NewsDetailPage = () => {
             </div>
 
             <GlassCard className="p-8 bg-gradient-to-br from-cyan-600 to-blue-700 text-white border-none shadow-2xl shadow-cyan-500/20">
-               <h3 className="text-xl font-black mb-4 uppercase tracking-tighter">Get The Latest Insights</h3>
-               <p className="text-cyan-100 text-sm mb-6 leading-relaxed">Join 5,000+ industry professionals receiving our monthly technology digest.</p>
-               <div className="space-y-3">
-                  <input 
-                    type="email" 
-                    placeholder="Work email address"
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl outline-none placeholder:text-white/40 text-white focus:bg-white/20 transition-all font-medium"
-                   />
-                   <button className="w-full bg-white text-cyan-600 font-black py-3 rounded-xl shadow-xl shadow-cyan-900/10 hover:bg-cyan-50 transition-colors uppercase text-xs tracking-widest">
-                     Subscribe Now
-                   </button>
-               </div>
+              <h3 className="text-xl font-black mb-4 uppercase tracking-tighter">Get The Latest Insights</h3>
+              <p className="text-cyan-100 text-sm mb-6 leading-relaxed">Join 5,000+ industry professionals receiving our monthly technology digest.</p>
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  placeholder="Work email address"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl outline-none placeholder:text-white/40 text-white focus:bg-white/20 transition-all font-medium"
+                />
+                <button className="w-full bg-white text-cyan-600 font-black py-3 rounded-xl shadow-xl shadow-cyan-900/10 hover:bg-cyan-50 transition-colors uppercase text-xs tracking-widest">
+                  Subscribe Now
+                </button>
+              </div>
             </GlassCard>
           </div>
         </div>

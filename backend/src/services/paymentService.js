@@ -126,7 +126,7 @@ async function initiatePayment(orderId, userId, paymentType = 'full') {
         // Remove spaces and dashes
         phoneNum = phoneNum.replace(/[\s-]/g, '');
 
-        // Convert +2519XXXXXXXX or 2519XXXXXXXX to 09XXXXXXXX
+        // Convert +2519XXXXXXXX or 2519XXXXXXXX to 09XXXXXXXX that reduce error for various phone number
         if (phoneNum.startsWith('+251')) {
             phoneNum = '0' + phoneNum.slice(4);
         } else if (phoneNum.startsWith('251')) {
@@ -138,7 +138,7 @@ async function initiatePayment(orderId, userId, paymentType = 'full') {
     if (!phoneNum || phoneNum === 'unknown' || !/^09\d{8}$/.test(phoneNum)) {
         phoneNum = '0911000000';
     }
-
+    //payment initialization
     const chapaResult = await chapaService.initializeTransaction({
         amount: parseFloat(amount),
         email: safeEmail,

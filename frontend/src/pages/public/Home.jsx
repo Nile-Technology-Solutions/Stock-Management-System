@@ -168,11 +168,11 @@ const Home = () => {
               {/* Main Headline — bold, clear, immediately readable */}
               <div>
                 <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.05] tracking-tight">
-                  Beautiful Spaces,
-                  <br />
                   <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-700 bg-clip-text text-transparent">
-                    Crafted Just for You
+                    AddHomes Creatives
                   </span>
+                  <br />
+                  Premium Furniture & Interior Design
                 </h1>
                 <div className="w-24 h-1.5 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full mt-6" />
               </div>

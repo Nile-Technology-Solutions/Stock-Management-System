@@ -158,112 +158,127 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
-      {/* Enhanced animated background */}
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center">
+      {/* Premium Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-cyan-400/5 to-sky-400/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-sky-400/5 to-cyan-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/2 via-transparent to-sky-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
-
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-amber-400/8 to-orange-400/8 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-br from-orange-400/8 to-amber-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-400/2 via-transparent to-orange-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
+        
+        {/* Decorative Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:32px_32px]" />
+        
         {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-sky-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-cyan-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-amber-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
       </div>
 
-      <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-lg mx-auto">
         {/* Back to Home */}
-        <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8">
+        <div className="mb-8 px-4">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 group text-sm font-medium"
           >
             <Home className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
             Back to Home
           </Link>
         </div>
 
-        {/* Enhanced Header */}
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400/10 to-sky-400/10 border border-cyan-400/20 rounded-full mb-6">
-              <Shield className="w-4 h-4 text-cyan-600 animate-pulse" />
-              <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">Secure Login</span>
-            </div>
-
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-slate-900 to-slate-800 dark:from-cyan-400 dark:to-sky-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20 dark:shadow-cyan-400/20">
-              <span className="text-3xl font-semibold text-white">SMS</span>
-            </div>
-
-            <h1 className="text-3xl lg:text-4xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-              Welcome Back
-            </h1>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-              Sign in to your account to continue your journey with SMS Nile Tech
-            </p>
+        {/* Premium Header */}
+        <div className="text-center mb-8 px-4">
+          {/* Logo Mark */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full mb-6">
+            <Shield className="w-4 h-4 text-amber-600 animate-pulse" />
+            <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Secure Login</span>
           </div>
+
+          {/* Brand Icon */}
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
+            <span className="text-3xl font-black text-white">AH</span>
+          </div>
+
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+            Sign in to your account to continue with AddHomes Creatives
+          </p>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <GlassCard variant="standard" className="py-8 px-6 sm:px-10">
-            {/* Demo Credentials */}
+        <div className="px-4 w-full">
+          <GlassCard variant="standard" className="py-8 px-6 sm:px-8 w-full">
+            {/* Demo Accounts Section */}
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-4 h-4 text-cyan-500" />
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">Demo Accounts</h3>
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Quick Demo Access</h3>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {demoAccounts.map((demo) => (
                   <button
                     key={demo.id}
                     type="button"
                     onClick={() => handleDemoLogin(demo)}
-                    className="w-full text-left p-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 transition-all duration-200 hover:scale-105 group"
+                    className="w-full text-left p-3.5 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/80 dark:to-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-amber-400/50 hover:shadow-md hover:shadow-amber-500/5 transition-all duration-200 hover:-translate-y-0.5 group"
                   >
-
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${demo.role === 'SuperAdmin' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
-                          demo.role === 'Admin' ? 'bg-gradient-to-r from-orange-400 to-red-400' :
-                            'bg-gradient-to-r from-cyan-400 to-sky-400'
-                        } text-white shadow-lg`}>
-                        {demo.role === 'Customer' ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-md ${
+                        demo.role === 'SuperAdmin' 
+                          ? 'bg-gradient-to-br from-purple-500 to-pink-500' 
+                          : demo.role === 'Admin' 
+                            ? 'bg-gradient-to-br from-amber-500 to-orange-500' 
+                            : 'bg-gradient-to-br from-amber-600 to-amber-700'
+                      }`}>
+                        {demo.role === 'Customer' ? 'CU' : demo.role === 'Admin' ? 'AD' : 'SA'}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-200">
+                        <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
                           {demo.name}
                         </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        <div className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
                           {demo.identifier}
                         </div>
-                        <div className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-                          {demo.description}
-                        </div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all duration-200" />
+                      <div className="flex-shrink-0">
+                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all duration-200" />
+                      </div>
                     </div>
                   </button>
                 ))}
               </div>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Divider */}
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 backdrop-blur-sm">Or sign in manually</span>
+              </div>
+            </div>
+
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl p-4">
-                  <div className="flex items-center">
-                    <AlertTriangle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0" />
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
                     <p className="text-sm text-red-700 dark:text-red-300 font-medium">{error}</p>
                   </div>
                 </div>
               )}
 
-              <div className="space-y-2">
-                <label htmlFor="identifier" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    Email or Phone Number
-                  </div>
+              {/* Email / Phone */}
+              <div className="space-y-1.5">
+                <label htmlFor="identifier" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Email or Phone Number
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="identifier"
                     name="identifier"
@@ -272,29 +287,29 @@ const Login = () => {
                     required
                     value={credentials.identifier}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
-                    placeholder="Enter your email or phone number"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    placeholder="your@email.com"
                   />
-                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
               </div>
 
-              <div className="space-y-2">
+              {/* Password */}
+              <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    <div className="flex items-center gap-2">
-                      <Lock className="w-4 h-4" />
-                      Password
-                    </div>
+                  <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Password
                   </label>
                   <Link 
                     to="/forgot-password"
-                    className="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-200"
+                    className="text-xs font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
                   >
                     Forgot Password?
                   </Link>
                 </div>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="password"
                     name="password"
@@ -303,37 +318,37 @@ const Login = () => {
                     required
                     value={credentials.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 pr-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Enter your password"
                   />
-                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              <div>
+              {/* Submit Button */}
+              <div className="pt-2">
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full group relative overflow-hidden"
+                  className="w-full group relative overflow-hidden bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300"
                   size="large"
                 >
-                  <span className="relative z-10 flex items-center justify-center">
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-base font-bold">
                     {loading ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         Signing you in...
                       </>
                     ) : (
                       <>
                         Sign In
-                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
                       </>
                     )}
                   </span>
@@ -344,66 +359,62 @@ const Login = () => {
               </div>
             </form>
 
-            <div className="mt-8">
-              <div className="relative">
+            {/* System Setup */}
+            <div className="mt-6">
+              <div className="relative mb-4">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-slate-200 dark:border-slate-700" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 backdrop-blur-sm rounded-full">
-                    System Maintenance
-                  </span>
+                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 backdrop-blur-sm">System</span>
                 </div>
               </div>
 
-              <div className="mt-6 text-center">
+              <div className="text-center">
                 <button
                   type="button"
                   onClick={handleSystemInit}
                   disabled={loading}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 backdrop-blur-md border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition-all duration-200 hover:shadow-lg group"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-xl transition-all duration-200 hover:shadow-md group text-sm"
                 >
-                  <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform duration-200 text-cyan-500" />
-                  Initial System Setup
+                  <Sparkles className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
+                  Initialize Demo Accounts
                 </button>
-                <p className="text-[10px] text-slate-500 mt-2 italic px-8">
-                  Click once to register the default Admin, Super Admin, and Customer accounts if they don't exist yet.
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2 italic">
+                  Register default Admin, Super Admin & Customer accounts if missing
                 </p>
               </div>
             </div>
 
-            <div className="mt-8">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 backdrop-blur-sm rounded-full">
-                    New to SMS Nile Tech?
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="mt-6 text-center">
+            {/* Register Link */}
+            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <div className="text-center">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                  New to AddHomes Creatives?
+                </p>
                 <Link
                   to="/register"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/10 group"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 hover:border-amber-500/60 text-amber-700 dark:text-amber-400 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/10 group"
                 >
-                  <User className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                   Create Account
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
 
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-400/10 to-emerald-400/10 border border-green-400/20 rounded-full">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-green-600 dark:text-green-400">API Connected</span>
+            {/* Status Badge */}
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-green-400/10 to-emerald-400/10 border border-green-400/20 rounded-full">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  <span className="text-xs font-medium text-green-600 dark:text-green-400">API Connected</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
-                Connected to backend API. Use the demo accounts above or your registered credentials.
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2">
+                Connected to backend API. Use demo accounts or your credentials.
               </p>
             </div>
           </GlassCard>

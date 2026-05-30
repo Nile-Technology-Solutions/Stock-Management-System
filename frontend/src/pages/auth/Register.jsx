@@ -76,7 +76,7 @@ const Register = () => {
       case 3:
         return 'bg-yellow-500';
       case 4:
-        return 'bg-blue-500';
+        return 'bg-amber-500';
       case 5:
         return 'bg-green-500';
       default:
@@ -175,33 +175,32 @@ const Register = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
-        {/* Enhanced animated background */}
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-green-400/5 to-emerald-400/5 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-emerald-400/5 to-green-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
 
-        <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10">
-          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-md mx-auto">
+          <div className="px-4">
             <GlassCard variant="standard" className="py-12 px-6 sm:px-10 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-400/25">
+              <div className="w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
                 <CheckCircle className="w-10 h-10 text-white" />
               </div>
               
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Account Created Successfully!
               </h2>
-              <p className="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-                Welcome to SMS Nile Tech! Your account has been created and you're being signed in automatically.
+              <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+                Welcome to AddHomes Creatives! Your account has been created and you're being signed in automatically.
               </p>
               
               <div className="flex justify-center">
-                <div className="flex space-x-1">
+                <div className="flex space-x-1.5">
                   {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-2 h-2 bg-green-400 rounded-full animate-bounce"
+                      className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce"
                       style={{ animationDelay: `${i * 0.1}s` }}
                     />
                   ))}
@@ -215,72 +214,74 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
-      {/* Enhanced animated background */}
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center">
+      {/* Premium Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-cyan-400/5 to-sky-400/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-sky-400/5 to-cyan-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/2 via-transparent to-sky-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-amber-400/8 to-orange-400/8 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-br from-orange-400/8 to-amber-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-400/2 via-transparent to-orange-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
+        
+        {/* Decorative Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:32px_32px]" />
         
         {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-sky-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-cyan-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-amber-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
       </div>
 
-      <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-xl mx-auto">
         {/* Back to Home */}
-        <div className="sm:mx-auto sm:w-full sm:max-w-lg mb-8">
+        <div className="mb-8 px-4">
           <Link 
             to="/"
-            className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 group text-sm font-medium"
           >
             <Home className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
             Back to Home
           </Link>
         </div>
 
-        {/* Enhanced Header */}
-        <div className="sm:mx-auto sm:w-full sm:max-w-lg">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400/10 to-sky-400/10 border border-cyan-400/20 rounded-full mb-6">
-              <UserPlus className="w-4 h-4 text-cyan-600 animate-pulse" />
-              <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">Join SMS Nile Tech</span>
-            </div>
-            
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-slate-900 to-slate-800 dark:from-cyan-400 dark:to-sky-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20 dark:shadow-cyan-400/20">
-              <span className="text-3xl font-semibold text-white">SMS</span>
-            </div>
-            
-            <h1 className="text-3xl lg:text-4xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-              Create Your Account
-            </h1>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-              Join thousands of customers who trust SMS Nile Tech for their furniture needs
-            </p>
+        {/* Premium Header */}
+        <div className="text-center mb-8 px-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full mb-6">
+            <UserPlus className="w-4 h-4 text-amber-600 animate-pulse" />
+            <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Join AddHomes Creatives</span>
           </div>
+          
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
+            <span className="text-3xl font-black text-white">AH</span>
+          </div>
+          
+          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-2">
+            Create Your Account
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+            Join AddHomes Creatives and start exploring premium furniture and interior solutions
+          </p>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-lg">
-          <GlassCard variant="standard" className="py-8 px-6 sm:px-10">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="px-4 w-full">
+          <GlassCard variant="standard" className="py-8 px-6 sm:px-8 w-full">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl p-4">
-                  <div className="flex items-center">
-                    <AlertTriangle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0" />
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
                     <p className="text-sm text-red-700 dark:text-red-300 font-medium">{error}</p>
                   </div>
                 </div>
               )}
 
-              <div className="space-y-2">
-                <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    Full Name
-                  </div>
+              {/* Full Name */}
+              <div className="space-y-1.5">
+                <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Full Name
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="fullName"
                     name="fullName"
@@ -288,21 +289,21 @@ const Register = () => {
                     required
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Enter your full name"
                   />
-                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    Email Address
-                  </div>
+              {/* Email */}
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Email Address
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="email"
                     name="email"
@@ -310,21 +311,21 @@ const Register = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="your.email@example.com"
                   />
-                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    Phone Number
-                  </div>
+              {/* Phone */}
+              <div className="space-y-1.5">
+                <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Phone Number
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Shield className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="phone"
                     name="phone"
@@ -332,24 +333,24 @@ const Register = () => {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="+251912345678"
                   />
-                  <Shield className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
                   Include country code (e.g., +251 for Ethiopia)
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    Password
-                  </div>
+              {/* Password */}
+              <div className="space-y-1.5">
+                <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Password
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="password"
                     name="password"
@@ -357,25 +358,24 @@ const Register = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 pr-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Create a strong password"
                   />
-                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
                 
                 {/* Password Strength Indicator */}
                 {formData.password && (
-                  <div className="mt-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-slate-600 dark:text-slate-400">Password Strength:</span>
-                      <span className={`text-xs font-medium ${
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Password Strength:</span>
+                      <span className={`text-xs font-semibold ${
                         passwordStrength <= 2 ? 'text-red-600' : 
                         passwordStrength <= 3 ? 'text-yellow-600' : 
                         'text-green-600'
@@ -383,9 +383,9 @@ const Register = () => {
                         {getPasswordStrengthText(passwordStrength)}
                       </span>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
                       <div 
-                        className={`h-2 rounded-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
+                        className={`h-full rounded-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
                         style={{ width: `${(passwordStrength / 5) * 100}%` }}
                       />
                     </div>
@@ -394,15 +394,15 @@ const Register = () => {
 
                 {/* Password Requirements */}
                 {formData.password && (
-                  <div className="mt-3 space-y-1">
+                  <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                     {passwordRequirements.map((req, index) => (
                       <div key={index} className="flex items-center gap-2 text-xs">
                         {req.met ? (
-                          <Check className="w-3 h-3 text-green-500" />
+                          <Check className="w-3 h-3 text-green-500 flex-shrink-0" />
                         ) : (
-                          <X className="w-3 h-3 text-slate-400" />
+                          <X className="w-3 h-3 text-slate-400 flex-shrink-0" />
                         )}
-                        <span className={req.met ? 'text-green-600 dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}>
+                        <span className={req.met ? 'text-green-600 dark:text-green-400' : 'text-slate-400 dark:text-slate-500'}>
                           {req.text}
                         </span>
                       </div>
@@ -411,14 +411,15 @@ const Register = () => {
                 )}
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    Confirm Password
-                  </div>
+              {/* Confirm Password */}
+              <div className="space-y-1.5">
+                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  Confirm Password
                 </label>
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Shield className="w-4 h-4 text-slate-400" />
+                  </div>
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -426,16 +427,15 @@ const Register = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pl-12 pr-12 bg-white/50 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 backdrop-blur-sm"
+                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Confirm your password"
                   />
-                  <Shield className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
                 
@@ -445,36 +445,37 @@ const Register = () => {
                     {formData.password === formData.confirmPassword ? (
                       <>
                         <Check className="w-3 h-3 text-green-500" />
-                        <span className="text-green-600 dark:text-green-400">Passwords match</span>
+                        <span className="text-green-600 dark:text-green-400 font-medium">Passwords match</span>
                       </>
                     ) : (
                       <>
                         <X className="w-3 h-3 text-red-500" />
-                        <span className="text-red-600 dark:text-red-400">Passwords do not match</span>
+                        <span className="text-red-600 dark:text-red-400 font-medium">Passwords do not match</span>
                       </>
                     )}
                   </div>
                 )}
               </div>
 
-              <div>
+              {/* Submit Button */}
+              <div className="pt-2">
                 <Button
                   type="submit"
                   disabled={loading || passwordStrength < 3 || formData.password !== formData.confirmPassword}
-                  className="w-full group relative overflow-hidden"
+                  className="w-full group relative overflow-hidden bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300"
                   size="large"
                 >
-                  <span className="relative z-10 flex items-center justify-center">
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-base font-bold">
                     {loading ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         Creating your account...
                       </>
                     ) : (
                       <>
-                        <UserPlus className="w-5 h-5 mr-2" />
+                        <UserPlus className="w-5 h-5" />
                         Create Account
-                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
                       </>
                     )}
                   </span>
@@ -485,36 +486,31 @@ const Register = () => {
               </div>
             </form>
 
-            <div className="mt-8">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-500 dark:text-slate-400 backdrop-blur-sm rounded-full">
-                    Already have an account?
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center">
+            {/* Sign In Link */}
+            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <div className="text-center">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                  Already have an account?
+                </p>
                 <Link 
                   to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 hover:border-cyan-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-cyan-400/10 group"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 hover:border-amber-500/60 text-amber-700 dark:text-amber-400 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/10 group"
                 >
-                  <Shield className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
                   Sign In Instead
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
 
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400/10 to-sky-400/10 border border-cyan-400/20 rounded-full">
-                <Sparkles className="w-4 h-4 text-cyan-600" />
-                <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">Secure Registration</span>
+            {/* Security Badge */}
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-400/10 to-orange-400/10 border border-amber-400/20 rounded-full">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                  <span className="text-xs font-medium text-amber-600 dark:text-amber-400">Secure Registration</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2">
                 Your information is encrypted and secure. We never share your personal data with third parties.
               </p>
             </div>

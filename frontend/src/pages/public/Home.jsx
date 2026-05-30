@@ -134,128 +134,152 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950">
       
-      {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[95vh] flex items-center pt-16">
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.08),transparent)]" />
+      {/* Hero Section — refined with better hierarchy and visibility */}
+      <section className="relative overflow-hidden min-h-screen pt-[88px] pb-12 md:pb-20">
+        {/* Premium Background Effects */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.12),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_80%_80%,rgba(251,146,60,0.08),transparent)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:32px_32px]" />
         
-        {/* Glowing Orbs */}
-        <div className="absolute top-20 left-10 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2.5s' }} />
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-orange-500/8 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-amber-600/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '3s' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        {/* Decorative Border Lines */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Hero text (Left) */}
-            <div className="lg:col-span-7 space-y-8 animate-fade-in-up text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full">
-                <span className="flex h-2 w-2 relative">
+            {/* Hero Content (Left) — enhanced with better typography hierarchy */}
+            <div className="lg:col-span-7 space-y-8 text-left">
+              {/* Live Status Badge */}
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-amber-500/10 border border-amber-500/20 rounded-full backdrop-blur-sm">
+                <span className="flex h-2.5 w-2.5 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
                 </span>
-                <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest">
+                <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-[0.2em]">
                   Proudly Crafted in Addis Ababa
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
-                Beautiful Spaces,{' '}
-                <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-700 bg-clip-text text-transparent">
-                  Crafted Just for You
-                </span>
-              </h1>
+              {/* Main Headline — bold, clear, immediately readable */}
+              <div>
+                <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.05] tracking-tight">
+                  Beautiful Spaces,
+                  <br />
+                  <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-700 bg-clip-text text-transparent">
+                    Crafted Just for You
+                  </span>
+                </h1>
+                <div className="w-24 h-1.5 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full mt-6" />
+              </div>
 
-              <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
+              {/* Value Proposition — clear, compelling */}
+              <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl font-medium">
                 AddHomes Creatives is your trusted partner for custom furniture, fitted kitchens, 
-                designer closets, and CNC woodwork — all crafted right here in Addis Ababa.
+                designer closets, and CNC woodwork — all crafted right here in Addis Ababa with 
+                precision and passion.
               </p>
 
-              {/* Action Buttons */}
+              {/* CTA Buttons — prominent, action-oriented */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Link to="/products">
                   <Button
                     variant="primary"
                     size="large"
-                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-xl shadow-amber-500/20 min-w-[200px] text-white font-bold tracking-wide"
+                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 min-w-[220px] text-white font-bold tracking-wide text-base py-4 px-8 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95"
                   >
                     Explore Our Designs
+                    <svg className="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
                   </Button>
                 </Link>
                 <Link to="/about">
                   <Button
                     variant="secondary"
                     size="large"
-                    className="border-2 border-slate-900 dark:border-white/20 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[200px] font-bold tracking-wide"
+                    className="border-2 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white hover:bg-amber-50 dark:hover:bg-slate-800 min-w-[200px] font-bold tracking-wide text-base py-4 px-8 rounded-2xl transition-all duration-300 hover:border-amber-500/50"
                   >
                     Our Story
                   </Button>
                 </Link>
               </div>
 
-              {/* Mini Stats Bar */}
-              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-slate-200 dark:border-slate-800">
-                <div>
-                  <div className="text-3xl font-extrabold text-slate-950 dark:text-white">100%</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase mt-1">Bespoke Design</div>
+              {/* Trust Indicators — redesigned for impact */}
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+                <div className="space-y-1">
+                  <div className="text-3xl font-black text-slate-950 dark:text-white">100%</div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">Bespoke Design</span>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-slate-950 dark:text-white">Addis</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase mt-1">Ababa Hub</div>
+                <div className="space-y-1">
+                  <div className="text-3xl font-black text-slate-950 dark:text-white">Addis</div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">Ababa Hub</span>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-slate-950 dark:text-white">CNC</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase mt-1">Carving Tech</div>
+                <div className="space-y-1">
+                  <div className="text-3xl font-black text-slate-950 dark:text-white">CNC</div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-1 rounded-full bg-amber-500" />
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">Carving Tech</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Hero Visuals (Right) */}
-            <div className="lg:col-span-5 relative mt-8 lg:mt-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            {/* Hero Visuals (Right) — refined with better layering */}
+            <div className="lg:col-span-5 relative mt-8 lg:mt-0">
               <div className="relative z-10">
-                <div className="absolute -inset-1.5 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur-xl opacity-35 animate-pulse" />
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-900">
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur-2xl opacity-30 animate-pulse" />
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-900 border border-white/5">
                   <img 
                     src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" 
                     alt="Premium AddHomes Closet & TV Wall Finishing" 
-                    className="w-full h-[500px] object-cover opacity-95 hover:scale-105 transition-transform duration-700"
+                    className="w-full h-[520px] object-cover opacity-90 hover:scale-105 transition-transform duration-700"
                   />
                   
-                  {/* Overlay Experience Card */}
-                  <div className="absolute bottom-6 left-6 right-6 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md p-5 rounded-xl border border-white/20 dark:border-slate-800 shadow-xl flex items-center justify-between">
+                  {/* Hero Overlay Card */}
+                  <div className="absolute bottom-6 left-6 right-6 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md p-5 rounded-xl border border-white/20 dark:border-slate-800 shadow-xl flex items-center justify-between">
                     <div>
                       <h4 className="text-sm font-extrabold text-slate-900 dark:text-white">AddHomes Creatives</h4>
                       <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-0.5">Custom Kitchens & Wood Finishing</p>
                     </div>
-                    <span className="px-3 py-1 bg-amber-500 text-white rounded-full text-[10px] font-bold tracking-wider uppercase">
+                    <span className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-[10px] font-bold tracking-wider uppercase shadow-lg shadow-amber-500/30">
                       Premium
                     </span>
                   </div>
                 </div>
 
-                {/* Floating Widget 1 */}
-                <div className="absolute -top-6 -left-6 bg-white dark:bg-slate-850 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float">
+                {/* Floating Badge 1 — Precision */}
+                <div className="absolute -top-4 -left-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float" style={{ animationDuration: '4s' }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                       </svg>
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">Precision Cut</div>
-                      <div className="text-[10px] text-slate-500 font-medium mt-0.5">CNC Millimeter accuracy</div>
+                      <div className="text-sm font-bold text-slate-900 dark:text-white">Precision Cut</div>
+                      <div className="text-[11px] text-slate-500 font-medium mt-0.5">CNC Millimeter accuracy</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Widget 2 */}
-                <div className="absolute top-1/4 -right-8 bg-white dark:bg-slate-850 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float" style={{ animationDelay: '1.5s' }}>
+                {/* Floating Badge 2 — Rating */}
+                <div className="absolute top-1/3 -right-6 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float" style={{ animationDuration: '5s', animationDelay: '1s' }}>
                   <div className="flex items-center gap-2">
-                    <div className="text-amber-500">★★★★★</div>
-                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300">Addis Ababa</span>
+                    <div className="text-amber-500 text-sm">★★★★★</div>
+                    <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">Addis Ababa</span>
                   </div>
-                  <div className="text-xs font-bold text-slate-950 dark:text-white mt-1">Excellent Finish</div>
+                  <div className="text-sm font-bold text-slate-950 dark:text-white mt-1">Excellent Finish</div>
                 </div>
               </div>
             </div>
@@ -299,7 +323,7 @@ const Home = () => {
               </div>
               
               {/* Floating tech badge */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-600 text-white px-6 py-4 rounded-xl shadow-2xl text-center max-w-[200px] border border-amber-400">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-amber-600 to-orange-600 text-white px-6 py-4 rounded-xl shadow-2xl text-center max-w-[200px] border border-amber-400/30">
                 <div className="text-2xl font-black">CNC + ART</div>
                 <div className="text-[10px] tracking-widest font-bold uppercase mt-1">The Perfect Mix</div>
               </div>
@@ -541,7 +565,7 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold">Our Vision</h3>
               <p className="text-slate-300 leading-relaxed text-sm">
-                To become one of Ethiopia’s leading creative furniture and interior brands by delivering innovative, high-quality, and reliable craftsmanship.
+                To become one of Ethiopia's leading creative furniture and interior brands by delivering innovative, high-quality, and reliable craftsmanship.
               </p>
             </div>
 

@@ -13,7 +13,7 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     // Initialize theme immediately from localStorage, default to 'light'
-    const storedTheme = localStorage.getItem('sms_theme');
+    const storedTheme = localStorage.getItem('ah_theme');
     if (storedTheme) {
       return storedTheme;
     }
@@ -32,7 +32,7 @@ export const ThemeProvider = ({ children }) => {
     }
     
     // Store theme preference
-    localStorage.setItem('sms_theme', theme);
+    localStorage.setItem('ah_theme', theme);
     
     // Remove no-transition class after a brief delay to enable smooth transitions
     setTimeout(() => {

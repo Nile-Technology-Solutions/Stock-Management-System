@@ -320,7 +320,7 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
         </div>
 
         <div class="footer">
-            <p><strong>SMS Nile Tech</strong> - Stock Management System</p>
+            <p><strong>AddHomes Creative Woodworks</strong></p>
             <p>For inquiries, please contact our support team</p>
             <p style="margin-top: 15px; font-size: 12px;">
                 Generated on ${new Date().toLocaleString()}

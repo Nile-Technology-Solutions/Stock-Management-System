@@ -98,7 +98,7 @@ export const authApi = {
    * @returns {Promise<{success: boolean, data: {user: Object}}>} Current user profile
    */
   getProfile: async () => {
-    const token = localStorage.getItem('sms_token');
+    const token = localStorage.getItem('ah_token');
     const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
       method: 'GET',
       headers: {
@@ -123,7 +123,7 @@ export const authApi = {
    * @returns {Promise<{success: boolean, message: string}>}
    */
   changePassword: async (oldPassword, newPassword) => {
-    const token = localStorage.getItem('sms_token');
+    const token = localStorage.getItem('ah_token');
     const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
       method: 'PUT',
       headers: {
@@ -193,15 +193,15 @@ export const authApi = {
    * Logout (clear local storage)
    */
   logout: () => {
-    localStorage.removeItem('sms_token');
-    localStorage.removeItem('sms_user');
+    localStorage.removeItem('ah_token');
+    localStorage.removeItem('ah_user');
   },
 
   /**
    * Get current user from local storage
    */
   getCurrentUser: () => {
-    const userStr = localStorage.getItem('sms_user');
+    const userStr = localStorage.getItem('ah_user');
     if (userStr) {
       try {
         return JSON.parse(userStr);

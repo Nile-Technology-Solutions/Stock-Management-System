@@ -1,6 +1,6 @@
 # Public Components
 
-This directory contains reusable components specifically designed for the public-facing interface of the Stock Management System (SMS). All components follow the Neo-Enterprise design system with subtle glassmorphism accents.
+This directory contains reusable components specifically designed for the public-facing interface of AddHomes Creative Woodworks. All components follow a modern design system with subtle glassmorphism accents.
 
 ## Components
 

@@ -1,6 +1,5 @@
 /**
- * Mock Data for Stock Management System
- * Based on API Spec v1.4.0
+ * Mock Data for AddHomes Creative Woodworks
  */
 
 export const mockStock = [
@@ -106,31 +105,14 @@ export const mockUsers = [
   }
 ];
 
-// Demo Credentials Info (for display on login page)
-export const demoCredentials = {
-  admin: {
-    username: "admin",
-    password: "admin123",
-    role: "Admin"
-  },
-  customer: {
-    username: "customer",
-    password: "customer123",
-    role: "Customer"
-  },
-  superadmin: {
-    username: "superadmin",
-    password: "super123",
-    role: "SuperAdmin"
-  }
-};
+// Demo credentials removed - use real accounts only
 
 export const mockNews = [
   {
     id: 1,
     title: "Eco-Friendly Wood Sourcing Initiative",
     category: "Sustainability",
-    content: "Nile Technology is proud to announce our partnership with local forest reserves to ensure 100% sustainable wood sourcing. Our new initiative aims to plant ten trees for every mahogany board sold, ensuring a greener future for Ethiopia's furniture industry.",
+    content: "AddHomes Creative Woodworks is proud to announce our partnership with local forest reserves to ensure 100% sustainable wood sourcing. Our new initiative aims to plant ten trees for every mahogany board sold, ensuring a greener future for Ethiopia's furniture industry.",
     status: "Published",
     publishDate: "2026-02-15T10:00:00Z",
     image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=800"

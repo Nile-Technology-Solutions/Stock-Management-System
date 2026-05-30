@@ -75,83 +75,8 @@ const Login = () => {
     if (error) setError('');
   };
 
-  const handleDemoLogin = (demoUser) => {
-    setCredentials({
-      identifier: demoUser.identifier,
-      password: demoUser.password
-    });
-  };
-
-  // Demo accounts for testing (matches seeded data)
-  const demoAccounts = [
-    {
-      id: 'customer-demo',
-      identifier: 'customer@example.com',
-      password: 'password123',
-      role: 'Customer',
-      name: 'Demo Customer',
-      description: 'Standard customer account'
-    },
-    {
-      id: 'admin-demo',
-      identifier: 'admin@example.com',
-      password: 'password123',
-      role: 'Admin',
-      name: 'Admin User',
-      description: 'Admin account'
-    },
-    {
-      id: 'super-admin-demo',
-      identifier: 'superadmin@example.com',
-      password: 'password123',
-      role: 'SuperAdmin',
-      name: 'Super Admin',
-      description: 'Super Admin account'
-    }
-  ];
-
-  const handleSystemInit = async () => {
-    setLoading(true);
-    setError('');
-    const results = [];
-
-    // Use a Set to track processed usernames to avoid duplicate registration attempts
-    const registeredUsernames = new Set();
-
-    try {
-      for (const account of demoAccounts) {
-        if (registeredUsernames.has(account.username)) {
-          results.push(`Skipping duplicate register for ${account.username}`);
-          continue;
-        }
-
-        try {
-          await authApi.register({
-            fullName: account.name,
-            email: account.identifier,
-            phone: `+251${Math.floor(Math.random() * 900000000 + 100000000)}`, // Generate random phone
-            password: account.password,
-            confirmPassword: account.password,
-            role: account.role
-          });
-          results.push(`Registered ${account.identifier} (${account.password})`);
-          registeredUsernames.add(account.username);
-        } catch (err) {
-          if (err.message.toLowerCase().includes('exist') || err.message.toLowerCase().includes('taken')) {
-            results.push(`${account.identifier} already exists`);
-            registeredUsernames.add(account.username);
-          } else {
-            console.warn(`Failed to register ${account.identifier}:`, err);
-            results.push(`Error registering ${account.identifier}`);
-          }
-        }
-      }
-      alert('System Setup Check Complete:\n' + results.join('\n'));
-    } catch (err) {
-      setError('System verification failed: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleDemoLogin = () => {
+    // Demo login removed - use real credentials only
   };
 
 
@@ -209,56 +134,6 @@ const Login = () => {
 
         <div className="px-4 w-full">
           <GlassCard variant="standard" className="py-8 px-6 sm:px-8 w-full">
-            {/* Demo Accounts Section */}
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Quick Demo Access</h3>
-              </div>
-              <div className="space-y-2.5">
-                {demoAccounts.map((demo) => (
-                  <button
-                    key={demo.id}
-                    type="button"
-                    onClick={() => handleDemoLogin(demo)}
-                    className="w-full text-left p-3.5 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/80 dark:to-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-amber-400/50 hover:shadow-md hover:shadow-amber-500/5 transition-all duration-200 hover:-translate-y-0.5 group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-md ${
-                        demo.role === 'SuperAdmin' 
-                          ? 'bg-gradient-to-br from-purple-500 to-pink-500' 
-                          : demo.role === 'Admin' 
-                            ? 'bg-gradient-to-br from-amber-500 to-orange-500' 
-                            : 'bg-gradient-to-br from-amber-600 to-amber-700'
-                      }`}>
-                        {demo.role === 'Customer' ? 'CU' : demo.role === 'Admin' ? 'AD' : 'SA'}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                          {demo.name}
-                        </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
-                          {demo.identifier}
-                        </div>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all duration-200" />
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="relative mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 backdrop-blur-sm">Or sign in manually</span>
-              </div>
-            </div>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               {error && (
@@ -359,38 +234,11 @@ const Login = () => {
               </div>
             </form>
 
-            {/* System Setup */}
-            <div className="mt-6">
-              <div className="relative mb-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/60 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 backdrop-blur-sm">System</span>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={handleSystemInit}
-                  disabled={loading}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400/50 text-slate-700 dark:text-slate-300 font-medium rounded-xl transition-all duration-200 hover:shadow-md group text-sm"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
-                  Initialize Demo Accounts
-                </button>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2 italic">
-                  Register default Admin, Super Admin & Customer accounts if missing
-                </p>
-              </div>
-            </div>
-
             {/* Register Link */}
             <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
               <div className="text-center">
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
-                  New to AddHomes Creatives?
+                  New to AddHomes Creative Woodworks?
                 </p>
                 <Link
                   to="/register"
@@ -400,22 +248,6 @@ const Login = () => {
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
-            </div>
-
-            {/* Status Badge */}
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-              <div className="flex items-center justify-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-green-400/10 to-emerald-400/10 border border-green-400/20 rounded-full">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                  </span>
-                  <span className="text-xs font-medium text-green-600 dark:text-green-400">API Connected</span>
-                </div>
-              </div>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2">
-                Connected to backend API. Use demo accounts or your credentials.
-              </p>
             </div>
           </GlassCard>
         </div>

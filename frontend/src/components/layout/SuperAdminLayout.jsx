@@ -127,7 +127,7 @@ const SuperAdminLayout = () => {
                   <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-purple-500/25 ring-2 ring-purple-500/30 group-hover:ring-purple-500/50 transition-all duration-300">
                     <img 
                       src="/src/assets/LOGO.png" 
-                      alt="SMS Logo" 
+                      alt="AddHomes Logo" 
                       className="w-full h-full object-contain"
                     />
                   </div>
@@ -137,7 +137,7 @@ const SuperAdminLayout = () => {
                 </div>
                 
                 <div>
-                  <h1 className="text-xl font-bold text-white">SMS Pro</h1>
+                  <h1 className="text-xl font-bold text-white">AddHomes</h1>
                   <p className="text-sm text-slate-400 dark:text-slate-500">Super Admin Console</p>
                 </div>
               </div>

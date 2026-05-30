@@ -20,7 +20,7 @@ export const apiConfig = {
   retryDelay: 1000,
   
   // Token storage key
-  tokenKey: 'sms_token'
+  tokenKey: 'ah_token'
 };
 
 // Export individual values for convenience

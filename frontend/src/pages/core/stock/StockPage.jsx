@@ -285,7 +285,7 @@ const StockPage = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-                Stock Management
+                Inventory
               </h1>
               <p className="text-slate-500 dark:text-slate-400 mt-0.5">
                 Real-time raw materials and inventory control

@@ -35,7 +35,7 @@ const multipartRequest = async (url, method, data) => {
   const response = await fetch(`${API_BASE_URL}${url}`, { method, headers, body });
 
   if (response.status === 401) {
-    localStorage.removeItem('sms_token');
+    localStorage.removeItem('ah_token');
     window.location.href = '/login';
     throw new Error('Authentication required. Please log in again.');
   }

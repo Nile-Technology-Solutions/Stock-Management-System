@@ -102,7 +102,7 @@ const SuperAdminDashboardPage = () => {
                   <h1 className="text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-slate-100">
                     SuperAdmin Dashboard
                   </h1>
-                  <p className="text-slate-500 dark:text-slate-400 mt-0.5">Control Center for SMS Nile Tech</p>
+                  <p className="text-slate-500 dark:text-slate-400 mt-0.5">Control Center</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl w-fit">

@@ -79,7 +79,7 @@ const DashboardPage = () => {
                 </div>
               </div>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                Your stock management system is running smoothly. Here's your real-time dashboard overview.
+                Your system is running smoothly. Here's your real-time dashboard overview.
               </p>
             </div>
             

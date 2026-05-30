@@ -1,4 +1,4 @@
-// Public-facing components for the Stock Management System
+// Public-facing components for AddHomes Creative Woodworks
 export { default as ProductCard } from './ProductCard';
 export { default as CategoryFilter } from './CategoryFilter';
 export { default as ProductImageGallery } from './ProductImageGallery';

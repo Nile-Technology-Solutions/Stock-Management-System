@@ -1,11 +1,11 @@
 <h1 align="center">
-  📦 Nile Technology Solutions — Stock Management System (SMS)
+  🪵 AddHomes Creative Woodworks
 </h1>
 
 <p align="center">
-  <strong>A premium, modern web application for comprehensive stock management, production tracking, and order fulfillment.</strong>
+  <strong>A premium web application for furniture manufacturing, order management, and business operations.</strong>
   <br />
-  Designed with a high-performance Neo-Enterprise UI featuring glassmorphism aesthetics, dark/light theming, and role-based access control (RBAC).
+  Built with a modern UI featuring glassmorphism aesthetics, dark/light theming, and role-based access control (RBAC).
 </p>
 
 <p align="center">
@@ -20,9 +20,9 @@
 
 ## 🚀 Overview
 
-**SMS** is an enterprise-grade stock management platform built for **AddHomes Creatives** (Furniture & Interiors). It provides a complete pipeline from public product showcasing through secure ordering, payment processing, stock management, production tracking, and administrative oversight — all wrapped in a sleek, glassmorphism-inspired UI.
+**AddHomes Creative Woodworks** is a full-featured platform for **AddHomes Creatives** (Furniture & Interiors). It provides a complete pipeline from public product showcasing through secure ordering, payment processing, inventory management, production tracking, and administrative oversight — all wrapped in a sleek, glassmorphism-inspired UI.
 
-The platform serves **three distinct user roles** (Super Admin, Admin, Customer) with tailored dashboards, granular permissions, and a unified API service layer ready for backend integration.
+The platform serves **three distinct user roles** (Super Admin, Admin, Customer) with tailored dashboards and granular permissions.
 
 ---
 
@@ -43,12 +43,12 @@ The platform serves **three distinct user roles** (Super Admin, Admin, Customer)
 | Feature | Description |
 |---|---|
 | **Executive Dashboard** | KPI metrics, charts, and actionable insights (powered by Recharts) |
-| **Stock Management** | Real-time inventory with low-stock alerts |
+| **Inventory Management** | Real-time inventory with low-stock alerts |
 | **Production Control** | Batch management with photo documentation |
 | **Order Pipeline** | Full lifecycle management (placement → fulfillment) |
 | **Payment Oversight** | Transaction history and status monitoring |
 | **Analytics** | Interactive charts and time-filtered analytics |
-| **Reports** | Export-ready stock, sales, orders, production, and payments reports |
+| **Reports** | Export-ready inventory, sales, orders, production, and payments reports |
 | **News Management** | Publish and manage public-facing articles |
 | **Todo Management** | Team task tracking board |
 | **Product Showcase** | Manage catalog, categories, and visibility |
@@ -63,7 +63,7 @@ The platform serves **three distinct user roles** (Super Admin, Admin, Customer)
 | **All Admin Capabilities** | Inherits full admin access |
 
 ### 🎨 Design System
-- **Neo-Enterprise UI** — Ultra-clean interface with smooth glassmorphism effects
+- **Modern UI** — Ultra-clean interface with smooth glassmorphism effects
 - **Fully Responsive** — Seamless across mobile, tablet, and desktop
 - **Tailwind CSS v4** — Utility-first styling with custom glass components
 - **Custom Icon Pack** — Lucide-inspired icon library
@@ -371,7 +371,7 @@ The role system uses a **hierarchical** permission model:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Nile-Technology-Solutions/Stock-Management-System.git
+   git clone <repository-url>
    cd frontend
    ```
 
@@ -519,25 +519,21 @@ For Vite-specific deployment guides, refer to the [Vite deployment documentation
 
 ## 📄 License
 
-**Proprietary and Confidential** — Nile Technology Solutions.
+**Proprietary and Confidential**.
 
-All rights reserved. This software is the property of Nile Technology Solutions and may not be reproduced, distributed, or used without explicit written permission.
+All rights reserved. This software may not be reproduced, distributed, or used without explicit written permission.
 
 ---
 
 ## 🏢 About
 
-Built with ❤️ by **Nile Technology Solutions** for **AddHomes Creatives**.
+Built for **AddHomes Creatives** — Furniture & Interiors.
 
 | | |
 |---|---|
-| **Product** | Stock Management System (SMS) |
-| **Version** | 1.5.0 (Enterprise Suite) |
+| **Product** | AddHomes Creative Woodworks |
+| **Version** | 1.0.0 |
 | **Client** | AddHomes Creatives — Furniture & Interiors |
-| **Last Updated** | February 25, 2026 |
+| **Last Updated** | May 30, 2026 |
 
 ---
-
-<p align="center">
-  <sub>If you find this project useful, please ⭐ the repo!</sub>
-</p>

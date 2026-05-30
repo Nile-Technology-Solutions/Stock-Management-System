@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check for stored user data on app load
-    const storedUser = localStorage.getItem('sms_user');
-    const storedToken = localStorage.getItem('sms_token');
+    const storedUser = localStorage.getItem('ah_user');
+    const storedToken = localStorage.getItem('ah_token');
     
     if (storedUser && storedToken) {
       try {
@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }) => {
         setShowLogoutModal(false); // Ensure modal is hidden when restoring session
       } catch (error) {
         // Clear invalid stored data
-        localStorage.removeItem('sms_user');
-        localStorage.removeItem('sms_token');
+        localStorage.removeItem('ah_user');
+        localStorage.removeItem('ah_token');
       }
     }
     setLoading(false);
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
     setUser(userWithDefaults);
     setShowLogoutModal(false); // Ensure modal is hidden on login
-    localStorage.setItem('sms_user', JSON.stringify({
+    localStorage.setItem('ah_user', JSON.stringify({
       id: userWithDefaults.id,
       email: userWithDefaults.email,
       username: userWithDefaults.username,
@@ -64,13 +64,13 @@ export const AuthProvider = ({ children }) => {
       role: userWithDefaults.role,
       loginTime: userWithDefaults.loginTime
     }));
-    localStorage.setItem('sms_token', userWithDefaults.token);
+    localStorage.setItem('ah_token', userWithDefaults.token);
   };
 
   const logout = (showModal = true) => {
     setUser(null);
-    localStorage.removeItem('sms_user');
-    localStorage.removeItem('sms_token');
+    localStorage.removeItem('ah_user');
+    localStorage.removeItem('ah_token');
     if (showModal) {
       setShowLogoutModal(true);
     }

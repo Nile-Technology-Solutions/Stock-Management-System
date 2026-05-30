@@ -1,6 +1,6 @@
 # Order Components
 
-This directory contains reusable components specifically designed for order placement and tracking functionality in the Stock Management System (SMS). All components follow the Neo-Enterprise design system with appropriate glassmorphism usage.
+This directory contains reusable components specifically designed for order placement and tracking functionality in AddHomes Creative Woodworks. All components follow a modern design system with appropriate glassmorphism usage.
 
 ## Components
 

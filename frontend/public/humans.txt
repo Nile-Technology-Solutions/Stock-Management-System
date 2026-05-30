@@ -1,15 +1,15 @@
 /* TEAM */
-Organization: SMS Nile Tech
-Site: https://sms-niletech.com
-Location: Ethiopia
+Organization: AddHomes Creative Woodworks
+Site: https://addhomescreative.com
+Location: Addis Ababa, Ethiopia
 
 /* SITE */
-Last update: 2026/02/27
+Last update: 2026/05/30
 Standards: HTML5, CSS3, JavaScript ES6+
 Components: React, Vite, Tailwind CSS
 Software: Visual Studio Code, Git
 
 /* THANKS */
 Built with modern web technologies
-Designed for enterprise-level performance
+Designed for premium furniture showcase
 Optimized for accessibility and user experience

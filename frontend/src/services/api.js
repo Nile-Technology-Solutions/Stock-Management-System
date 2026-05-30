@@ -1,7 +1,7 @@
 /**
  * Base API Service
  * Centralized API configuration and utilities
- * Based on SMS Backend API v1.4.0 specifications
+ * Centralized API configuration for AddHomes Creative Woodworks
  */
 
 import { apiConfig } from '../config/env';

@@ -130,7 +130,7 @@ const generateRecentActivities = () => [
   {
     id: generateId(),
     action: 'New order received',
-    item: 'Order #SMS-2024-0156',
+    item: 'Order #AH-2024-0156',
     time: '15 minutes ago',
     type: 'order',
     user: 'Sarah Johnson',
@@ -558,10 +558,10 @@ const generateFinancialSummary = (timeRange = '7d') => ({
 // System Settings
 const generateSystemSettings = () => ({
   general: {
-    companyName: 'Nile Technology Solutions',
-    companyEmail: 'info@niletech.com',
-    companyPhone: '+251 11 123 4567',
-    companyAddress: 'Bole, Addis Ababa, Ethiopia',
+    companyName: 'AddHomes Creative Woodworks',
+    companyEmail: 'info@addhomescreative.com',
+    companyPhone: '+251 905 488 848',
+    companyAddress: 'Shegole Mender-7, Addis Ababa, Ethiopia',
     timezone: 'Africa/Addis_Ababa',
     currency: 'ETB',
     dateFormat: 'DD/MM/YYYY'

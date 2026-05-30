@@ -83,7 +83,7 @@ const NewsListPage = () => {
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-            Nile <span className="text-cyan-400">Insights</span>
+            AddHomes <span className="text-amber-400">Insights</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
             Stay updated with the latest in wood technology, sustainable sourcing, and interior design trends in Ethiopia.

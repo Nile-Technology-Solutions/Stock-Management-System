@@ -179,8 +179,8 @@ const getDefaultSettings = async () => {
   // This would typically come from an API endpoint or config file
   return {
     general: {
-      companyName: 'Nile Technology Solutions',
-      companyEmail: 'info@niletech.com',
+      companyName: 'AddHomes Creative Woodworks',
+      companyEmail: 'info@addhomescreative.com',
       companyPhone: '+251 11 123 4567',
       companyAddress: 'Bole, Addis Ababa, Ethiopia',
       timezone: 'Africa/Addis_Ababa',

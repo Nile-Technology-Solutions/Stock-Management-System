@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from '../../components/icons';
+import logoSrc from '../../assets/LOGO.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -55,7 +56,7 @@ const Footer = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-orange-400/20 rounded-xl blur-lg" />
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-amber-500/10 ring-2 ring-amber-500/20 group-hover:ring-amber-500/40 transition-all duration-300">
                   <img 
-                    src="/src/assets/LOGO.png" 
+                    src={logoSrc} 
                     alt="AddHomes Logo" 
                     className="w-full h-full object-contain"
                   />

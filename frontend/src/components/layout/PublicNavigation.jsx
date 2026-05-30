@@ -4,6 +4,7 @@ import { Menu, X, Globe, ShoppingBag, User, LogOut, Shield } from '../../compone
 import Button from '../common/Button';
 import ThemeToggle from '../common/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
+import logoSrc from '../../assets/LOGO.png';
 
 const PublicNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,7 +65,7 @@ const PublicNavigation = () => {
               {/* Main container */}
               <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-white shadow-lg shadow-amber-200/60 dark:shadow-amber-900/30 ring-2 ring-amber-200/50 dark:ring-amber-700/30 group-hover:ring-amber-400/70 group-hover:scale-105 transition-all duration-300">
                 <img
-                  src="/src/assets/LOGO.png"
+                  src={logoSrc}
                   alt="AddHomes Creatives Logo"
                   className="w-full h-full object-contain p-1"
                 />

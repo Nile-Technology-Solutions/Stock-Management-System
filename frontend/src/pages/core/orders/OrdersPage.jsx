@@ -117,10 +117,10 @@ const OrdersPage = () => {
               <ShoppingCart className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
                 Order Dashboard
               </h1>
-              <p className="text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-sm sm:text-base">
                 Manage sales pipeline and fulfillment
               </p>
             </div>
@@ -140,7 +140,7 @@ const OrdersPage = () => {
           <input
             type="text"
             placeholder="Search by Order ID, Customer name, or Product..."
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 transition-all"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 transition-all text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -148,7 +148,7 @@ const OrdersPage = () => {
         <div className="relative">
           <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <select
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 appearance-none"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 appearance-none text-sm"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -164,7 +164,7 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      {/* Orders Table */}
+      {/* Orders List - Responsive: Table on desktop, Cards on mobile */}
       <GlassCard className="overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
@@ -176,123 +176,215 @@ const OrdersPage = () => {
             <p className="text-slate-500 dark:text-slate-400">No orders found</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Order ID
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Items
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Amount
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                {filteredOrders.map((order) => {
-                  const style = statusStyles[order.status] || statusStyles['OrderSubmitted'];
-                  return (
-                    <tr key={order.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="font-mono font-bold text-slate-900 dark:text-slate-100">
-                          #{order.id}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-slate-900 dark:text-slate-100">
-                            {order.user?.fullName || 'N/A'}
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+                  <tr>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Order ID
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Customer
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Items
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  {filteredOrders.map((order) => {
+                    const style = statusStyles[order.status] || statusStyles['OrderSubmitted'];
+                    return (
+                      <tr key={order.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <span className="font-mono font-bold text-slate-900 dark:text-slate-100">
+                            #{order.id}
                           </span>
-                          <span className="text-sm text-slate-500 dark:text-slate-400">
-                            ID: {order.user?.id || 'N/A'}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                            {order.productName}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-slate-500 dark:text-slate-400">
-                              Qty: {order.quantity}
+                        </td>
+                        <td className="px-4 py-4">
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">
+                              {order.user?.fullName || 'N/A'}
                             </span>
-                            {order.isCustom && (
-                              <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded font-semibold">
-                                Custom
+                            <span className="text-sm text-slate-500 dark:text-slate-400">
+                              ID: {order.user?.id || 'N/A'}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                              {order.productName}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-slate-500 dark:text-slate-400">
+                                Qty: {order.quantity}
                               </span>
+                              {order.isCustom && (
+                                <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded font-semibold">
+                                  Custom
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <span className="font-bold text-cyan-600 dark:text-cyan-400">
+                            {order.totalPrice ? `${order.totalPrice} ETB` : 'N/A'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${style.bg} ${style.text}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                            {order.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleViewDetails(order)}
+                              className="p-2 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors group"
+                              title="View Details"
+                            >
+                              <Eye className="w-4 h-4 text-slate-400 group-hover:text-cyan-500" />
+                            </button>
+
+                            {/* Create Production for custom orders with confirmed payment */}
+                            {order.isCustom && order.status === 'PaymentConfirmed' && !order.productionRecord && (
+                              <button
+                                onClick={() => navigate(`/admin/production?orderId=${order.id}`)}
+                                className="px-2 py-1 text-xs font-semibold bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
+                                title="Create Production"
+                              >
+                                + Production
+                              </button>
+                            )}
+
+                            {/* Mark Delivered */}
+                            {order.status === 'ReadyForDelivery' && (
+                              <button
+                                onClick={() => handleMarkDelivered(order)}
+                                className="px-2 py-1 text-xs font-semibold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
+                                title="Mark as Delivered"
+                              >
+                                ✓ Deliver
+                              </button>
                             )}
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-700">
+              {filteredOrders.map((order) => {
+                const style = statusStyles[order.status] || statusStyles['OrderSubmitted'];
+                return (
+                  <div key={order.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    {/* Header Row */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-mono font-bold text-slate-900 dark:text-slate-100 text-sm">
+                        #{order.id}
+                      </span>
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${style.bg} ${style.text}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+                        {order.status}
+                      </span>
+                    </div>
+
+                    {/* Customer + Product */}
+                    <div className="space-y-2 mb-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Customer:</span>
+                        <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          {order.user?.fullName || 'N/A'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Product:</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 text-right">
+                          {order.productName}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Qty:</span>
+                        <span className="text-sm text-slate-600 dark:text-slate-400">{order.quantity}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Amount:</span>
                         <span className="font-bold text-cyan-600 dark:text-cyan-400">
                           {order.totalPrice ? `${order.totalPrice} ETB` : 'N/A'}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${style.bg} ${style.text}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
-                          {order.status}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Date:</span>
+                        <span className="text-sm text-slate-600 dark:text-slate-400">
+                          {new Date(order.createdAt).toLocaleDateString()}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => handleViewDetails(order)}
-                            className="p-2 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors group"
-                            title="View Details"
-                          >
-                            <Eye className="w-4 h-4 text-slate-400 group-hover:text-cyan-500" />
-                          </button>
-
-                          {/* Create Production for custom orders with confirmed payment */}
-                          {order.isCustom && order.status === 'PaymentConfirmed' && !order.productionRecord && (
-                            <button
-                              onClick={() => navigate(`/admin/production?orderId=${order.id}`)}
-                              className="px-2 py-1 text-xs font-semibold bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
-                              title="Create Production"
-                            >
-                              + Production
-                            </button>
-                          )}
-
-                          {/* Mark Delivered */}
-                          {order.status === 'ReadyForDelivery' && (
-                            <button
-                              onClick={() => handleMarkDelivered(order)}
-                              className="px-2 py-1 text-xs font-semibold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
-                              title="Mark as Delivered"
-                            >
-                              ✓ Deliver
-                            </button>
-                          )}
+                      </div>
+                      {order.isCustom && (
+                        <div className="flex justify-end">
+                          <span className="text-[10px] px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded font-semibold">
+                            Custom Order
+                          </span>
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      )}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+                      <button
+                        onClick={() => handleViewDetails(order)}
+                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                        View Details
+                      </button>
+
+                      {order.isCustom && order.status === 'PaymentConfirmed' && !order.productionRecord && (
+                        <button
+                          onClick={() => navigate(`/admin/production?orderId=${order.id}`)}
+                          className="flex-1 px-3 py-2 text-sm font-semibold bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
+                        >
+                          + Production
+                        </button>
+                      )}
+
+                      {order.status === 'ReadyForDelivery' && (
+                        <button
+                          onClick={() => handleMarkDelivered(order)}
+                          className="flex-1 px-3 py-2 text-sm font-semibold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
+                        >
+                          ✓ Deliver
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </GlassCard>
 

@@ -157,16 +157,16 @@ const UserManagementPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">User Management</h1>
           <p className="text-slate-500">Manage system users and roles</p>
         </div>
         <Button variant="primary" onClick={handleOpenAddModal}><UserPlus className="w-5 h-5 mr-2" /> Add User</Button>
       </div>
 
       <GlassCard className="p-4">
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
@@ -187,7 +187,7 @@ const UserManagementPage = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={currentUser ? 'Edit User' : 'Add User'}>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-sm font-medium">Full Name *</label>
               <input required name="fullName" value={formData.fullName} onChange={handleInputChange} className="w-full px-3 py-2 border rounded-lg" />

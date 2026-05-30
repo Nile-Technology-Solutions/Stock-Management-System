@@ -175,23 +175,23 @@ const Register = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center px-3 sm:px-4">
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-green-400/5 to-emerald-400/5 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-emerald-400/5 to-green-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
 
-        <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-md mx-auto">
+        <div className="flex flex-col justify-center py-8 sm:py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-md mx-auto">
           <div className="px-4">
-            <GlassCard variant="standard" className="py-12 px-6 sm:px-10 text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
-                <CheckCircle className="w-10 h-10 text-white" />
+            <GlassCard variant="standard" className="py-8 sm:py-12 px-4 sm:px-10 text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
+                <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
               
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4">
                 Account Created Successfully!
               </h2>
-              <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
                 Welcome to AddHomes Creatives! Your account has been created and you're being signed in automatically.
               </p>
               
@@ -214,7 +214,7 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center px-3 sm:px-4">
       {/* Premium Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-amber-400/8 to-orange-400/8 rounded-full blur-3xl animate-pulse" />
@@ -230,9 +230,9 @@ const Register = () => {
         <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-amber-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
       </div>
 
-      <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-xl mx-auto">
+      <div className="flex flex-col justify-center py-8 sm:py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-xl mx-auto">
         {/* Back to Home */}
-        <div className="mb-8 px-4">
+        <div className="mb-6 sm:mb-8 px-4">
           <Link 
             to="/"
             className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 group text-sm font-medium"
@@ -243,29 +243,29 @@ const Register = () => {
         </div>
 
         {/* Premium Header */}
-        <div className="text-center mb-8 px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full mb-6">
+        <div className="text-center mb-6 sm:mb-8 px-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full mb-4 sm:mb-6">
             <UserPlus className="w-4 h-4 text-amber-600 animate-pulse" />
             <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Join AddHomes Creatives</span>
           </div>
           
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
-            <span className="text-3xl font-black text-white">AH</span>
+          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
+            <span className="text-2xl sm:text-3xl font-black text-white">AH</span>
           </div>
           
-          <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-2">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-2">
             Create Your Account
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
             Join AddHomes Creatives and start exploring premium furniture and interior solutions
           </p>
         </div>
 
-        <div className="px-4 w-full">
-          <GlassCard variant="standard" className="py-8 px-6 sm:px-8 w-full">
-            <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="px-3 sm:px-4 w-full">
+          <GlassCard variant="standard" className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 w-full">
+            <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-3 sm:p-4">
                   <div className="flex items-center gap-3">
                     <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
                     <p className="text-sm text-red-700 dark:text-red-300 font-medium">{error}</p>
@@ -289,7 +289,7 @@ const Register = () => {
                     required
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -311,7 +311,7 @@ const Register = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -333,7 +333,7 @@ const Register = () => {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     placeholder="+251912345678"
                   />
                 </div>
@@ -358,7 +358,7 @@ const Register = () => {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     placeholder="Create a strong password"
                   />
                   <button
@@ -427,7 +427,7 @@ const Register = () => {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
+                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
                     placeholder="Confirm your password"
                   />
                   <button
@@ -465,7 +465,7 @@ const Register = () => {
                   className="w-full group relative overflow-hidden bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300"
                   size="large"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2 text-base font-bold">
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base font-bold">
                     {loading ? (
                       <>
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -494,7 +494,7 @@ const Register = () => {
                 </p>
                 <Link 
                   to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 hover:border-amber-500/60 text-amber-700 dark:text-amber-400 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/10 group"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 hover:border-amber-500/60 text-amber-700 dark:text-amber-400 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/10 group text-sm"
                 >
                   Sign In Instead
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

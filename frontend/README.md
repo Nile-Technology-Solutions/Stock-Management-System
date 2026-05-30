@@ -408,6 +408,20 @@ The role system uses a **hierarchical** permission model:
 
 ---
 
+## 🔐 Login Credentials
+
+The following accounts are available for testing (seeded via backend):
+
+| Role | Email | Password |
+|---|---|---|
+| **Super Admin** | `superadmin@example.com` | `password123` |
+| **Admin** | `admin@example.com` | `password123` |
+| **Customer** | `customer@example.com` | `password123` |
+
+> **Note:** These are development/test credentials only. In production, register new accounts or use credentials provided by your system administrator.
+
+---
+
 ## 🔧 Environment Configuration
 
 | Variable | Default | Description |

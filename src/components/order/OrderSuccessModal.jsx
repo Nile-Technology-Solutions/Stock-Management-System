@@ -1,25 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  CheckCircle, 
-  Download, 
-  X, 
-  Package, 
-  Calendar, 
-  MapPin, 
-  User, 
+import {
+  CheckCircle,
+  Download,
+  X,
+  Package,
+  Calendar,
+  MapPin,
+  User,
   Phone,
   Hash,
   FileText,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  CreditCard
 } from '../icons';
 import Button from '../common/Button';
+import { paymentApi } from '../../services/paymentApi';
 
 const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
   const navigate = useNavigate();
   const [downloading, setDownloading] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [payingNow, setPayingNow] = useState(false);
+  const [payError, setPayError] = useState('');
 
   useEffect(() => {
     if (isOpen) {
@@ -41,9 +45,9 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -53,7 +57,7 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
   // Download order receipt as PDF
   const handleDownload = () => {
     setDownloading(true);
-    
+
     const receiptHTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -337,13 +341,31 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(receiptHTML);
     printWindow.document.close();
-    
+
     // Wait a bit for content to load, then trigger print dialog
     setTimeout(() => {
       printWindow.focus();
       printWindow.print();
       setDownloading(false);
     }, 500);
+  };
+
+  const handlePayNow = async () => {
+    setPayingNow(true);
+    setPayError('');
+    try {
+      const response = await paymentApi.initiatePayment({ orderId: order.id });
+      const checkoutUrl = response.data?.checkoutUrl || response.checkoutUrl;
+      if (!checkoutUrl) {
+        throw new Error('No checkout URL received from payment gateway');
+      }
+      // Redirect to Chapa
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      console.error('Payment initiation failed:', err);
+      setPayError(err.message || 'Failed to initiate payment. Please try again.');
+      setPayingNow(false);
+    }
   };
 
   const handleTrackOrder = () => {
@@ -389,7 +411,7 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
 
             <h2 className="text-4xl font-bold text-white mb-3">Order Confirmed!</h2>
             <p className="text-white/90 text-lg mb-4">Your order has been successfully placed</p>
-            
+
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-white font-semibold">
               <Sparkles className="w-5 h-5" />
               <span>Order #{order.id}</span>
@@ -485,6 +507,27 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
             </div>
           )}
 
+          {/* Pay Now Button — Primary CTA */}
+          {order.totalPrice && order.status === 'OrderSubmitted' && (
+            <div className="pt-2">
+              {payError && (
+                <div className="mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                  <p className="text-sm text-red-700 dark:text-red-300">{payError}</p>
+                </div>
+              )}
+              <Button
+                onClick={handlePayNow}
+                disabled={payingNow}
+                className="w-full group"
+                variant="primary"
+                size="large"
+              >
+                <CreditCard className="w-5 h-5 mr-2" />
+                {payingNow ? 'Connecting to Chapa...' : `Pay Now — ${order.totalPrice} ETB`}
+              </Button>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button
@@ -497,7 +540,7 @@ const OrderSuccessModal = ({ isOpen, onClose, orderData }) => {
               <Download className="w-5 h-5 mr-2 group-hover:animate-bounce" />
               {downloading ? 'Opening Print Dialog...' : 'Download as PDF'}
             </Button>
-            
+
             <Button
               onClick={handleTrackOrder}
               className="flex-1"

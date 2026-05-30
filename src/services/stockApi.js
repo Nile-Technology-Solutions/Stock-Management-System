@@ -24,10 +24,22 @@ const normalizeProductForPublic = (product) => {
   const firstPhoto = photos[0];
   const firstPhotoUrl = typeof firstPhoto === 'string' ? firstPhoto : firstPhoto?.url;
 
+  // Resolve relative URLs to full backend URLs
+  const resolveUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('blob:')) return url;
+    return `${API_BASE_URL}${url}`;
+  };
+
   return {
     ...product,
     category: getCategoryLabel(product.category),
-    image: product.image || firstPhotoUrl || null
+    image: product.image || resolveUrl(firstPhotoUrl) || null,
+    // Also resolve all photo URLs for gallery/detail pages
+    photos: photos.map(p => {
+      if (typeof p === 'string') return { url: resolveUrl(p) };
+      return { ...p, url: resolveUrl(p.url) };
+    })
   };
 };
 
@@ -196,6 +208,9 @@ export const stockApi = {
       let products = Array.isArray(data) ? data : [];
       products = products.map(normalizeProductForPublic);
 
+      // Filter to only show products with available stock
+      products = products.filter(p => Number(p.stockQuantity) > 0);
+
       // Apply filters
       if (params.category && params.category !== 'all') {
         products = products.filter(p => p.category === params.category);
@@ -303,15 +318,15 @@ export const stockApiHelpers = {
     if (stockData.color && stockData.color.trim()) {
       formatted.color = stockData.color.trim();
     }
-    
+
     if (stockData.size && stockData.size.trim()) {
       formatted.size = stockData.size.trim();
     }
-    
+
     if (stockData.thickness && stockData.thickness.trim()) {
       formatted.thickness = stockData.thickness.trim();
     }
-    
+
     if (stockData.typeNote && stockData.typeNote.trim()) {
       formatted.typeNote = stockData.typeNote.trim();
     }

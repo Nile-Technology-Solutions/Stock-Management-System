@@ -97,7 +97,7 @@ const ProductDetail = () => {
           {/* Left Column - Images */}
           <div className="space-y-6">
             <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-xl">
-              <ProductImageGallery images={product.images || [product.image]} productName={product.name} />
+              <ProductImageGallery images={(product.photos || []).map(p => typeof p === 'string' ? p : p.url)} productName={product.name} />
             </div>
           </div>
 
@@ -113,11 +113,10 @@ const ProductDetail = () => {
                   {product.category}
                 </span>
                 {product.origin && (
-                  <span className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full border shadow-sm ${
-                    product.origin === 'Local'
+                  <span className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full border shadow-sm ${product.origin === 'Local'
                       ? 'text-green-700 dark:text-green-300 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-800'
                       : 'text-purple-700 dark:text-purple-300 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border-purple-200 dark:border-purple-800'
-                  }`}>
+                    }`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -146,11 +145,10 @@ const ProductDetail = () => {
                   {[...Array(5)].map((_, i) => (
                     <svg
                       key={i}
-                      className={`w-6 h-6 ${
-                        i < Math.floor(product.rating)
+                      className={`w-6 h-6 ${i < Math.floor(product.rating)
                           ? 'text-yellow-400 fill-current'
                           : 'text-slate-300 dark:text-slate-600'
-                      }`}
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

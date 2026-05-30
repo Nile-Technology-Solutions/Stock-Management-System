@@ -16,9 +16,9 @@ const AuditLogStats = ({ stats, loading }) => {
 
   if (!stats) return null;
 
-  const successCount = stats.statusStats.find(s => s.status === 'Success')?._count?.status || 0;
-  const failedCount = stats.statusStats.find(s => s.status === 'Failed')?._count?.status || 0;
-  const warningCount = stats.statusStats.find(s => s.status === 'Warning')?._count?.status || 0;
+  const successCount = stats.statusStats?.find(s => s.status === 'Success')?.count || 0;
+  const failedCount = stats.statusStats?.find(s => s.status === 'Failed')?.count || 0;
+  const warningCount = stats.statusStats?.find(s => s.status === 'Warning')?.count || 0;
 
   const statCards = [
     {

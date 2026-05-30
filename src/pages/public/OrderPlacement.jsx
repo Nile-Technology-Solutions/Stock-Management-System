@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { productApi } from '../../services/productApi';
 import { orderApi } from '../../services/orderApi';
+import { resolveImageUrl } from '../../utils/imageUrl';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
@@ -24,6 +25,7 @@ const OrderPlacement = () => {
   const [error, setError] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [orderResponse, setOrderResponse] = useState(null);
+  const [isCustomOrder, setIsCustomOrder] = useState(false);
 
   const [formData, setFormData] = useState({
     quantity: 1,
@@ -84,15 +86,20 @@ const OrderPlacement = () => {
       setSubmitting(true);
       setError(null);
 
-      // Map to Swagger Order schema
-      // Note: userId is automatically set by backend from authenticated user
+      const totalPrice = product.price ? parseFloat(product.price) * parseInt(formData.quantity) : null;
+
       const orderData = {
-        productId: parseInt(productId),  // Link to the finished product
-        productName: product.name,       // Required by spec
+        productName: product.name,
         quantity: parseInt(formData.quantity),
         customNotes: formData.customNotes || '',
-        totalPrice: product.price ? parseFloat(product.price) * parseInt(formData.quantity) : null,
+        totalPrice,
       };
+
+      // Ready-made order: include productId so backend deducts finished product stock
+      // Custom order: no productId, backend sets isCustom = true and calculates deposit
+      if (!isCustomOrder) {
+        orderData.productId = parseInt(productId);
+      }
 
       // Only include deliveryAddressId if it has a value
       if (formData.deliveryAddressId && formData.deliveryAddressId !== '') {
@@ -165,12 +172,37 @@ const OrderPlacement = () => {
                     placeholder="Enter saved address ID"
                   />
                 </div>
+                {/* Customization Toggle */}
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="block text-sm font-medium">Want Customization?</label>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        {isCustomOrder
+                          ? 'You will pay 50% deposit upfront. Remaining after production completes.'
+                          : 'Ready-made: Pay full price for immediate delivery.'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsCustomOrder(!isCustomOrder)}
+                      className={`relative w-14 h-7 rounded-full transition-colors duration-200 ${isCustomOrder ? 'bg-cyan-500' : 'bg-slate-300 dark:bg-slate-600'}`}
+                    >
+                      <span className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${isCustomOrder ? 'translate-x-7' : ''}`} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Custom Notes — always shown for custom, optional for ready-made */}
                 <div>
-                  <label className="block text-sm font-medium mb-2">Custom Notes (Optional)</label>
+                  <label className="block text-sm font-medium mb-2">
+                    {isCustomOrder ? 'Customization Details *' : 'Notes (Optional)'}
+                  </label>
                   <textarea
                     name="customNotes" value={formData.customNotes} onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border dark:bg-slate-900 min-h-[100px]"
-                    placeholder="E.g. Special delivery instructions..."
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 min-h-[100px] focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500 transition-all"
+                    placeholder={isCustomOrder ? 'Describe your customization requirements (color, size, material preferences...)' : 'E.g. Special delivery instructions...'}
+                    required={isCustomOrder}
                   />
                 </div>
 
@@ -207,16 +239,47 @@ const OrderPlacement = () => {
               {product && (
                 <div className="space-y-4">
                   {product.photos?.[0] && (
-                    <img src={product.photos[0].url} alt={product.name} className="w-full h-32 object-cover rounded-lg" />
+                    <img src={resolveImageUrl(product.photos[0].url)} alt={product.name} className="w-full h-32 object-cover rounded-lg" />
                   )}
                   <div>
                     <h3 className="font-semibold">{product.name}</h3>
-                    <p className="text-sm text-slate-500">Price: {product.price || 'Contact for price'}</p>
+                    <p className="text-sm text-slate-500">Unit Price: ETB {product.price ? Number(product.price).toLocaleString() : 'Contact for price'}</p>
+                    {!isCustomOrder && (
+                      <p className="text-xs text-green-600 font-medium mt-1">{product.stockQuantity > 0 ? `${product.stockQuantity} in stock` : 'Out of stock'}</p>
+                    )}
                   </div>
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between font-bold">
-                      <span>Total</span>
-                      <span className="text-cyan-600">{product.price ? `${parseInt(product.price) * formData.quantity} ETB` : '—'}</span>
+
+                  {isCustomOrder && (
+                    <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                      <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Custom Order</p>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">You pay 50% deposit now. Remaining 50% after production is complete.</p>
+                    </div>
+                  )}
+
+                  <div className="border-t pt-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Subtotal</span>
+                      <span>{product.price ? `ETB ${(parseInt(product.price) * formData.quantity).toLocaleString()}` : '—'}</span>
+                    </div>
+                    {isCustomOrder && product.price && (
+                      <>
+                        <div className="flex justify-between text-sm text-amber-600 dark:text-amber-400">
+                          <span>Deposit (50%)</span>
+                          <span>ETB {(parseInt(product.price) * formData.quantity * 0.5).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between text-sm text-slate-500">
+                          <span>Remaining</span>
+                          <span>ETB {(parseInt(product.price) * formData.quantity * 0.5).toLocaleString()}</span>
+                        </div>
+                      </>
+                    )}
+                    <div className="flex justify-between font-bold text-lg border-t pt-2">
+                      <span>{isCustomOrder ? 'Due Now' : 'Total'}</span>
+                      <span className="text-cyan-600">
+                        {product.price
+                          ? `ETB ${(parseInt(product.price) * formData.quantity * (isCustomOrder ? 0.5 : 1)).toLocaleString()}`
+                          : '—'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -227,7 +290,7 @@ const OrderPlacement = () => {
       </div>
 
       {/* Success Modal */}
-      <OrderSuccessModal 
+      <OrderSuccessModal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
         orderData={orderResponse}

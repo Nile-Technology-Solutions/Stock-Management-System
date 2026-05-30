@@ -3,16 +3,16 @@ const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
 
   const sizeClasses = {
     small: "max-w-md",
-    medium: "max-w-lg", 
+    medium: "max-w-lg",
     large: "max-w-2xl",
     xlarge: "max-w-4xl"
   };
 
   return (
     <div className="fixed inset-0 bg-slate-900/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 w-full ${sizeClasses[size]} mx-4`}>
+      <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-md border border-slate-200 dark:border-slate-700 w-full ${sizeClasses[size]} mx-4 max-h-[90vh] flex flex-col`}>
         {title && (
-          <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700">
+          <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 shrink-0">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{title}</h2>
             <button
               onClick={onClose}
@@ -24,7 +24,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "medium" }) => {
             </button>
           </div>
         )}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto">
           {children}
         </div>
       </div>

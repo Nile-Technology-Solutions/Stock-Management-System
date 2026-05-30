@@ -36,10 +36,10 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
 
     try {
       const updatedOrder = await orderApi.updateOrder(order.id, { status });
-      
+
       // Close modal first to prevent DOM errors
       onClose();
-      
+
       // Then update the parent component
       setTimeout(() => {
         onUpdate(updatedOrder.data || updatedOrder);
@@ -54,9 +54,9 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="relative bg-gradient-to-r from-cyan-400 to-sky-500 p-8 text-white rounded-t-3xl overflow-hidden">
+        <div className="shrink-0 relative bg-gradient-to-r from-cyan-400 to-sky-500 p-8 text-white rounded-t-3xl overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-5 left-5 w-24 h-24 border-4 border-white rounded-full animate-ping" />
           </div>
@@ -76,7 +76,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="flex-1 p-8 space-y-6 overflow-y-auto">
           {/* Order Summary */}
           <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
             <div className="grid grid-cols-2 gap-4">
@@ -106,7 +106,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
             <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-4">
               Select New Status
             </label>
-            
+
             {allowedStatuses.length === 0 ? (
               <div className="p-6 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 text-center">
                 <p className="text-amber-700 dark:text-amber-400 font-semibold">
@@ -125,11 +125,10 @@ const OrderEditModal = ({ order, isOpen, onClose, onUpdate }) => {
                     key={s.value}
                     type="button"
                     onClick={() => setStatus(s.value)}
-                    className={`relative p-4 rounded-xl border-2 transition-all transform hover:scale-105 ${
-                      status === s.value
+                    className={`relative p-4 rounded-xl border-2 transition-all transform hover:scale-105 ${status === s.value
                         ? `border-transparent bg-gradient-to-r ${s.color} text-white shadow-lg`
                         : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-cyan-400'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{s.icon}</span>

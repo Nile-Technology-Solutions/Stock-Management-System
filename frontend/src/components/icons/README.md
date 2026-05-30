@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-This directory contains the centralized icon system for the Stock Management System (SMS). All icons use **Lucide React** and follow Neo-Enterprise design principles.
+This directory contains the centralized icon system for AddHomes Creative Woodworks. All icons use **Lucide React** and follow modern design principles.
 
 ## 🚫 STRICT RULES
 
@@ -193,4 +193,4 @@ export {
 - Maintain consistent spacing across breakpoints
 - Test icon clarity at different sizes
 
-This icon system ensures consistent, professional, and maintainable icon usage across the entire SMS application while following Neo-Enterprise design principles.
+This icon system ensures consistent, professional, and maintainable icon usage across the entire application while following modern design principles.

@@ -74,7 +74,7 @@ const AdminLayout = () => {
       description: 'Performance Insights'
     },
     {
-      name: 'Stock Management',
+      name: 'Inventory',
       href: '/admin/stock',
       icon: <Package className="w-5 h-5" />,
       description: 'Inventory Control'
@@ -166,17 +166,17 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex relative overflow-x-hidden">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-cyan-400/2 to-sky-400/2 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-sky-400/2 to-cyan-400/2 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-amber-400/2 to-orange-400/2 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-orange-400/2 to-amber-400/2 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Skip to content link for accessibility */}
       <a 
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-cyan-400 text-white px-4 py-2 rounded-lg z-50"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-amber-500 text-white px-4 py-2 rounded-lg z-50"
       >
         Skip to main content
       </a>
@@ -198,41 +198,41 @@ const AdminLayout = () => {
         
         {/* Sidebar Header */}
         <div className="p-6 border-b border-slate-800/50 dark:border-slate-700/50 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-sky-400/5" />
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-400/5 to-orange-400/5" />
           <div className="relative flex items-center justify-between">
             {!sidebarCollapsed ? (
               <div className="flex items-center gap-3">
                 {/* Logo with futuristic styling */}
                 <div className="relative group">
                   {/* Glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-sky-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-orange-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* Logo container with white bg */}
-                  <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-cyan-400/25 ring-2 ring-cyan-400/30 group-hover:ring-cyan-400/50 transition-all duration-300">
+                  <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-amber-400/25 ring-2 ring-amber-400/30 group-hover:ring-amber-400/50 transition-all duration-300">
                     <img 
                       src="/src/assets/LOGO.png" 
-                      alt="SMS Logo" 
+                      alt="AddHomes Logo" 
                       className="w-full h-full object-contain"
                     />
                   </div>
                   
                   {/* Animated corner dot */}
-                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50" />
+                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full animate-pulse shadow-lg shadow-amber-400/50" />
                 </div>
                 
                 <div>
-                  <h1 className="text-xl font-bold text-white">SMS Admin</h1>
-                  <p className="text-sm text-slate-400 dark:text-slate-500">Stock Management Pro</p>
+                  <h1 className="text-xl font-bold text-white">AddHomes</h1>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">Admin Panel</p>
                 </div>
               </div>
             ) : (
               <div className="relative group mx-auto">
                 {/* Collapsed logo */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-sky-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-cyan-400/25 ring-2 ring-cyan-400/30 group-hover:ring-cyan-400/50 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-orange-400/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-lg shadow-amber-400/25 ring-2 ring-amber-400/30 group-hover:ring-amber-400/50 transition-all duration-300">
                   <img 
                     src="/src/assets/LOGO.png" 
-                    alt="SMS Logo" 
+                    alt="AddHomes Logo" 
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -285,7 +285,7 @@ const AdminLayout = () => {
                     isActiveRoute(item.href)
                       ? item.exclusive
                         ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
-                        : 'bg-gradient-to-r from-cyan-400 to-sky-400 text-white shadow-lg shadow-cyan-400/25'
+                        : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/50 dark:hover:bg-slate-700/50'
                   }`}
                   aria-current={isActiveRoute(item.href) ? 'page' : undefined}
@@ -345,7 +345,7 @@ const AdminLayout = () => {
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                       user?.role === ROLES.SUPER_ADMIN 
                         ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' 
-                        : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                        : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                     }`}>
                       {getRoleDisplayName(user?.role)}
                     </span>
@@ -384,7 +384,7 @@ const AdminLayout = () => {
               </button>
               
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-cyan-400 to-sky-400 rounded-lg shadow-lg shadow-cyan-400/25">
+                <div className="p-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg shadow-lg shadow-amber-500/25">
                   <BarChart3 className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -392,7 +392,7 @@ const AdminLayout = () => {
                     {getCurrentPageTitle()}
                   </h2>
                   <p className="text-sm text-slate-600 dark:text-slate-400 hidden sm:block">
-                    Advanced stock management & analytics
+                    Dashboard & Analytics
                   </p>
                 </div>
               </div>
@@ -400,12 +400,13 @@ const AdminLayout = () => {
             
             <div className="flex items-center gap-3">
               {/* Search */}
-              <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
+              {/* Search - visible on tablet and up */}
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
                 <Search className="w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Quick search..."
-                  className="bg-transparent text-sm text-slate-700 dark:text-slate-300 placeholder-slate-400 border-none outline-none w-32 lg:w-48"
+                  className="bg-transparent text-sm text-slate-700 dark:text-slate-300 placeholder-slate-400 border-none outline-none w-24 md:w-32 lg:w-48"
                 />
               </div>
 
@@ -422,13 +423,13 @@ const AdminLayout = () => {
                 )}
               </button>
               
-              {/* Role Badge */}
-              <div className={`hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg ${
+              {/* Role Badge - visible on medium screens and up */}
+              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-lg ${
                 user?.role === ROLES.SUPER_ADMIN 
                   ? 'bg-gradient-to-r from-purple-400/10 to-pink-400/10 border border-purple-400/20' 
-                  : 'bg-gradient-to-r from-cyan-400/10 to-sky-400/10 border border-cyan-400/20'
+                  : 'bg-gradient-to-r from-amber-400/10 to-orange-400/10 border border-amber-400/20'
               }`}>
-                <Shield className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   {getRoleDisplayName(user?.role)}
                 </span>
@@ -438,7 +439,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main id="main-content" className="flex-1 p-4 sm:p-6 overflow-auto relative z-10">
+        <main id="main-content" className="flex-1 p-3 sm:p-4 lg:p-6 overflow-auto relative z-10">
           <Outlet />
         </main>
       </div>

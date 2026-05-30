@@ -1,4 +1,4 @@
-// Centralized icon exports for SMS - Lucide React Icons Only
+// Centralized icon exports for AddHomes - Lucide React Icons Only
 // All icons follow Neo-Enterprise design principles
 
 // Product & Inventory Icons

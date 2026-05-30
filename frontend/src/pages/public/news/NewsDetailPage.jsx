@@ -130,21 +130,21 @@ const NewsDetailPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Tag className="w-4 h-4 text-cyan-500" />
-                  <span className="text-xs font-bold text-slate-400">#NileTechnology #Innovation #EthiopiaDesign</span>
+                   <Tag className="w-4 h-4 text-cyan-500" />
+                   <span className="text-xs font-bold text-slate-400">#AddHomesCreative #Woodworks #InteriorDesign</span>
                 </div>
               </div>
             </GlassCard>
 
             {/* Author Section */}
             <GlassCard className="p-6 mb-12 flex items-center gap-6 border-none bg-slate-900 text-white">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center font-black text-2xl">
-                NT
-              </div>
-              <div>
-                <h4 className="font-bold text-lg mb-0.5">Nile Editorial Team</h4>
-                <p className="text-slate-400 text-sm">Official publication for Nile Technology & Wood Solutions. Providing expert insights into manufacturing excellence.</p>
-              </div>
+               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center font-black text-2xl">
+                  AH
+                </div>
+                <div>
+                   <h4 className="font-bold text-lg mb-0.5">AddHomes Editorial Team</h4>
+                   <p className="text-slate-400 text-sm">Official publication for AddHomes Creative Woodworks. Providing expert insights into furniture craftsmanship and interior design.</p>
+                </div>
             </GlassCard>
           </div>
 

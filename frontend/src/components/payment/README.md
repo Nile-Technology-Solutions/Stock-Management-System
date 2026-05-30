@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-This directory contains reusable components for the payment flow in the Stock Management System (SMS). All components follow Neo-Enterprise design principles with appropriate glassmorphism usage for financial transactions.
+This directory contains reusable components for the payment flow in AddHomes Creative Woodworks. All components follow modern design principles with appropriate glassmorphism usage for financial transactions.
 
 ## 🚫 CRITICAL RULES
 

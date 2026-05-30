@@ -1,7 +1,7 @@
 {
-  "name": "SMS Nile Tech - Stock Management System",
-  "short_name": "SMS Nile Tech",
-  "description": "Enterprise-grade Stock Management System for efficient inventory control, production tracking, and business analytics",
+  "name": "AddHomes Creative Woodworks",
+  "short_name": "AddHomes",
+  "description": "Premium furniture manufacturing and interior design solutions by AddHomes Creative Woodworks",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -16,13 +16,13 @@
       "purpose": "any maskable"
     }
   ],
-  "theme_color": "#06b6d4",
+  "theme_color": "#d97706",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait-primary",
   "start_url": "/",
   "scope": "/",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": ["furniture", "interior design", "lifestyle"],
   "lang": "en-US",
   "dir": "ltr"
 }

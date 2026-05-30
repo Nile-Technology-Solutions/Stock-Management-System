@@ -57,7 +57,7 @@ const DashboardPage = () => {
       <GlassCard variant="standard" className="relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
         <div className="relative">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-sky-400 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-400/25">
@@ -79,26 +79,26 @@ const DashboardPage = () => {
                 </div>
               </div>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                Your stock management system is running smoothly. Here's your real-time dashboard overview.
+                Your system is running smoothly. Here's your real-time dashboard overview.
               </p>
             </div>
             
             <div className="mt-6 lg:mt-0 lg:text-right">
               <div className="flex flex-col lg:items-end gap-2">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                   <Button
                     onClick={handleRefresh}
                     disabled={refreshing}
                     variant="glass-secondary"
-                    className="flex items-center gap-2"
+                    className="flex items-center justify-center gap-2 text-sm"
                   >
                     <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-                    {refreshing ? 'Refreshing...' : 'Refresh Data'}
+                    <span className="hidden sm:inline">{refreshing ? 'Refreshing...' : 'Refresh Data'}</span>
                   </Button>
                   <select 
                     value={selectedTimeRange}
                     onChange={(e) => setSelectedTimeRange(e.target.value)}
-                    className="px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+                    className="px-3 py-2 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 w-full sm:w-auto"
                   >
                     <option value="24h">Last 24 Hours</option>
                     <option value="7d">Last 7 Days</option>
@@ -106,7 +106,7 @@ const DashboardPage = () => {
                     <option value="90d">Last 90 Days</option>
                   </select>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right mt-2 sm:mt-0">
                   <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                     {currentTime.toLocaleDateString('en-US', { 
                       weekday: 'long', 

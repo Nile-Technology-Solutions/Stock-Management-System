@@ -1,4 +1,4 @@
-// Order-related components for the Stock Management System
+// Order-related components for AddHomes Creative Woodworks
 export { default as ImageWithFallback } from './ImageWithFallback';
 export { default as OrderSummaryCard } from './OrderSummaryCard';
 export { default as OrderForm } from './OrderForm';

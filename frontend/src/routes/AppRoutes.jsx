@@ -10,6 +10,7 @@ import { ROLES } from '../utils/roleUtils';
 
 // Lazy load all pages
 const Home = lazy(() => import('../pages/public/Home'));
+const About = lazy(() => import('../pages/public/About'));
 const Products = lazy(() => import('../pages/public/Products'));
 const ProductDetail = lazy(() => import('../pages/public/ProductDetail'));
 const NewsList = lazy(() => import('../pages/public/news/NewsListPage'));
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         {/* Public Routes */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id" element={<ProductDetail />} />
           <Route path="news" element={<NewsList />} />

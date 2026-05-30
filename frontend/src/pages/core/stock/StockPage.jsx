@@ -285,7 +285,7 @@ const StockPage = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
-                Stock Management
+                Inventory
               </h1>
               <p className="text-slate-500 dark:text-slate-400 mt-0.5">
                 Real-time raw materials and inventory control
@@ -386,7 +386,7 @@ const StockPage = () => {
           </div>
 
           {/* Quantity & Size */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 Quantity <span className="text-red-500">*</span>
@@ -415,7 +415,7 @@ const StockPage = () => {
           </div>
 
           {/* Category & Origin */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Category</label>
               <select
@@ -444,7 +444,7 @@ const StockPage = () => {
           </div>
 
           {/* Color & Thickness */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Color</label>
               <input

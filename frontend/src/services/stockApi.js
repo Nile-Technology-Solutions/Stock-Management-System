@@ -1,6 +1,5 @@
 /**
- * Stock Management API Service
- * Integrated with SMS Backend API v1.4.0
+ * Inventory API Service
  * Handles raw materials and inventory for furniture manufacturing
  * Strictly connects to the real backend
  */
@@ -44,7 +43,7 @@ const normalizeProductForPublic = (product) => {
 };
 
 // Get authentication token
-const getAuthToken = () => localStorage.getItem('sms_token') || localStorage.getItem('authToken');
+const getAuthToken = () => localStorage.getItem('ah_token') || localStorage.getItem('authToken');
 
 // Get authentication headers
 const getAuthHeaders = () => {
@@ -352,7 +351,7 @@ export const stockApiHelpers = {
     console.error('Stock API Error:', error);
 
     if (error.message.includes('401')) {
-      localStorage.removeItem('sms_token');
+      localStorage.removeItem('ah_token');
       localStorage.removeItem('authToken');
       window.location.href = '/login';
       return 'Authentication required. Please log in again.';

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { stockApi, stockApiHelpers } from '../services/stockApi';
 
 /**
- * Custom hook for stock management
+ * Custom hook for inventory management
  * Handles furniture raw materials inventory
  */
 export const useStock = () => {

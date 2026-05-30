@@ -166,7 +166,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex relative overflow-x-hidden">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-amber-400/2 to-orange-400/2 rounded-full blur-3xl animate-pulse" />
@@ -400,12 +400,13 @@ const AdminLayout = () => {
             
             <div className="flex items-center gap-3">
               {/* Search */}
-              <div className="hidden md:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
+              {/* Search - visible on tablet and up */}
+              <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-slate-800/50 rounded-lg border border-slate-200/50 dark:border-slate-700/50">
                 <Search className="w-4 h-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Quick search..."
-                  className="bg-transparent text-sm text-slate-700 dark:text-slate-300 placeholder-slate-400 border-none outline-none w-32 lg:w-48"
+                  className="bg-transparent text-sm text-slate-700 dark:text-slate-300 placeholder-slate-400 border-none outline-none w-24 md:w-32 lg:w-48"
                 />
               </div>
 
@@ -422,8 +423,8 @@ const AdminLayout = () => {
                 )}
               </button>
               
-              {/* Role Badge */}
-              <div className={`hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg ${
+              {/* Role Badge - visible on medium screens and up */}
+              <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-lg ${
                 user?.role === ROLES.SUPER_ADMIN 
                   ? 'bg-gradient-to-r from-purple-400/10 to-pink-400/10 border border-purple-400/20' 
                   : 'bg-gradient-to-r from-amber-400/10 to-orange-400/10 border border-amber-400/20'
@@ -438,7 +439,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main id="main-content" className="flex-1 p-4 sm:p-6 overflow-auto relative z-10">
+        <main id="main-content" className="flex-1 p-3 sm:p-4 lg:p-6 overflow-auto relative z-10">
           <Outlet />
         </main>
       </div>

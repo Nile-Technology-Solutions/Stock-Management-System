@@ -24,7 +24,7 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl animate-pulse" />
@@ -33,7 +33,7 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
 
       <div className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-3xl shadow-2xl">
         {/* Header */}
-        <div className={`relative bg-gradient-to-r ${statusColors[order.status] || 'from-cyan-400 to-sky-500'} p-8 text-white overflow-hidden`}>
+        <div className={`relative bg-gradient-to-r ${statusColors[order.status] || 'from-cyan-400 to-sky-500'} p-6 sm:p-8 text-white overflow-hidden`}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full animate-ping" />
             <div className="absolute bottom-10 right-10 w-24 h-24 border-4 border-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
@@ -41,27 +41,27 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
 
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
 
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold mb-2">Order Details</h2>
-            <p className="text-white/90 text-lg">Complete order information</p>
+            <h2 className="text-2xl sm:text-4xl font-bold mb-2">Order Details</h2>
+            <p className="text-white/90 text-sm sm:text-lg">Complete order information</p>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-8 space-y-6">
+        <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
           {/* Order ID Card */}
-          <div className="bg-gradient-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 p-6 rounded-2xl border-2 border-cyan-200 dark:border-cyan-800">
-            <div className="flex items-center justify-between">
+          <div className="bg-gradient-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 p-4 sm:p-6 rounded-2xl border-2 border-cyan-200 dark:border-cyan-800">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Order ID</p>
-                <p className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">#{order.id}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-cyan-600 dark:text-cyan-400">#{order.id}</p>
               </div>
-              <div className="text-right">
+              <div className="sm:text-right w-full sm:w-auto">
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Status</p>
                 <span className={`inline-block px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${statusColors[order.status]} text-white shadow-lg`}>
                   {order.status}
@@ -70,9 +70,9 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {/* Customer Information */}
-            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg">
                   <User className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
@@ -100,7 +100,7 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
             </div>
 
             {/* Product Information */}
-            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-sky-100 dark:bg-sky-900/30 rounded-lg">
                   <Package className="w-5 h-5 text-sky-600 dark:text-sky-400" />
@@ -137,7 +137,7 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
 
             {/* Delivery Address */}
             {order.deliveryAddress && (
-              <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+              <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
                     <MapPin className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -145,21 +145,21 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Delivery Address</h3>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.street}</p>
-                  <p className="text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.city}</p>
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.street}</p>
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.city}</p>
                   {order.deliveryAddress.state && (
-                    <p className="text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.state}</p>
+                    <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.state}</p>
                   )}
-                  <p className="text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.country || 'Ethiopia'}</p>
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">{order.deliveryAddress.country || 'Ethiopia'}</p>
                   {order.deliveryAddress.zipCode && (
-                    <p className="text-base text-slate-700 dark:text-slate-300">Zip: {order.deliveryAddress.zipCode}</p>
+                    <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">Zip: {order.deliveryAddress.zipCode}</p>
                   )}
                 </div>
               </div>
             )}
 
             {/* Order Timeline */}
-            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                   <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -180,17 +180,17 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
           </div>
 
           {/* Payment Information */}
-          <div className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border-2 border-amber-200 dark:border-amber-800">
+          <div className="p-4 sm:p-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border-2 border-amber-200 dark:border-amber-800">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
                 <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Payment</h3>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Total Amount</p>
-                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                <p className="text-xl sm:text-2xl font-bold text-amber-600 dark:text-amber-400">
                   {order.totalPrice ? `${order.totalPrice} ETB` : 'Contact for price'}
                 </p>
               </div>
@@ -205,19 +205,19 @@ const OrderDetailsModal = ({ order, isOpen, onClose, onEdit }) => {
 
           {/* Custom Notes */}
           {order.customNotes && (
-            <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                   <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Custom Notes</h3>
               </div>
-              <p className="text-base text-slate-700 dark:text-slate-300">{order.customNotes}</p>
+              <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300">{order.customNotes}</p>
             </div>
           )}
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
             <Button
               onClick={onEdit}
               className="flex-1"

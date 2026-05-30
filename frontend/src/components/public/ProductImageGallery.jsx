@@ -9,9 +9,8 @@ const ProductImageGallery = ({
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Fallback to placeholder if no images provided
   const processedImages = images.map(img => typeof img === 'string' ? getImageUrl(img) : getImageUrl(img?.url));
-  const galleryImages = processedImages.length > 0 ? processedImages : ['/api/placeholder/600/400'];
+  const galleryImages = processedImages.length > 0 ? processedImages : ['https://placehold.co/600x400/e2e8f0/64748b?text=No+Image'];
 
   return (
     <div className={`space-y-4 ${className}`}>

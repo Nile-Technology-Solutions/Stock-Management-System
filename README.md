@@ -1,16 +1,17 @@
 <div align="center">
 
-# 📦 Stock Management System
+# 📦 Stock Management System (SMS)
 
-### Enterprise-Grade Production & Inventory Management Platform
+### Enterprise-Grade Inventory, Production & E-Commerce Platform
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.0-2D3748?style=flat&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![License](https://img.shields.io/badge/License-Proprietary-red?style=flat)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.0-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Express](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Tech Stack](#-tech-stack) • [Documentation](#-documentation) • [API](#-api-reference)
+[Features](#-key-features) • [Quick Start](#-quick-start) • [Tech Stack](#-tech-stack) • [Architecture](#-architecture) • [API Reference](#-api-reference)
 
 </div>
 
@@ -18,82 +19,80 @@
 
 ## 🎯 Overview
 
-A comprehensive full-stack solution for **Nile Technology Solutions** that streamlines inventory management, production tracking, order processing, and business operations. Built with modern technologies and enterprise-grade security.
+The **Stock Management System (SMS)** is a comprehensive, full-stack enterprise solution built for **Nile Technology Solutions**. It bridges the gap between internal manufacturing operations and public e-commerce by offering a seamless, unified platform. 
 
-### 🎭 Role-Based Access Control
+Whether tracking raw materials, monitoring live production workflows, managing financial reporting, or selling finished goods online, SMS is designed for performance, security, and scalability.
+
+---
+
+## 🏗️ Architecture
+
+The system enforces a strict **Role-Based Access Control (RBAC)** architecture to ensure data security and operational isolation across different business domains.
 
 ```mermaid
-graph LR
-    A[SuperAdmin] -->|Full Access| B[User Management]
-    A -->|Full Access| C[Financial Reports]
-    A -->|Full Access| D[Audit Logs]
-    E[Admin] -->|Manage| F[Stock & Production]
-    E -->|Manage| G[Orders & Content]
-    H[Customer] -->|Access| I[Browse Products]
-    H -->|Access| J[Place Orders]
+graph TD
+    %% Roles
+    SuperAdmin[Super Admin]
+    Admin[Admin]
+    Customer[Customer]
+
+    %% Modules
+    SysAdmin((System Admin))
+    Finances((Finances & Audit))
+    Inventory((Raw Inventory))
+    Production((Production Line))
+    Shop((E-Commerce))
+    Orders((Order Fulfillment))
+
+    %% Connections
+    SuperAdmin ==>|Full Access| SysAdmin
+    SuperAdmin ==>|Full Access| Finances
+    SuperAdmin -.->|Inherits| Admin
+
+    Admin ==>|Manages| Inventory
+    Admin ==>|Tracks| Production
+    Admin ==>|Processes| Orders
+
+    Customer ==>|Browses| Shop
+    Customer ==>|Places| Orders
+    
+    classDef roles fill:#2D3748,stroke:#4A5568,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef modules fill:#E2E8F0,stroke:#CBD5E0,stroke-width:2px,color:#1A202C;
+    
+    class SuperAdmin,Admin,Customer roles;
+    class SysAdmin,Finances,Inventory,Production,Shop,Orders modules;
 ```
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-<table>
-<tr>
-<td width="50%">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-### 🔐 Authentication & Security
+### 🔐 Security & Identity
+- **JWT-based Authentication** with secure token handling.
+- **Granular RBAC** (SuperAdmin, Admin, Customer).
+- **Comprehensive Audit Logs** tracking over 25 unique system actions.
+- **Secure File Uploads** via Multer with MIME-type validation.
 
-- JWT-based authentication
-- Role-based access control (RBAC)
-- Password reset functionality
-- Comprehensive audit logging
-- Secure file uploads
+### 📦 Raw Material & Inventory
+- **Real-Time Stock Tracking** with low-stock alerts.
+- **Detailed Attributes** (Origin: Local/Imported, Size, Color, Lamination).
+- **Category Management** for hierarchical material grouping.
 
-### 📊 Inventory Management
+### 🏭 Production Monitoring
+- **Workflow Tracking** from raw material to finished product.
+- **Automated Stock Deduction** upon production initiation.
+- **Visual Documentation** via multi-image upload galleries.
+- **Progress Tracking** (0-100% completion metrics).
 
-- Real-time stock tracking
-- Material categorization
-- Local/Imported origin tracking
-- Color, size, thickness variants
-- Low stock alerts
+### 🛍️ Public E-Commerce & Orders
+- **Dynamic Product Showcase** with variant and stock sync.
+- **Customer Order Pipeline** (Submitted → Processing → Shipped).
+- **Integrated Payments** supporting Chapa & Telebirr APIs.
+- **Responsive Modern UI** featuring glassmorphism and micro-animations.
 
-### 🏭 Production Tracking
-
-- Production workflow management
-- Progress monitoring (0-100%)
-- Material usage tracking
-- Photo documentation
-- Status management (UnderProcess/Completed/Rejected)
-
-</td>
-<td width="50%">
-
-### 🛍️ E-Commerce Features
-
-- Product showcase with photos
-- Customer ordering system
-- Payment integration (Chapa, Telebirr)
-- Order status tracking
-- Delivery address management
-
-### 📈 Reporting & Analytics
-
-- Stock reports with filtering
-- Production analytics
-- Sales & revenue reports
-- Payment tracking
-- Export to CSV/PDF
-
-### 📰 Content Management
-
-- News & announcements
-- Task management (To-Do lists)
-- User preferences
-- Multi-photo uploads
-
-</td>
-</tr>
-</table>
+</div>
 
 ---
 
@@ -101,11 +100,14 @@ graph LR
 
 ### Prerequisites
 
-```bash
-Node.js 18+  |  npm 9+  |  PostgreSQL 14+
-```
+Ensure you have the following installed on your local environment:
+- **Node.js** (v18.0.0 or higher)
+- **npm** (v9.0.0 or higher)
+- **PostgreSQL** (v14.0 or higher)
 
-### 1️⃣ Clone & Install
+### 1️⃣ Installation
+
+Clone the repository and install dependencies for both frontend and backend:
 
 ```bash
 # Clone the repository
@@ -123,411 +125,161 @@ npm install
 
 ### 2️⃣ Environment Configuration
 
+You will need to set up `.env` files in both the `frontend` and `backend` directories.
+
 <details>
-<summary><b>Backend Configuration</b> (<code>backend/.env</code>)</summary>
+<summary><b>Backend <code>backend/.env</code></b></summary>
 
 ```env
-# Database
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/production_db"
-SHADOW_DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/production_db_shadow"
-
 # Server
 PORT=5000
 NODE_ENV=development
 
-# JWT
-JWT_SECRET="your_super_secret_jwt_key_change_this_in_production"
-JWT_EXPIRES_IN=7d
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/stock_management_db"
 
-# CORS
-CORS_ORIGIN=http://localhost:5173
+# JWT Auth
+JWT_SECRET="your_highly_secure_256bit_jwt_secret_key"
+JWT_EXPIRES_IN=1h
 
-# File Upload
-MAX_FILE_SIZE=5242880
-MAX_FILES=10
+# Payment Gateways (Optional for dev)
+CHAPA_SECRET_KEY="CHASECK_TEST-your-chapa-key"
+CHAPA_WEBHOOK_SECRET="your-webhook-secret"
+
+# Client URL
+FRONTEND_URL=http://localhost:5173
 ```
-
 </details>
 
 <details>
-<summary><b>Frontend Configuration</b> (<code>frontend/.env</code>)</summary>
+<summary><b>Frontend <code>frontend/.env</code></b></summary>
 
 ```env
 VITE_API_BASE_URL=http://localhost:5000
 VITE_USE_MOCK=false
 ```
-
 </details>
 
-### 3️⃣ Database Setup
+### 3️⃣ Database Initialization
+
+Set up the PostgreSQL database schema and seed it with initial admin accounts and demo data:
 
 ```bash
 cd backend
 
-# Run migrations
+# Deploy database migrations
 npx prisma migrate deploy
 
 # Generate Prisma Client
 npx prisma generate
 
-# Seed demo data
+# Seed the database (Creates SuperAdmin, Categories, etc.)
 npx prisma db seed
 ```
 
-### 4️⃣ Launch Applications
+### 4️⃣ Start Development Servers
 
-<table>
-<tr>
-<td width="50%">
+Run the backend and frontend simultaneously in separate terminal windows:
 
 **Backend Server**
-
 ```bash
 cd backend
 npm run dev
+# 🚀 Server running on http://localhost:5000
 ```
 
-🟢 Running on `http://localhost:5000`
-
-</td>
-<td width="50%">
-
-**Frontend App**
-
+**Frontend Application**
 ```bash
 cd frontend
 npm run dev
+# 🚀 App running on http://localhost:5173
 ```
-
-🟢 Running on `http://localhost:5173`
-
-</td>
-</tr>
-</table>
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Backend Architecture
+### Frontend (Client-Side)
+- **Core:** React 19, React Router v7
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS v4, PostCSS
+- **Data Visualization:** Recharts
+- **Icons:** Lucide React
 
-```
-┌─────────────────────────────────────────────┐
-│  Express.js REST API                        │
-├─────────────────────────────────────────────┤
-│  • JWT Authentication                       │
-│  • Prisma ORM                               │
-│  • PostgreSQL Database                      │
-│  • Multer File Uploads                      │
-│  • Helmet Security                          │
-│  • Morgan Logging                           │
-└─────────────────────────────────────────────┘
-```
-
-**Core Technologies:**
-
-- **Runtime**: Node.js 18+
-- **Framework**: Express.js 4.19
-- **Database**: PostgreSQL 14+ with Prisma ORM 6.0
-- **Authentication**: JWT (jsonwebtoken)
-- **Validation**: Joi
-- **File Handling**: Multer
-- **Security**: Helmet, bcryptjs, CORS
-
-### Frontend Architecture
-
-```
-┌─────────────────────────────────────────────┐
-│  React 19 SPA                               │
-├─────────────────────────────────────────────┤
-│  • Vite Build Tool                          │
-│  • React Router v7                          │
-│  • Tailwind CSS v4                          │
-│  • Recharts Analytics                       │
-│  • Lucide Icons                             │
-└─────────────────────────────────────────────┘
-```
-
-**Core Technologies:**
-
-- **Framework**: React 19.2
-- **Build Tool**: Vite 7.3
-- **Routing**: React Router DOM 7.13
-- **Styling**: Tailwind CSS 4.1
-- **Charts**: Recharts 3.7
-- **Icons**: Lucide React
+### Backend (Server-Side)
+- **Core:** Node.js, Express.js
+- **Database:** PostgreSQL, Prisma ORM
+- **Authentication:** JSON Web Tokens (JWT), bcryptjs
+- **Validation:** Joi validation schemas
+- **Storage:** Multer (Local disk storage)
+- **Security:** Helmet, CORS
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 Stock-Management-System/
-├── 📂 backend/
-│   ├── 📂 prisma/
-│   │   ├── schema.prisma          # Database schema
-│   │   ├── seed.js                # Demo data seeder
-│   │   └── migrations/            # Database migrations
-│   ├── 📂 src/
-│   │   ├── 📂 config/             # Configuration files
-│   │   ├── 📂 controllers/        # Request handlers
-│   │   ├── 📂 middleware/         # Auth, validation, logging
-│   │   ├── 📂 routes/             # API routes
-│   │   ├── 📂 services/           # Business logic
-│   │   ├── 📂 utils/              # Helper functions
-│   │   ├── app.js                 # Express app setup
-│   │   └── server.js              # Server entry point
-│   ├── 📂 uploads/                # User-uploaded files
-│   └── package.json
+├── backend/
+│   ├── prisma/
+│   │   ├── migrations/       # SQL migration history
+│   │   ├── schema.prisma     # Central DB schema & models
+│   │   └── seed.js           # Database initialization script
+│   ├── src/
+│   │   ├── config/           # DB, Multer, and Env setup
+│   │   ├── controllers/      # Route logic & request handling
+│   │   ├── middleware/       # Auth guards, validators, error handlers
+│   │   ├── routes/           # Express router definitions
+│   │   ├── services/         # Core business logic & Prisma queries
+│   │   └── app.js            # Express application bootstrapping
+│   └── uploads/              # Local storage for product/news images
 │
-├── 📂 frontend/
-│   ├── 📂 src/
-│   │   ├── 📂 components/         # Reusable UI components
-│   │   ├── 📂 pages/              # Route pages
-│   │   │   ├── admin/             # Admin dashboard
-│   │   │   ├── superAdmin/        # SuperAdmin features
-│   │   │   └── customer/          # Customer interface
-│   │   ├── 📂 utils/              # Utilities & helpers
-│   │   ├── 📂 assets/             # Images & static files
-│   │   ├── App.jsx                # Root component
-│   │   └── main.jsx               # Entry point
-│   └── package.json
-│
-├── api_spec.yaml                  # OpenAPI specification
-└── README.md
+└── frontend/
+    ├── src/
+    │   ├── assets/           # Static files
+    │   ├── components/       # Reusable UI (Cards, Tables, Modals)
+    │   ├── config/           # Frontend environment settings
+    │   ├── context/          # React Context (AuthContext)
+    │   ├── hooks/            # Custom React hooks
+    │   ├── pages/            # View components (Admin, Public, Auth)
+    │   └── services/         # API client handlers (fetch wrappers)
+    ├── index.html            # App entry HTML
+    └── tailwind.config.js    # Design system configuration
 ```
 
 ---
 
 ## 🔌 API Reference
 
-### Base URL
+The backend exposes a fully RESTful API. Below are the primary resource domains.
 
-```
-http://localhost:5000/api
-```
+| Resource | Endpoints | Authentication |
+|----------|-----------|----------------|
+| **Auth** | `/api/auth/*` | Public / Bearer Token |
+| **Users** | `/api/users/*` | SuperAdmin |
+| **Stock** | `/api/stock/*` | Admin, SuperAdmin |
+| **Production** | `/api/production/*` | Admin, SuperAdmin |
+| **Products** | `/api/products/*` | Public (GET), Admin (POST/PUT) |
+| **Orders** | `/api/orders/*` | Customer (POST), Admin (PUT) |
+| **Payments** | `/api/payments/*` | Customer, Admin |
+| **Audit Logs** | `/api/audit-logs/*` | SuperAdmin |
 
-### Core Endpoints
-
-<details>
-<summary><b>🔐 Authentication</b></summary>
-
-```http
-POST   /api/auth/register          # Register new user
-POST   /api/auth/login             # Login
-POST   /api/auth/logout            # Logout
-POST   /api/auth/forgot-password   # Request password reset
-POST   /api/auth/reset-password    # Reset password
-GET    /api/auth/me                # Get current user
-```
-
-</details>
-
-<details>
-<summary><b>📦 Stock Management</b></summary>
-
-```http
-GET    /api/stock                  # List all stock items
-GET    /api/stock/:id              # Get stock item
-POST   /api/stock                  # Create stock item (Admin+)
-PUT    /api/stock/:id              # Update stock item (Admin+)
-DELETE /api/stock/:id              # Delete stock item (Admin+)
-```
-
-</details>
-
-<details>
-<summary><b>🏭 Production</b></summary>
-
-```http
-GET    /api/production             # List production records
-GET    /api/production/:id         # Get production record
-POST   /api/production             # Create production (Admin+)
-PUT    /api/production/:id         # Update production (Admin+)
-DELETE /api/production/:id         # Delete production (Admin+)
-```
-
-</details>
-
-<details>
-<summary><b>🛍️ Products & Orders</b></summary>
-
-```http
-GET    /api/products               # List products (Public)
-GET    /api/products/:id           # Get product (Public)
-POST   /api/products               # Create product (Admin+)
-PUT    /api/products/:id           # Update product (Admin+)
-DELETE /api/products/:id           # Delete product (Admin+)
-
-GET    /api/orders                 # List orders
-GET    /api/orders/:id             # Get order
-POST   /api/orders                 # Create order (Authenticated)
-PUT    /api/orders/:id             # Update order (Admin+)
-DELETE /api/orders/:id             # Delete order (Admin+)
-```
-
-</details>
-
-<details>
-<summary><b>👥 User Management</b></summary>
-
-```http
-GET    /api/users                  # List users (SuperAdmin)
-GET    /api/users/:id              # Get user (SuperAdmin)
-POST   /api/users                  # Create user (SuperAdmin)
-PUT    /api/users/:id              # Update user (SuperAdmin)
-DELETE /api/users/:id              # Delete user (SuperAdmin)
-```
-
-</details>
-
-<details>
-<summary><b>📊 Reports</b></summary>
-
-```http
-GET    /api/reports/stock          # Stock report (Admin+)
-GET    /api/reports/production     # Production report (Admin+)
-GET    /api/reports/orders         # Orders report (Admin+)
-GET    /api/reports/sales          # Sales report (Admin+)
-GET    /api/reports/payments       # Payments report (SuperAdmin)
-```
-
-</details>
-
-<details>
-<summary><b>🔍 Audit Logs</b></summary>
-
-```http
-GET    /api/audit-logs             # List audit logs (SuperAdmin)
-GET    /api/audit-logs/:id         # Get audit log (SuperAdmin)
-GET    /api/audit-logs/stats       # Get statistics (SuperAdmin)
-DELETE /api/audit-logs/cleanup     # Cleanup old logs (SuperAdmin)
-```
-
-</details>
-
-### 📄 Full API Documentation
-
-- **OpenAPI Spec**: [`api_spec.yaml`](./api_spec.yaml)
-- **Postman Collection**: [`backend/postman/SMS_API_Collection.json`](./backend/postman/SMS_API_Collection.json)
+> **Note:** A complete OpenAPI specification is available in the `api_spec.yaml` file located in the project root. You can import this file into Postman or Swagger UI.
 
 ---
 
-## 🧩 Available Scripts
+## 🛡️ Security & Best Practices
 
-### Backend Commands
-
-```bash
-npm run dev              # Start development server with nodemon
-npm start                # Start production server
-npm run prisma:generate  # Generate Prisma Client
-npm run prisma:migrate   # Run database migrations
-```
-
-### Frontend Commands
-
-```bash
-npm run dev              # Start Vite dev server
-npm run build            # Build for production
-npm run preview          # Preview production build
-npm run lint             # Run ESLint
-```
-
----
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><b>Database Connection Issues</b></summary>
-
-```bash
-# Verify PostgreSQL is running
-sudo systemctl status postgresql
-
-# Check DATABASE_URL in backend/.env
-# Ensure user has proper permissions
-psql -U your_username -d production_db
-```
-
-</details>
-
-<details>
-<summary><b>Prisma Migration Errors</b></summary>
-
-```bash
-# Use migrate deploy instead of migrate dev if shadow DB permission denied
-npx prisma migrate deploy
-
-# Reset database (WARNING: Deletes all data)
-npx prisma migrate reset
-```
-
-</details>
-
-<details>
-<summary><b>Frontend API Connection Failed</b></summary>
-
-- Verify `VITE_API_BASE_URL` in `frontend/.env` matches backend URL
-- Ensure backend server is running on the correct port
-- Check browser console for CORS errors
-
-</details>
-
-<details>
-<summary><b>File Upload Issues</b></summary>
-
-- Check `MAX_FILE_SIZE` in backend `.env`
-- Ensure `uploads/` directory exists and has write permissions
-- Verify Multer configuration in `backend/src/config/multer.js`
-
-</details>
-
----
-
-## 🔒 Security Best Practices
-
-- [ ] Change default JWT_SECRET in production
-- [ ] Update demo account passwords
-- [ ] Enable HTTPS in production
-- [ ] Configure proper CORS origins
-- [ ] Set up rate limiting
-- [ ] Regular security audits
-- [ ] Keep dependencies updated
-- [ ] Implement backup strategy
-
----
-
-## 📈 Performance Optimization
-
-- **Database**: Indexed queries on frequently accessed fields
-- **Frontend**: Code splitting with React.lazy()
-- **API**: Response caching for static data
-- **Images**: Optimized uploads with Multer
-- **Build**: Vite's optimized production builds
-
----
-
-## 🤝 Contributing
-
-This is a proprietary project for Nile Technology Solutions. For internal contributions:
-
-1. Create a feature branch
-2. Make your changes
-3. Submit a pull request
-4. Wait for code review
-
----
-
-## 📄 License
-
-**Proprietary and Confidential**
-
-© 2026 Nile Technology Solutions. All rights reserved.
+To ensure enterprise-grade security before deploying to production:
+1. **Rotate Secrets:** Replace all default `JWT_SECRET` and database passwords.
+2. **HTTPS/TLS:** Ensure traffic is routed through HTTPS.
+3. **CORS:** Restrict `CORS_ORIGIN` in the backend to your specific production frontend domain.
+4. **Rate Limiting:** Implement a reverse proxy (e.g., Nginx, Cloudflare) with active rate-limiting.
+5. **Storage:** Migrate the `uploads/` directory to a managed cloud storage bucket (e.g., AWS S3, Google Cloud Storage) if scaling horizontally.
 
 ---
 
 <div align="center">
-
-### 🌟 Built with ❤️ for Nile Technology Solutions
-
+  <p><b>Proprietary and Confidential</b></p>
+  <p>© 2026 Nile Technology Solutions. All rights reserved.</p>
 </div>

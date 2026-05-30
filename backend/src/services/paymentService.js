@@ -266,7 +266,7 @@ async function handleCallback(txRef) {
         await prisma.payment.update({
             where: { id: payment.id },
             data: { status: 'Failed' },
-        });
+        }) ;
 
         throw Object.assign(
             new Error(`Payment was not successful. Chapa status: ${chapaStatus}`),

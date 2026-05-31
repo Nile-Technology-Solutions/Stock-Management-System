@@ -2,22 +2,22 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { authApi } from '../../services/authApi';
-import GlassCard from '../../components/common/GlassCard';
-import Button from '../../components/common/Button';
-import { 
-  User, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  Shield, 
-  ArrowRight, 
-  Sparkles, 
-  CheckCircle,
+import {
+  User,
+  Lock,
+  Eye,
+  EyeOff,
+  Shield,
+  ArrowRight,
   AlertTriangle,
   Home,
+  CheckCircle,
   UserPlus,
   Check,
-  X
+  X,
+  Mail,
+  Phone,
+  Sparkles
 } from '../../components/icons';
 
 const Register = () => {
@@ -37,7 +37,6 @@ const Register = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // Password strength checker
   const checkPasswordStrength = (password) => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -50,37 +49,23 @@ const Register = () => {
 
   const getPasswordStrengthText = (strength) => {
     switch (strength) {
-      case 0:
-      case 1:
-        return 'Very Weak';
-      case 2:
-        return 'Weak';
-      case 3:
-        return 'Fair';
-      case 4:
-        return 'Good';
-      case 5:
-        return 'Strong';
-      default:
-        return '';
+      case 0: case 1: return 'Very Weak';
+      case 2: return 'Weak';
+      case 3: return 'Fair';
+      case 4: return 'Good';
+      case 5: return 'Strong';
+      default: return '';
     }
   };
 
   const getPasswordStrengthColor = (strength) => {
     switch (strength) {
-      case 0:
-      case 1:
-        return 'bg-red-500';
-      case 2:
-        return 'bg-orange-500';
-      case 3:
-        return 'bg-yellow-500';
-      case 4:
-        return 'bg-amber-500';
-      case 5:
-        return 'bg-green-500';
-      default:
-        return 'bg-slate-200';
+      case 0: case 1: return 'bg-red-500';
+      case 2: return 'bg-orange-500';
+      case 3: return 'bg-yellow-500';
+      case 4: return 'bg-emerald-500';
+      case 5: return 'bg-green-500';
+      default: return 'bg-slate-200';
     }
   };
 
@@ -89,60 +74,45 @@ const Register = () => {
     setLoading(true);
     setError('');
 
-    // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match. Please check and try again.');
+      setError('Passwords do not match.');
       setLoading(false);
       return;
     }
 
     if (passwordStrength < 3) {
-      setError('Password is too weak. Please use a stronger password with at least 8 characters, including uppercase, lowercase, and numbers.');
+      setError('Password is too weak. Use at least 8 characters, uppercase, lowercase, and numbers.');
       setLoading(false);
       return;
     }
 
     try {
-      // Call actual API endpoint
       await authApi.register({
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
-        role: 'Customer' // Default role for registration
+        role: 'Customer'
       });
 
       setSuccess(true);
-      
-      // Auto-login after successful registration
+
       setTimeout(async () => {
         try {
           const loginResponse = await authApi.login(formData.email, formData.password);
-          login({
-            ...loginResponse.user,
-            token: loginResponse.token
-          });
+          login({ ...loginResponse.user, token: loginResponse.token });
           navigate('/', { replace: true });
         } catch {
-          // If auto-login fails, redirect to login page
           navigate('/login', { replace: true });
         }
       }, 2000);
-
     } catch (err) {
       console.error('Registration error:', err);
-      // Handle different error formats
       let errorMessage = 'Registration failed. Please try again.';
-      
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      } else if (typeof err === 'string') {
-        errorMessage = err;
-      } else if (err && err.message) {
-        errorMessage = err.message;
-      }
-      
+      if (err instanceof Error) errorMessage = err.message;
+      else if (typeof err === 'string') errorMessage = err;
+      else if (err?.message) errorMessage = err.message;
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -151,62 +121,35 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-
-    // Update password strength
-    if (name === 'password') {
-      setPasswordStrength(checkPasswordStrength(value));
-    }
-
-    // Clear error when user starts typing
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'password') setPasswordStrength(checkPasswordStrength(value));
     if (error) setError('');
   };
 
   const passwordRequirements = [
-    { text: 'At least 8 characters', met: formData.password.length >= 8 },
-    { text: 'One uppercase letter', met: /[A-Z]/.test(formData.password) },
-    { text: 'One lowercase letter', met: /[a-z]/.test(formData.password) },
+    { text: '8+ characters', met: formData.password.length >= 8 },
+    { text: 'Uppercase letter', met: /[A-Z]/.test(formData.password) },
+    { text: 'Lowercase letter', met: /[a-z]/.test(formData.password) },
     { text: 'One number', met: /[0-9]/.test(formData.password) },
-    { text: 'One special character', met: /[^A-Za-z0-9]/.test(formData.password) }
+    { text: 'Special character', met: /[^A-Za-z0-9]/.test(formData.password) }
   ];
 
+  // Success screen
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center px-3 sm:px-4">
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-green-400/5 to-emerald-400/5 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-emerald-400/5 to-green-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
-
-        <div className="flex flex-col justify-center py-8 sm:py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-md mx-auto">
-          <div className="px-4">
-            <GlassCard variant="standard" className="py-8 sm:py-12 px-4 sm:px-10 text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
-                <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-              </div>
-              
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4">
-                Account Created Successfully!
-              </h2>
-              <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
-                Welcome to AddHomes Creatives! Your account has been created and you're being signed in automatically.
-              </p>
-              
-              <div className="flex justify-center">
-                <div className="flex space-x-1.5">
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce"
-                      style={{ animationDelay: `${i * 0.1}s` }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </GlassCard>
+      <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center p-6">
+        <div className="w-full max-w-md mx-auto text-center">
+          <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-xl shadow-amber-500/20">
+            <CheckCircle className="w-10 h-10 text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Account created!</h2>
+          <p className="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+            Welcome to AddHomes Creatives. We're signing you in now...
+          </p>
+          <div className="flex justify-center gap-2">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="w-3 h-3 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+            ))}
           </div>
         </div>
       </div>
@@ -214,307 +157,263 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 relative overflow-hidden flex items-center justify-center px-3 sm:px-4">
-      {/* Premium Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-amber-400/8 to-orange-400/8 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-br from-orange-400/8 to-amber-400/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-400/2 via-transparent to-orange-400/2 rounded-full blur-3xl animate-spin" style={{ animationDuration: '60s' }} />
-        
-        {/* Decorative Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:32px_32px]" />
-        
-        {/* Floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400/30 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-ping" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-amber-300/20 rounded-full animate-ping" style={{ animationDelay: '5s' }} />
+    <div className="min-h-screen bg-white dark:bg-slate-950 flex relative">
+      {/* ─── Left Panel: Brand Section ─── */}
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-stone-800 via-amber-900 to-stone-950 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="w-full h-full" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }} />
+        </div>
+        <div className="absolute top-1/3 -left-20 w-80 h-80 bg-amber-400/8 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-orange-400/8 rounded-full blur-[100px]" />
+
+        <div className="relative z-10 flex flex-col justify-between p-16 w-full">
+          <div>
+            <div className="flex items-center gap-4 mb-16">
+              <div className="w-14 h-14 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm p-2 ring-2 ring-white/20">
+                <img src="/src/assets/LOGO.png" alt="AddHomes" className="w-full h-full object-contain" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">AddHomes<span className="text-amber-400"> Creatives</span></h2>
+                <p className="text-sm text-amber-200/70 font-medium tracking-wider uppercase">Furniture & Interiors</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6 max-w-md">
+            <div className="w-16 h-1 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full" />
+            <h3 className="text-4xl font-bold text-white leading-tight">
+              Join the<br />
+              <span className="text-amber-300">community</span>
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
+                <p className="text-amber-100/70 text-sm">Browse our full catalog of premium furniture</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
+                <p className="text-amber-100/70 text-sm">Track your orders and production in real-time</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
+                <p className="text-amber-100/70 text-sm">Get personalized design recommendations</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-amber-200/50">
+            Based in Addis Ababa, Ethiopia
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-col justify-center py-8 sm:py-12 sm:px-6 lg:px-8 relative z-10 w-full max-w-xl mx-auto">
-        {/* Back to Home */}
-        <div className="mb-6 sm:mb-8 px-4">
-          <Link 
-            to="/"
-            className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors duration-200 group text-sm font-medium"
-          >
-            <Home className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
-            Back to Home
+      {/* ─── Right Panel: Register Form ─── */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-10">
+        <div className="w-full max-w-lg mx-auto">
+          {/* Mobile logo */}
+          <div className="lg:hidden mb-10 text-center">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-xl overflow-hidden bg-amber-50 dark:bg-slate-800 p-1.5 ring-2 ring-amber-200 dark:ring-amber-800">
+                <img src="/src/assets/LOGO.png" alt="AddHomes" className="w-full h-full object-contain" />
+              </div>
+              <div className="text-left">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white">AddHomes <span className="text-amber-600 dark:text-amber-400">Creatives</span></h2>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-widest">Furniture & Interiors</p>
+              </div>
+            </div>
+          </div>
+
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors mb-8 group">
+            <Home className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to home
           </Link>
-        </div>
 
-        {/* Premium Header */}
-        <div className="text-center mb-6 sm:mb-8 px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-full mb-4 sm:mb-6">
-            <UserPlus className="w-4 h-4 text-amber-600 animate-pulse" />
-            <span className="text-sm font-semibold text-amber-600 dark:text-amber-400">Join AddHomes Creatives</span>
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
+              Create your account
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400">
+              Join AddHomes Creatives and discover premium furniture
+            </p>
           </div>
-          
-          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-xl shadow-amber-500/25 ring-2 ring-amber-400/20">
-            <span className="text-2xl sm:text-3xl font-black text-white">AH</span>
-          </div>
-          
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-2">
-            Create Your Account
-          </h1>
-          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
-            Join AddHomes Creatives and start exploring premium furniture and interior solutions
-          </p>
-        </div>
 
-        <div className="px-3 sm:px-4 w-full">
-          <GlassCard variant="standard" className="py-6 sm:py-8 px-4 sm:px-6 lg:px-8 w-full">
-            <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
-              {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-3 sm:p-4">
-                  <div className="flex items-center gap-3">
-                    <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                    <p className="text-sm text-red-700 dark:text-red-300 font-medium">{error}</p>
-                  </div>
+          {error && (
+            <div className="mb-6 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/50 rounded-xl px-4 py-3">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+              </div>
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <User className="w-4 h-4 text-slate-400" />
                 </div>
-              )}
+                <input id="fullName" name="fullName" type="text" required value={formData.fullName} onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-slate-900 dark:text-white placeholder-slate-400"
+                  placeholder="Abebe Kebede" />
+              </div>
+            </div>
 
-              {/* Full Name */}
-              <div className="space-y-1.5">
-                <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Full Name
-                </label>
+            {/* Email & Phone - side by side on larger screens */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <User className="w-4 h-4 text-slate-400" />
+                    <Mail className="w-4 h-4 text-slate-400" />
                   </div>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    required
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
-                    placeholder="Enter your full name"
-                  />
+                  <input id="email" name="email" type="email" required value={formData.email} onChange={handleChange}
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-slate-900 dark:text-white placeholder-slate-400 text-sm"
+                    placeholder="your@email.com" />
                 </div>
               </div>
-
-              {/* Email */}
-              <div className="space-y-1.5">
-                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Email Address
-                </label>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Phone</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <User className="w-4 h-4 text-slate-400" />
+                    <Phone className="w-4 h-4 text-slate-400" />
                   </div>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
-                    placeholder="your.email@example.com"
-                  />
+                  <input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange}
+                    className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-slate-900 dark:text-white placeholder-slate-400 text-sm"
+                    placeholder="+251 912 345 678" />
                 </div>
+                <p className="text-[11px] text-slate-400 mt-1.5">Include country code</p>
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock className="w-4 h-4 text-slate-400" />
+                </div>
+                <input id="password" name="password" type={showPassword ? 'text' : 'password'} required value={formData.password} onChange={handleChange}
+                  className="w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-slate-900 dark:text-white placeholder-slate-400"
+                  placeholder="Create a strong password" />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
 
-              {/* Phone */}
-              <div className="space-y-1.5">
-                <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Phone Number
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Shield className="w-4 h-4 text-slate-400" />
+              {/* Strength bar */}
+              {formData.password && (
+                <div className="mt-3">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs text-slate-500 font-medium">Password strength</span>
+                    <span className={`text-xs font-semibold ${
+                      passwordStrength <= 2 ? 'text-red-500' : passwordStrength <= 3 ? 'text-yellow-500' : 'text-emerald-500'
+                    }`}>{getPasswordStrengthText(passwordStrength)}</span>
                   </div>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
-                    placeholder="+251912345678"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
-                  Include country code (e.g., +251 for Ethiopia)
-                </p>
-              </div>
+                  <div className="h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
+                      style={{ width: `${(passwordStrength / 5) * 100}%` }} />
+                  </div>
 
-              {/* Password */}
-              <div className="space-y-1.5">
-                <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
-                    placeholder="Create a strong password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-                
-                {/* Password Strength Indicator */}
-                {formData.password && (
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Password Strength:</span>
-                      <span className={`text-xs font-semibold ${
-                        passwordStrength <= 2 ? 'text-red-600' : 
-                        passwordStrength <= 3 ? 'text-yellow-600' : 
-                        'text-green-600'
-                      }`}>
-                        {getPasswordStrengthText(passwordStrength)}
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
-                      <div 
-                        className={`h-full rounded-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
-                        style={{ width: `${(passwordStrength / 5) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Password Requirements */}
-                {formData.password && (
-                  <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                    {passwordRequirements.map((req, index) => (
-                      <div key={index} className="flex items-center gap-2 text-xs">
+                  {/* Requirements grid */}
+                  <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                    {passwordRequirements.map((req, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs">
                         {req.met ? (
-                          <Check className="w-3 h-3 text-green-500 flex-shrink-0" />
+                          <Check className="w-3 h-3 text-emerald-500 flex-shrink-0" />
                         ) : (
                           <X className="w-3 h-3 text-slate-400 flex-shrink-0" />
                         )}
-                        <span className={req.met ? 'text-green-600 dark:text-green-400' : 'text-slate-400 dark:text-slate-500'}>
-                          {req.text}
-                        </span>
+                        <span className={req.met ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}>{req.text}</span>
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-
-              {/* Confirm Password */}
-              <div className="space-y-1.5">
-                <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Confirm Password
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Shield className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    required
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-12 py-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-200 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm"
-                    placeholder="Confirm your password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
                 </div>
-                
-                {/* Password Match Indicator */}
-                {formData.confirmPassword && (
-                  <div className="mt-2 flex items-center gap-2 text-xs">
-                    {formData.password === formData.confirmPassword ? (
-                      <>
-                        <Check className="w-3 h-3 text-green-500" />
-                        <span className="text-green-600 dark:text-green-400 font-medium">Passwords match</span>
-                      </>
-                    ) : (
-                      <>
-                        <X className="w-3 h-3 text-red-500" />
-                        <span className="text-red-600 dark:text-red-400 font-medium">Passwords do not match</span>
-                      </>
-                    )}
-                  </div>
-                )}
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Confirm Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Shield className="w-4 h-4 text-slate-400" />
+                </div>
+                <input id="confirmPassword" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} required value={formData.confirmPassword} onChange={handleChange}
+                  className="w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all text-slate-900 dark:text-white placeholder-slate-400"
+                  placeholder="Repeat your password" />
+                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
 
-              {/* Submit Button */}
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  disabled={loading || passwordStrength < 3 || formData.password !== formData.confirmPassword}
-                  className="w-full group relative overflow-hidden bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300"
-                  size="large"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base font-bold">
-                    {loading ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Creating your account...
-                      </>
-                    ) : (
-                      <>
-                        <UserPlus className="w-5 h-5" />
-                        Create Account
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                      </>
-                    )}
-                  </span>
-                  {!loading && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              {formData.confirmPassword && (
+                <div className="mt-2 flex items-center gap-2 text-xs">
+                  {formData.password === formData.confirmPassword ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-500" />
+                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">Passwords match</span>
+                    </>
+                  ) : (
+                    <>
+                      <X className="w-3 h-3 text-red-500" />
+                      <span className="text-red-500 font-medium">Passwords don't match</span>
+                    </>
                   )}
-                </Button>
-              </div>
-            </form>
-
-            {/* Sign In Link */}
-            <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
-              <div className="text-center">
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
-                  Already have an account?
-                </p>
-                <Link 
-                  to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 hover:border-amber-500/60 text-amber-700 dark:text-amber-400 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/10 group text-sm"
-                >
-                  Sign In Instead
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Security Badge */}
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-              <div className="flex items-center justify-center gap-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-400/10 to-orange-400/10 border border-amber-400/20 rounded-full">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span className="text-xs font-medium text-amber-600 dark:text-amber-400">Secure Registration</span>
                 </div>
-              </div>
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center mt-2">
-                Your information is encrypted and secure. We never share your personal data with third parties.
-              </p>
+              )}
             </div>
-          </GlassCard>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading || passwordStrength < 3 || formData.password !== formData.confirmPassword}
+              className="w-full py-3.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold text-base rounded-xl shadow-lg shadow-amber-600/20 hover:shadow-xl hover:shadow-amber-600/30 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mt-6"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  <UserPlus className="w-5 h-5" />
+                  Create Account
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200 dark:border-slate-800" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="px-4 text-xs font-semibold text-slate-400 bg-white dark:bg-slate-950 uppercase tracking-wider">Already registered?</span>
+            </div>
+          </div>
+
+          {/* Login */}
+          <Link to="/login" className="block w-full py-3.5 text-center text-sm font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-800/40 rounded-xl hover:bg-amber-100 dark:hover:bg-amber-900/30 hover:border-amber-300 dark:hover:border-amber-700 transition-all duration-200">
+            Sign in instead
+          </Link>
+
+          <p className="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">
+            Your data is encrypted and secure. We never share your personal information.
+          </p>
         </div>
       </div>
     </div>

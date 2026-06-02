@@ -4,16 +4,17 @@ import Button from '../../../components/common/Button';
 import Table from '../../../components/common/Table';
 import Modal from '../../../components/common/Modal';
 import { newsApi } from '../../../services/newsApi';
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  RefreshCw, 
-  FileText, 
-  CheckCircle, 
-  AlertCircle, 
-  Clock, 
+import { getImageUrl } from '../../../utils/imageHelper';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  RefreshCw,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  Clock,
   Image as ImageIcon,
   Search,
   Filter,
@@ -28,7 +29,7 @@ const NewsAdminPage = () => {
   const [editingArticle, setEditingArticle] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  
+
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -140,16 +141,16 @@ const NewsAdminPage = () => {
       accessor: 'title',
       render: (title, article) => {
         const firstPhoto = article.photos && article.photos.length > 0 ? article.photos[0] : null;
-        const photoUrl = firstPhoto 
-          ? `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${firstPhoto.url}`
+        const photoUrl = firstPhoto
+          ? getImageUrl(firstPhoto.url)
           : 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
-        
+
         return (
           <div className="flex items-center gap-4 py-2">
             <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 dark:border-slate-700">
-              <img 
-                src={photoUrl} 
-                className="w-full h-full object-cover" 
+              <img
+                src={photoUrl}
+                className="w-full h-full object-cover"
                 alt={title}
                 onError={(e) => {
                   e.target.src = 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&q=80&w=200';
@@ -201,14 +202,14 @@ const NewsAdminPage = () => {
       accessor: 'id',
       render: (id, article) => (
         <div className="flex items-center gap-2">
-          <button 
+          <button
             onClick={() => handleOpenEdit(article)}
             className="p-2 text-slate-400 hover:text-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors"
             title="Edit Article"
           >
             <Edit className="w-4 h-4" />
           </button>
-          <button 
+          <button
             onClick={() => handleDelete(id)}
             className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
             title="Delete Article"
@@ -237,16 +238,16 @@ const NewsAdminPage = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-             <Button 
-               variant="glass-secondary" 
-               className="bg-white/5 hover:bg-white/10 border-white/10 text-white"
-               onClick={() => fetchNews(true)}
-             >
-               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-             </Button>
-             <Button variant="primary" className="bg-cyan-500 border-none shadow-lg shadow-cyan-500/25" onClick={handleOpenAdd}>
-               <Plus className="w-5 h-5 mr-1" /> Create Post
-             </Button>
+            <Button
+              variant="glass-secondary"
+              className="bg-white/5 hover:bg-white/10 border-white/10 text-white"
+              onClick={() => fetchNews(true)}
+            >
+              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            </Button>
+            <Button variant="primary" className="bg-cyan-500 border-none shadow-lg shadow-cyan-500/25" onClick={handleOpenAdd}>
+              <Plus className="w-5 h-5 mr-1" /> Create Post
+            </Button>
           </div>
         </div>
       </GlassCard>
@@ -286,9 +287,9 @@ const NewsAdminPage = () => {
             <p className="text-slate-500 mt-4 font-bold uppercase tracking-widest">Loading News Articles...</p>
           </div>
         ) : (
-          <Table 
-            columns={columns} 
-            data={filteredArticles} 
+          <Table
+            columns={columns}
+            data={filteredArticles}
             pagination={true}
             pageSize={5}
           />
@@ -303,93 +304,92 @@ const NewsAdminPage = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
           <div className="space-y-4">
-             {/* Photo Upload */}
-             <div className="space-y-3">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Photos</label>
-                <div className="relative">
-                  <input
-                    type="file"
-                    name="photos"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileChange}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100"
-                  />
-                  {formData.photos && formData.photos.length > 0 && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                      {formData.photos.length} photo(s) selected
-                    </p>
-                  )}
-                  {editingArticle && editingArticle.photos && editingArticle.photos.length > 0 && (
-                    <div className="mt-3 flex gap-2 flex-wrap">
-                      {editingArticle.photos.map((photo, idx) => (
-                        <img 
-                          key={idx}
-                          src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}${photo.url}`}
-                          alt={`Photo ${idx + 1}`}
-                          className="w-20 h-20 object-cover rounded-lg border border-slate-200 dark:border-slate-700"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Upload one or more images for the article. Recommended size: 1200x630px
-                </p>
-             </div>
-
-             <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Title</label>
+            {/* Photo Upload */}
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Photos</label>
+              <div className="relative">
                 <input
-                  required
-                  name="title"
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50"
-                  placeholder="Enter headline..."
-                  value={formData.title}
-                  onChange={handleInputChange}
+                  type="file"
+                  name="photos"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100"
                 />
-             </div>
-
-             <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Status</label>
-                <div className="flex gap-4">
-                  {['Draft', 'Published', 'Archived'].map(s => (
-                    <label key={s} className="flex-1 cursor-pointer">
-                      <input 
-                        type="radio" 
-                        name="status" 
-                        value={s} 
-                        checked={formData.status === s}
-                        onChange={handleInputChange}
-                        className="hidden"
+                {formData.photos && formData.photos.length > 0 && (
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                    {formData.photos.length} photo(s) selected
+                  </p>
+                )}
+                {editingArticle && editingArticle.photos && editingArticle.photos.length > 0 && (
+                  <div className="mt-3 flex gap-2 flex-wrap">
+                    {editingArticle.photos.map((photo, idx) => (
+                      <img
+                        key={idx}
+                        src={getImageUrl(photo.url)}
+                        alt={`Photo ${idx + 1}`}
+                        className="w-20 h-20 object-cover rounded-lg border border-slate-200 dark:border-slate-700"
                       />
-                      <div className={`p-3 rounded-xl border-2 text-center text-[10px] font-black uppercase tracking-widest transition-all ${
-                        formData.status === s 
-                        ? 'border-cyan-500 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600' 
+                    ))}
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Upload one or more images for the article. Recommended size: 1200x630px
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Title</label>
+              <input
+                required
+                name="title"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50"
+                placeholder="Enter headline..."
+                value={formData.title}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Status</label>
+              <div className="flex gap-4">
+                {['Draft', 'Published', 'Archived'].map(s => (
+                  <label key={s} className="flex-1 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="status"
+                      value={s}
+                      checked={formData.status === s}
+                      onChange={handleInputChange}
+                      className="hidden"
+                    />
+                    <div className={`p-3 rounded-xl border-2 text-center text-[10px] font-black uppercase tracking-widest transition-all ${formData.status === s
+                        ? 'border-cyan-500 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600'
                         : 'border-transparent bg-slate-100 dark:bg-slate-800 text-slate-400'
                       }`}>
-                         {s}
-                      </div>
-                    </label>
-                  ))}
-                </div>
-             </div>
+                      {s}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
 
-             <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Content</label>
-                <textarea
-                  required
-                  name="content"
-                  rows={8}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 resize-none"
-                  placeholder="Write your article content here..."
-                  value={formData.content}
-                  onChange={handleInputChange}
-                />
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {formData.content.length} characters
-                </p>
-             </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-500">Article Content</label>
+              <textarea
+                required
+                name="content"
+                rows={8}
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/50 resize-none"
+                placeholder="Write your article content here..."
+                value={formData.content}
+                onChange={handleInputChange}
+              />
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {formData.content.length} characters
+              </p>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-2">

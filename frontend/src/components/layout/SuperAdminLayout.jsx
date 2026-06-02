@@ -102,7 +102,7 @@ const SuperAdminLayout = () => {
         <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-br from-orange-400/4 to-amber-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
-      {/* Skip to content link for accessibility */}
+      {/* Skip to content link */}
       <a 
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-lg z-50 shadow-lg shadow-amber-500/25"

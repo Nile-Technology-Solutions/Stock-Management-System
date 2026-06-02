@@ -135,7 +135,7 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/20 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950">
       
       {/* Hero Section — refined with better hierarchy and visibility */}
-      <section className="relative overflow-hidden min-h-screen pt-[88px] pb-12 md:pb-20">
+      <section className="relative overflow-hidden min-h-screen pt-[80px] pb-6 md:pb-10">
         {/* Premium Background Effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.12),transparent)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_80%_80%,rgba(251,146,60,0.08),transparent)]" />
@@ -149,11 +149,11 @@ const Home = () => {
         {/* Decorative Border Lines */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Hero Content (Left) — enhanced with better typography hierarchy */}
-            <div className="lg:col-span-7 space-y-8 text-left">
+              {/* Hero Content (Left) — enhanced with better typography hierarchy */}
+              <div className="lg:col-span-7 space-y-5 md:space-y-8 text-left">
               {/* Live Status Badge */}
               <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-amber-500/10 border border-amber-500/20 rounded-full backdrop-blur-sm">
                 <span className="flex h-2.5 w-2.5 relative">
@@ -210,7 +210,7 @@ const Home = () => {
               </div>
 
               {/* Trust Indicators — redesigned for impact */}
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <div className="grid grid-cols-3 gap-8 pt-6 border-t border-slate-200 dark:border-slate-800">
                 <div className="space-y-1">
                   <div className="text-3xl font-black text-slate-950 dark:text-white">100%</div>
                   <div className="flex items-center gap-1.5">
@@ -236,7 +236,7 @@ const Home = () => {
             </div>
 
             {/* Hero Visuals (Right) — refined with better layering */}
-            <div className="lg:col-span-5 relative mt-8 lg:mt-0">
+            <div className="lg:col-span-5 relative mt-4 lg:mt-0">
               <div className="relative z-10">
                 <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur-2xl opacity-30 animate-pulse" />
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-900 border border-white/5">

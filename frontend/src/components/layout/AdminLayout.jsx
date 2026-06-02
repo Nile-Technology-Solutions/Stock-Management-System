@@ -149,6 +149,7 @@ const AdminLayout = () => {
   ];
 
   // Combine navigation items based on role
+  // Super Admin exclusive items - now using amber/brand colors instead of purple/pink
   const navigationItems = user?.role === ROLES.SUPER_ADMIN 
     ? [...baseNavigationItems, ...superAdminItems]
     : baseNavigationItems;
@@ -271,11 +272,11 @@ const AdminLayout = () => {
                 {showSeparator && (
                   <div className="my-4 px-4">
                     <div className="flex items-center gap-2">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
-                      <span className="text-xs font-bold text-purple-400 uppercase tracking-wider">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
                         Super Admin
                       </span>
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
                     </div>
                   </div>
                 )}
@@ -284,9 +285,9 @@ const AdminLayout = () => {
                   className={`group flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 relative overflow-hidden ${
                     isActiveRoute(item.href)
                       ? item.exclusive
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
+                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25'
                         : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800/50 dark:hover:bg-slate-700/50'
+                      : 'text-slate-300 hover:text-white hover:bg-amber-500/10 dark:hover:bg-amber-500/10'
                   }`}
                   aria-current={isActiveRoute(item.href) ? 'page' : undefined}
                 >
@@ -426,10 +427,14 @@ const AdminLayout = () => {
               {/* Role Badge - visible on medium screens and up */}
               <div className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-lg ${
                 user?.role === ROLES.SUPER_ADMIN 
-                  ? 'bg-gradient-to-r from-purple-400/10 to-pink-400/10 border border-purple-400/20' 
+                  ? 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20' 
                   : 'bg-gradient-to-r from-amber-400/10 to-orange-400/10 border border-amber-400/20'
               }`}>
-                <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <Shield className={`w-4 h-4 ${
+                  user?.role === ROLES.SUPER_ADMIN 
+                    ? 'text-amber-500' 
+                    : 'text-amber-600 dark:text-amber-400'
+                }`} />
                 <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   {getRoleDisplayName(user?.role)}
                 </span>

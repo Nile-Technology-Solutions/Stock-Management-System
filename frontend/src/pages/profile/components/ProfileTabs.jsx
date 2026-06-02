@@ -9,7 +9,7 @@ const ProfileTabs = ({ tabs, activeTab, onTabChange }) => {
             className={`
               flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300
               ${activeTab === tab.id
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg scale-105'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/25 scale-105'
                 : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50'
               }
             `}

@@ -300,7 +300,7 @@ const AdminLayout = () => {
                       <div className="flex items-center gap-2">
                         <span className="block">{item.name}</span>
                         {item.exclusive && (
-                          <span className="px-1.5 py-0.5 bg-purple-500/20 text-purple-300 text-[10px] font-bold rounded uppercase">
+                          <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-300 text-[10px] font-bold rounded uppercase">
                             Pro
                           </span>
                         )}
@@ -345,7 +345,7 @@ const AdminLayout = () => {
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                       user?.role === ROLES.SUPER_ADMIN 
-                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' 
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' 
                         : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                     }`}>
                       {getRoleDisplayName(user?.role)}

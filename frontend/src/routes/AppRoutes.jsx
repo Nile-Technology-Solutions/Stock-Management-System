@@ -162,7 +162,7 @@ const AppRoutes = () => {
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">Page not found</p>
               <button 
                 onClick={() => window.history.back()}
-                className="bg-cyan-400 hover:bg-cyan-500 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
+                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg shadow-amber-500/25"
               >
                 Go Back
               </button>

@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import LogoutModal from './components/common/LogoutModal';
+import ScrollToTop from './components/common/ScrollToTop';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -13,6 +14,7 @@ const AppContent = () => {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <AppRoutes />
       </BrowserRouter>
       <LogoutModal isOpen={showLogoutModal} onClose={closeLogoutModal} />

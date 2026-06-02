@@ -48,10 +48,24 @@ const deleteProduct = async (req, res, next) => {
     }
 };
 
+const deletePhoto = async (req, res, next) => {
+    try {
+        const photoId = parseInt(req.params.photoId);
+        if (isNaN(photoId) || photoId <= 0) {
+            return res.status(400).json({ message: 'Invalid photo ID' });
+        }
+        await productService.deletePhoto(photoId);
+        return res.status(200).json({ message: 'Photo deleted successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
     updateProduct,
     deleteProduct,
+    deletePhoto,
 };

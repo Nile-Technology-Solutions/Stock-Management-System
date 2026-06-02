@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Image, AlertTriangle } from '../../components/icons';
+import { getImageUrl } from '../../utils/imageHelper';
 
-const ImageWithFallback = ({ 
-  src, 
-  alt, 
+const ImageWithFallback = ({
+  src,
+  alt,
   className = "",
   fallbackSrc = '/api/placeholder/400/300',
   loading = "lazy",
-  ...props 
+  ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState(src);
+  const [imgSrc, setImgSrc] = useState(getImageUrl(src));
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setImgSrc(getImageUrl(src));
+    setIsLoading(true);
+    setHasError(false);
+  }, [src]);
 
   const handleLoad = () => {
     setIsLoading(false);

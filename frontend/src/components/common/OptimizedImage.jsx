@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Image as ImageIcon, AlertTriangle } from '../icons';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const OptimizedImage = ({
   src,
@@ -14,7 +15,11 @@ const OptimizedImage = ({
   ...props
 }) => {
   const [imageState, setImageState] = useState('loading');
-  const [currentSrc, setCurrentSrc] = useState(src);
+  const [currentSrc, setCurrentSrc] = useState(getImageUrl(src));
+
+  useEffect(() => {
+    setCurrentSrc(getImageUrl(src));
+  }, [src]);
 
   const handleLoad = (e) => {
     setImageState('loaded');
@@ -36,7 +41,7 @@ const OptimizedImage = ({
 
   if (imageState === 'error') {
     return (
-      <div 
+      <div
         className={`flex items-center justify-center bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 ${className}`}
         style={{ width, height }}
         role="img"
@@ -53,7 +58,7 @@ const OptimizedImage = ({
   return (
     <div className="relative">
       {imageState === 'loading' && (
-        <div 
+        <div
           className={`absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 ${className}`}
           style={{ width, height }}
         >
@@ -63,7 +68,7 @@ const OptimizedImage = ({
           </div>
         </div>
       )}
-      
+
       <img
         src={currentSrc}
         alt={alt}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Star, TrendingUp, Sparkles, ArrowRight } from '../../components/icons';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const ProductCard = ({
   product,
@@ -23,7 +24,7 @@ const ProductCard = ({
           {/* Image */}
           <div className="relative w-48 h-32 bg-slate-100 dark:bg-slate-700 overflow-hidden flex-shrink-0">
             <img
-              src={image || '/api/placeholder/400/300'}
+              src={image ? getImageUrl(image) : 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image'}
               alt={name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
@@ -112,7 +113,7 @@ const ProductCard = ({
         {/* Product Image */}
         <div className="relative aspect-w-16 aspect-h-12 bg-slate-100 dark:bg-slate-700 overflow-hidden">
           <img
-            src={image || '/api/placeholder/400/300'}
+            src={image ? getImageUrl(image) : 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image'}
             alt={name}
             className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"

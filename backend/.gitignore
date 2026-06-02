@@ -1,0 +1,33 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*
+
+# Prisma local dev DB (if using SQLite)
+prisma/*.db
+prisma/*.db-journal
+
+# Uploaded files
+uploads/
+
+# Logs
+logs/
+*.log
+*.pid
+
+# Test coverage
+coverage/
+
+# Editor/IDE settings
+..vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db

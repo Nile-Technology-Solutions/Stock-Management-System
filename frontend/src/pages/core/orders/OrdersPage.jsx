@@ -113,7 +113,7 @@ const OrdersPage = () => {
       <GlassCard variant="standard" className="border-none shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-cyan-400 to-sky-500 rounded-2xl shadow-lg">
+            <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/25">
               <ShoppingCart className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -140,7 +140,7 @@ const OrdersPage = () => {
           <input
             type="text"
             placeholder="Search by Order ID, Customer name, or Product..."
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 transition-all text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -148,7 +148,7 @@ const OrdersPage = () => {
         <div className="relative">
           <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <select
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 appearance-none text-sm"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 appearance-none text-sm"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -243,7 +243,7 @@ const OrdersPage = () => {
                           </div>
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">
-                          <span className="font-bold text-cyan-600 dark:text-cyan-400">
+                          <span className="font-bold text-amber-600 dark:text-amber-400">
                             {order.totalPrice ? `${order.totalPrice} ETB` : 'N/A'}
                           </span>
                         </td>
@@ -260,17 +260,17 @@ const OrdersPage = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleViewDetails(order)}
-                              className="p-2 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 rounded-lg transition-colors group"
+                              className="p-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors group"
                               title="View Details"
                             >
-                              <Eye className="w-4 h-4 text-slate-400 group-hover:text-cyan-500" />
+                              <Eye className="w-4 h-4 text-slate-400 group-hover:text-amber-500" />
                             </button>
 
                             {/* Create Production for custom orders with confirmed payment */}
                             {order.isCustom && order.status === 'PaymentConfirmed' && !order.productionRecord && (
                               <button
                                 onClick={() => navigate(`/admin/production?orderId=${order.id}`)}
-                                className="px-2 py-1 text-xs font-semibold bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
+                                className="px-2 py-1 text-xs font-semibold bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
                                 title="Create Production"
                               >
                                 + Production
@@ -333,7 +333,7 @@ const OrdersPage = () => {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Amount:</span>
-                        <span className="font-bold text-cyan-600 dark:text-cyan-400">
+                          <span className="font-bold text-amber-600 dark:text-amber-400">
                           {order.totalPrice ? `${order.totalPrice} ETB` : 'N/A'}
                         </span>
                       </div>
@@ -356,7 +356,7 @@ const OrdersPage = () => {
                     <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                       <button
                         onClick={() => handleViewDetails(order)}
-                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/40 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
                       >
                         <Eye className="w-4 h-4" />
                         View Details

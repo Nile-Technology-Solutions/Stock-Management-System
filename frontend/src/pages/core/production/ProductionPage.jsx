@@ -249,7 +249,7 @@ const ProductionPage = () => {
     {
       header: 'ID',
       accessor: 'id',
-      render: (id) => <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">#{id}</span>
+      render: (id) => <span className="font-mono font-bold text-amber-600 dark:text-amber-400">#{id}</span>
     },
     {
       header: 'Order',
@@ -274,7 +274,7 @@ const ProductionPage = () => {
       render: (pct) => (
         <div className="flex items-center gap-2">
           <div className="w-20 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-cyan-400 to-sky-400" style={{ width: `${pct}%` }} />
+            <div className="h-full bg-gradient-to-r from-amber-400 to-orange-400" style={{ width: `${pct}%` }} />
           </div>
           <span className="text-xs font-medium">{pct}%</span>
         </div>
@@ -314,7 +314,7 @@ const ProductionPage = () => {
       header: 'Photos',
       accessor: 'photos',
       render: (photos, batch) => (
-        <button onClick={() => handleOpenUpload(batch)} className="flex items-center gap-1.5 text-cyan-500 hover:text-cyan-600">
+        <button onClick={() => handleOpenUpload(batch)} className="flex items-center gap-1.5 text-amber-500 hover:text-amber-600">
           <Camera className="w-4 h-4" />
           <span className="text-xs font-medium">{(photos || []).length}</span>
         </button>
@@ -335,7 +335,7 @@ const ProductionPage = () => {
       <GlassCard variant="standard" className="border-none shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl">
+            <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg shadow-amber-500/25">
               <Settings className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -412,7 +412,7 @@ const ProductionPage = () => {
             <div className="space-y-1">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Progress ({formData.progressPercentage}%)</label>
               <input type="range" name="progressPercentage" min="0" max="100" value={formData.progressPercentage} onChange={handleInputChange}
-                className="w-full accent-cyan-500" />
+                className="w-full accent-amber-500" />
             </div>
           </div>
 
@@ -446,7 +446,7 @@ const ProductionPage = () => {
                 Stock Materials Used
               </label>
               <button type="button" onClick={addMaterialRow}
-                className="text-xs px-3 py-1 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 rounded-lg hover:bg-cyan-100 font-semibold">
+                className="text-xs px-3 py-1 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-lg hover:bg-amber-100 font-semibold">
                 + Add Material
               </button>
             </div>
@@ -521,7 +521,7 @@ const ProductionPage = () => {
                 </div>
               ))}
               <button type="button" onClick={() => formFileRef.current?.click()}
-                className="aspect-square rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-cyan-500 hover:border-cyan-400 transition-colors">
+                className="aspect-square rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-400 transition-colors">
                 <Upload className="w-5 h-5" />
                 <span className="text-[10px] font-bold mt-1">Add</span>
               </button>
@@ -564,7 +564,7 @@ const ProductionPage = () => {
               );
             })}
             <button type="button" onClick={() => uploadFileRef.current?.click()}
-              className="aspect-square rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-cyan-500 hover:border-cyan-400 transition-colors">
+              className="aspect-square rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 flex flex-col items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-400 transition-colors">
               <Upload className="w-6 h-6" /><span className="text-[10px] font-bold mt-2">Add Photos</span>
             </button>
           </div>

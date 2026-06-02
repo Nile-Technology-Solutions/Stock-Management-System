@@ -12,8 +12,8 @@ router.post('/', authMiddleware, requireRoles(ADMIN_ROLES), upload.array('images
             return res.status(400).json({ message: 'No files uploaded' });
         }
 
-        // Return array of file URLs
-        const fileUrls = req.files.map(file => `/uploads/production/${file.filename}`);
+        // Return array of file URLs from Cloudinary
+        const fileUrls = req.files.map(file => file.path);
 
         return res.status(200).json({
             message: 'Images uploaded successfully',

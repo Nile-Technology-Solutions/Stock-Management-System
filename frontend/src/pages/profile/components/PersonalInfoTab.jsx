@@ -102,7 +102,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105"
+              className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-lg shadow-amber-500/25"
             >
               Edit Profile
             </button>
@@ -118,7 +118,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 shadow-lg shadow-amber-500/25"
               >
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
@@ -147,7 +147,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               value={formData.fullName}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -161,7 +161,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               value={formData.username}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -175,7 +175,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               value={formData.phone}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -189,7 +189,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               value={formData.email}
               onChange={handleChange}
               disabled={!isEditing}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -226,7 +226,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
           {!isChangingPassword && (
             <button
               onClick={() => setIsChangingPassword(true)}
-              className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105"
+              className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-lg shadow-amber-500/25"
             >
               Change Password
             </button>
@@ -245,7 +245,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
                 value={passwordData.oldPassword}
                 onChange={handlePasswordChange}
                 required
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -260,7 +260,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
                 onChange={handlePasswordChange}
                 required
                 minLength={6}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -275,7 +275,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
                 onChange={handlePasswordChange}
                 required
                 minLength={6}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -295,7 +295,7 @@ const PersonalInfoTab = ({ profileData, onUpdate, onRefresh }) => {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50"
+                className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 shadow-lg shadow-amber-500/25"
               >
                 {isSaving ? 'Changing...' : 'Change Password'}
               </button>

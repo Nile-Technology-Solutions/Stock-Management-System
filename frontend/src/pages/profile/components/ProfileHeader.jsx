@@ -51,13 +51,13 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700 shadow-2xl">
       {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 opacity-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 opacity-10"></div>
       
       <div className="relative p-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           {/* Profile Picture */}
           <div className="relative group">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 p-1 shadow-xl">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 p-1 shadow-xl shadow-amber-500/25">
               <div className="w-full h-full rounded-full bg-white dark:bg-slate-800 flex items-center justify-center overflow-hidden">
                 {profileData?.profilePicture ? (
                   <img 
@@ -66,7 +66,7 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-4xl font-bold text-cyan-500">
+                  <span className="text-4xl font-bold text-amber-500">
                     {getInitials(profileData?.fullName || profileData?.name)}
                   </span>
                 )}
@@ -74,7 +74,7 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
             </div>
             
             {/* Upload Button */}
-            <label className="absolute bottom-0 right-0 w-10 h-10 bg-cyan-500 hover:bg-cyan-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-200 group-hover:scale-110">
+            <label className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg shadow-amber-500/25 transition-all duration-200 group-hover:scale-110">
               <input 
                 type="file" 
                 accept="image/*" 
@@ -101,8 +101,8 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
             <p className="text-slate-600 dark:text-slate-400 mb-1">
               @{profileData?.username || 'username'}
             </p>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 rounded-full text-sm font-medium">
-              <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 text-amber-700 dark:text-amber-400 rounded-full text-sm font-medium">
+              <span className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
               {profileData?.role || 'Customer'}
             </div>
             
@@ -131,19 +131,19 @@ const ProfileHeader = ({ profileData, onRefresh }) => {
         {/* Stats */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-            <div className="text-2xl font-bold text-cyan-500">
+            <div className="text-2xl font-bold text-amber-500">
               {profileData?.totalOrders ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Total Orders</div>
           </div>
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-            <div className="text-2xl font-bold text-blue-500">
+            <div className="text-2xl font-bold text-amber-600">
               {profileData?.activeOrders ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Active Orders</div>
           </div>
           <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-            <div className="text-2xl font-bold text-purple-500">
+            <div className="text-2xl font-bold text-orange-500">
               {profileData?.addresses?.length ?? 0}
             </div>
             <div className="text-sm text-slate-600 dark:text-slate-400">Addresses</div>

@@ -73,18 +73,18 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950 flex items-center justify-center">
         <Loader size="large" text="Loading your profile..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      {/* Futuristic Background Effects */}
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-stone-950">
+      {/* Premium Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-400/10 dark:bg-cyan-400/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-amber-400/8 to-orange-400/8 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-orange-400/8 to-amber-400/8 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8 max-w-7xl">

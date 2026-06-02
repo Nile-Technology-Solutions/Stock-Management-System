@@ -149,7 +149,7 @@ async function main() {
       price: 15000.0,
       description: 'Queen size wooden bed',
       photos: {
-        create: [{ url: 'https://placehold.co/600x400/png', description: 'Front view' }],
+        create: [{ url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&h=400&fit=crop', description: 'Front view' }],
       },
     },
   });
@@ -163,7 +163,7 @@ async function main() {
       price: 5000.0,
       description: 'Office desk',
       photos: {
-        create: [{ url: 'https://placehold.co/600x400/png', description: 'Top view' }],
+        create: [{ url: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=600&h=400&fit=crop', description: 'Top view' }],
       },
     },
   });
@@ -180,7 +180,7 @@ async function main() {
       submittingDate: new Date(new Date().setDate(new Date().getDate() + 7)),
       workInstructions: 'Ensure smooth finish on edges.',
       photos: {
-        create: [{ url: 'https://placehold.co/600x400/png', description: 'Progress shot' }],
+        create: [{ url: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&h=400&fit=crop', description: 'Progress shot' }],
       },
     },
   });

@@ -24,4 +24,7 @@ router.put('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, v
 // DELETE /api/products/:id - Delete a finished product
 router.delete('/:id', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, productController.deleteProduct);
 
+// DELETE /api/products/:id/photos/:photoId - Delete a specific photo from a product
+router.delete('/:id/photos/:photoId', authMiddleware, requireRoles(ADMIN_ROLES), validateIdParam, productController.deletePhoto);
+
 module.exports = router;

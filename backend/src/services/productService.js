@@ -84,7 +84,10 @@ async function createProduct(data) {
  * Update an existing finished product.
  */
 async function updateProduct(id, updateData) {
-    const existing = await prisma.finishedProduct.findUnique({ where: { id } });
+    const existing = await prisma.finishedProduct.findUnique({ 
+        where: { id },
+        include: { photos: true }
+    });
     if (!existing) {
         const err = new Error('Product not found');
         err.statusCode = 404;
@@ -98,19 +101,33 @@ async function updateProduct(id, updateData) {
     if (fields.stockQuantity !== undefined) fields.stockQuantity = parseInt(fields.stockQuantity);
     if (fields.price !== undefined) fields.price = parseFloat(fields.price);
 
-    // Normalize photos: accept both plain strings and { url: "..." } objects
-    const normalizedPhotos = photos
-        ? photos.map(p => typeof p === 'string' ? p : p.url).filter(Boolean)
-        : [];
+    // Handle photo updates if provided
+    if (photos !== undefined) {
+        // Normalize photos: accept both plain strings and { url: "..." } objects
+        const normalizedPhotos = Array.isArray(photos)
+            ? photos.map(p => typeof p === 'string' ? p : p.url).filter(Boolean)
+            : [];
 
+        // Delete all existing photos for this product
+        await prisma.photo.deleteMany({
+            where: { finishedProductId: id }
+        });
+
+        // Create new photos if provided
+        if (normalizedPhotos.length > 0) {
+            await prisma.photo.createMany({
+                data: normalizedPhotos.map(url => ({
+                    url,
+                    finishedProductId: id
+                }))
+            });
+        }
+    }
+
+    // Update the product fields
     return prisma.finishedProduct.update({
         where: { id },
-        data: {
-            ...fields,
-            ...(normalizedPhotos.length > 0
-                ? { photos: { create: normalizedPhotos.map((url) => ({ url })) } }
-                : {}),
-        },
+        data: fields,
         include: { category: true, photos: true },
     });
 }
@@ -130,10 +147,33 @@ async function deleteProduct(id) {
     return { message: 'Deleted' };
 }
 
+/**
+ * Delete a specific photo by ID.
+ */
+async function deletePhoto(photoId) {
+    const photo = await prisma.photo.findUnique({ where: { id: photoId } });
+    if (!photo) {
+        const err = new Error('Photo not found');
+        err.statusCode = 404;
+        throw err;
+    }
+
+    // Verify the photo belongs to a finished product (not production or news)
+    if (!photo.finishedProductId) {
+        const err = new Error('Photo does not belong to a product');
+        err.statusCode = 400;
+        throw err;
+    }
+
+    await prisma.photo.delete({ where: { id: photoId } });
+    return { message: 'Photo deleted successfully' };
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
     updateProduct,
     deleteProduct,
+    deletePhoto,
 };

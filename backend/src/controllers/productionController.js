@@ -25,8 +25,8 @@ const getProductionById = async (req, res, next) => {
 
 const createProduction = async (req, res, next) => {
     try {
-        // Extract photo paths from multer-uploaded files
-        const photos = req.files ? req.files.map(f => `/uploads/production/${f.filename}`) : [];
+        // Extract photo URLs from multer-uploaded files (Cloudinary paths)
+        const photos = req.files ? req.files.map(f => f.path) : [];
         const data = { ...req.body, photos };
 
         // Parse progressPercentage from form-data string to integer
@@ -54,7 +54,7 @@ const createProduction = async (req, res, next) => {
 const updateProduction = async (req, res, next) => {
     try {
         const id = req.params.id; // normalized by validateIdParam
-        const photos = req.files ? req.files.map(f => `/uploads/production/${f.filename}`) : [];
+        const photos = req.files ? req.files.map(f => f.path) : [];
         const updateData = { ...req.body };
 
         // Only include photos if new files were uploaded

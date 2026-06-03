@@ -141,10 +141,10 @@ const Home = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_80%_80%,rgba(251,146,60,0.08),transparent)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:32px_32px]" />
         
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-orange-500/8 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '1.5s' }} />
-        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-amber-600/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '3s' }} />
+        {/* Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-orange-500/8 rounded-full blur-[150px]" />
+        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-amber-600/5 rounded-full blur-[100px]" />
 
         {/* Decorative Border Lines */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
@@ -157,7 +157,7 @@ const Home = () => {
               {/* Live Status Badge */}
               <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-amber-500/10 border border-amber-500/20 rounded-full backdrop-blur-sm">
                 <span className="flex h-2.5 w-2.5 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
                 </span>
                 <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-[0.2em]">
@@ -190,7 +190,7 @@ const Home = () => {
                   <Button
                     variant="primary"
                     size="large"
-                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 min-w-[220px] text-white font-bold tracking-wide text-base py-4 px-8 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+                    className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 min-w-[220px] text-white font-bold tracking-wide text-base py-4 px-8 rounded-2xl"
                   >
                     Explore Our Designs
                     <svg className="w-5 h-5 ml-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,7 +202,7 @@ const Home = () => {
                   <Button
                     variant="secondary"
                     size="large"
-                    className="border-2 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white hover:bg-amber-50 dark:hover:bg-slate-800 min-w-[200px] font-bold tracking-wide text-base py-4 px-8 rounded-2xl transition-all duration-300 hover:border-amber-500/50"
+                    className="border-2 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white hover:bg-amber-50 dark:hover:bg-slate-800 min-w-[200px] font-bold tracking-wide text-base py-4 px-8 rounded-2xl hover:border-amber-500/50"
                   >
                     Our Story
                   </Button>
@@ -238,12 +238,12 @@ const Home = () => {
             {/* Hero Visuals (Right) — refined with better layering */}
             <div className="lg:col-span-5 relative mt-4 lg:mt-0">
               <div className="relative z-10">
-                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur-2xl opacity-30 animate-pulse" />
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl blur-2xl opacity-30" />
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-slate-900 border border-white/5">
                   <img 
                     src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800" 
                     alt="Premium AddHomes Closet & TV Wall Finishing" 
-                    className="w-full h-[520px] object-cover opacity-90 hover:scale-105 transition-transform duration-700"
+                    className="w-full h-[520px] object-cover opacity-90"
                   />
                   
                   {/* Hero Overlay Card */}
@@ -259,7 +259,7 @@ const Home = () => {
                 </div>
 
                 {/* Floating Badge 1 — Precision */}
-                <div className="absolute -top-4 -left-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float" style={{ animationDuration: '4s' }}>
+                <div className="absolute -top-4 -left-4 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -274,7 +274,7 @@ const Home = () => {
                 </div>
 
                 {/* Floating Badge 2 — Rating */}
-                <div className="absolute top-1/3 -right-6 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block animate-float" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+                <div className="absolute top-1/3 -right-6 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-800 backdrop-blur-md hidden sm:block">
                   <div className="flex items-center gap-2">
                     <div className="text-amber-500 text-sm">★★★★★</div>
                     <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">Addis Ababa</span>
@@ -300,24 +300,24 @@ const Home = () => {
                   <img 
                     src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400" 
                     alt="AddHomes custom kitchen cabinets" 
-                    className="rounded-2xl h-56 w-full object-cover shadow-lg hover:scale-98 transition duration-300"
+                    className="rounded-2xl h-56 w-full object-cover shadow-lg"
                   />
                   <img 
                     src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&q=80&w=400" 
                     alt="AddHomes CNC wall carvings" 
-                    className="rounded-2xl h-72 w-full object-cover shadow-lg hover:scale-98 transition duration-300"
+                    className="rounded-2xl h-72 w-full object-cover shadow-lg"
                   />
                 </div>
                 <div className="space-y-4 pt-10">
                   <img 
                     src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=400" 
                     alt="AddHomes premium woodwork living room" 
-                    className="rounded-2xl h-72 w-full object-cover shadow-lg hover:scale-98 transition duration-300"
+                    className="rounded-2xl h-72 w-full object-cover shadow-lg"
                   />
                   <img 
                     src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=400" 
                     alt="AddHomes woodwork close-up" 
-                    className="rounded-2xl h-56 w-full object-cover shadow-lg hover:scale-98 transition duration-300"
+                    className="rounded-2xl h-56 w-full object-cover shadow-lg"
                   />
                 </div>
               </div>
@@ -399,7 +399,7 @@ const Home = () => {
                   <img 
                     src={svc.image} 
                     alt={svc.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    className="w-full h-full object-cover" 
                   />
                   <div className={`absolute top-4 right-4 w-10 h-10 rounded-xl bg-gradient-to-br ${svc.gradient} flex items-center justify-center shadow-lg z-20`}>
                     {svc.icon}
@@ -451,7 +451,7 @@ const Home = () => {
                 <img 
                   src={item.image} 
                   alt={item.title} 
-                  className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                  className="w-full h-full object-cover opacity-85"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/10 to-transparent flex flex-col justify-end p-6 text-left">
                   <span className="text-[10px] text-amber-500 font-extrabold uppercase tracking-widest">
@@ -505,18 +505,18 @@ const Home = () => {
 
             {/* Showcase Visual with floating card (Right) */}
             <div className="relative">
-              <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl blur-2xl opacity-20 animate-pulse" />
+              <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl blur-2xl opacity-20" />
               <div className="relative bg-slate-950 rounded-2xl overflow-hidden shadow-2xl">
                 <img 
                   src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800" 
                   alt="Precision wood carving CNC workspace" 
-                  className="w-full h-[500px] object-cover opacity-85 hover:scale-102 transition-transform duration-500"
+                  className="w-full h-[500px] object-cover opacity-85"
                 />
                 
                 {/* floating operator status */}
                 <div className="absolute top-6 left-6 bg-slate-950/80 backdrop-blur-md border border-slate-800 p-4 rounded-xl">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
+                    <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full" />
                     <span className="text-[10px] text-slate-350 font-bold uppercase tracking-wider">CNC Router Online</span>
                   </div>
                 </div>
@@ -556,7 +556,7 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Vision */}
-            <div className="relative p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/40 hover:bg-white/10 transition-all duration-300 text-left space-y-4">
+            <div className="relative p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/40 text-left space-y-4">
               <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-400">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -570,7 +570,7 @@ const Home = () => {
             </div>
 
             {/* Mission */}
-            <div className="relative p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/40 hover:bg-white/10 transition-all duration-300 text-left space-y-4">
+            <div className="relative p-8 bg-white/5 border border-white/10 rounded-2xl hover:border-amber-500/40 text-left space-y-4">
               <div className="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-400">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -606,9 +606,9 @@ const Home = () => {
             {/* Phone */}
             <a 
               href="tel:0905488848" 
-              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300"
+              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40"
             >
-              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
                 <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
@@ -619,7 +619,7 @@ const Home = () => {
             </a>
 
             {/* Address */}
-            <div className="p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300">
+            <div className="p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40">
               <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
                 <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -636,9 +636,9 @@ const Home = () => {
               href="https://www.instagram.com/Addhomescreative" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300"
+              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40"
             >
-              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
                 <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -653,9 +653,9 @@ const Home = () => {
               href="https://www.tiktok.com/@addhomes" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40 hover:-translate-y-1 transition-all duration-300"
+              className="group p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl text-center border border-slate-100 dark:border-slate-800 hover:border-amber-500/40"
             >
-              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-6">
                 <svg className="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
